@@ -1,0 +1,76 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+    
+    <p:dialog id="dlgSVFiscaliaRDECargar" header="Carga archivo de transacciones" widgetVar="var_dlgSVFiscaliaRDECargar" modal="true" appendTo="@(body)" resizable="false" closable="true" closeOnEscape="true">
+        <style>
+            .fa { 
+                color: orange;
+            }
+        </style>
+        <h:form id="formSVFiscaliaRDECargar" prependId="true" enctype="multipart/form-data">
+            <h:panelGrid columns="1">
+                <p:fileUpload id="fupAdjunto" value="#{Cargar_RDE_Dialog_Uno.documento_transacciones}" mode="simple"  skinSimple="true" required="true" label="Excel"/>
+            </h:panelGrid>
+            <div align="right">
+                <p:commandButton id="btnAceptar" value="Aceptar" ajax="false" actionListener="#{Cargar_RDE_Dialog_Uno.cargar}" action="#{Reporte_Diario_Efectivo_Uno.cargar_datos(Cargar_RDE_Dialog_Uno.usuario, Cargar_RDE_Dialog_Uno.empresa)}" icon="ui-icon-check" update=":formContenido,:formMensaje:mensaje2"/>
+                <p:commandButton id="btnCancelar" value="Cancelar" icon="ui-icon-close" oncomplete="PF('var_dlgSVFiscaliaRDECargar').hide();"/>
+            </div>
+        </h:form>
+    </p:dialog>
+    
+    <p:dialog id="dlgSVFiscaliaRMECargar" header="Carga archivo de transacciones" widgetVar="var_dlgSVFiscaliaRMECargar" modal="true" appendTo="@(body)" resizable="false" closable="true" closeOnEscape="true">
+        <style>
+            .fa { 
+                color: orange;
+            }
+        </style>
+        <h:form id="formSVFiscaliaRMECargar" prependId="true" enctype="multipart/form-data">
+            <h:panelGrid columns="1">
+                <p:fileUpload id="fupAdjunto" value="#{Cargar_RME_Dialog_Uno.documento_transacciones}" mode="simple"  skinSimple="true" required="true" label="Excel"/>
+            </h:panelGrid>
+            <div align="right">
+                <p:commandButton id="btnAceptar" value="Aceptar" ajax="false" actionListener="#{Cargar_RME_Dialog_Uno.cargar}" action="#{Reporte_Mensual_Efectivo_Uno.cargar_datos(Cargar_RME_Dialog_Uno.usuario, Cargar_RME_Dialog_Uno.empresa)}" icon="ui-icon-check" update=":formContenido,:formMensaje:mensaje2"/>
+                <p:commandButton id="btnCancelar" value="Cancelar" icon="ui-icon-close" oncomplete="PF('var_dlgSVFiscaliaRMECargar').hide();"/>
+            </div>
+        </h:form>
+    </p:dialog>
+    
+    <p:dialog id="dlgSVFiscaliaRMMECargar" header="Carga archivo de transacciones" widgetVar="var_dlgSVFiscaliaRMMECargar" modal="true" appendTo="@(body)" resizable="false" closable="true" closeOnEscape="true">
+        <style>
+            .fa { 
+                color: orange;
+            }
+        </style>
+        <h:form id="formSVFiscaliaRMMECargar" prependId="true" enctype="multipart/form-data">
+            <h:panelGrid columns="1">
+                <p:fileUpload id="fupAdjunto" value="#{Cargar_RMME_Dialog_Uno.documento_transacciones}" mode="simple"  skinSimple="true" required="true" label="Excel"/>
+            </h:panelGrid>
+            <div align="right">
+                <p:commandButton id="btnAceptar" value="Aceptar" ajax="false" actionListener="#{Cargar_RMME_Dialog_Uno.cargar}" action="#{Reporte_Mensual_Medios_Electronicos_Uno.cargar_datos(Cargar_RMME_Dialog_Uno.usuario, Cargar_RMME_Dialog_Uno.empresa)}" icon="ui-icon-check" update=":formContenido,:formMensaje:mensaje2"/>
+                <p:commandButton id="btnCancelar" value="Cancelar" icon="ui-icon-close" oncomplete="PF('var_dlgSVFiscaliaRMMECargar').hide();"/>
+            </div>
+        </h:form>
+    </p:dialog>
+    
+    <p:dialog id="dlgSVFiscaliaRMOMCargar" header="Carga archivo de transacciones" widgetVar="var_dlgSVFiscaliaRMOMCargar" modal="true" appendTo="@(body)" resizable="false" closable="true" closeOnEscape="true">
+        <style>
+            .fa { 
+                color: orange;
+            }
+        </style>
+        <h:form id="formSVFiscaliaRMOMCargar" prependId="true" enctype="multipart/form-data">
+            <h:panelGrid columns="1">
+                <p:fileUpload id="fupAdjunto" value="#{Cargar_RMOM_Dialog_Uno.documento_transacciones}" mode="simple"  skinSimple="true" required="true" label="Excel"/>
+            </h:panelGrid>
+            <div align="right">
+                <p:commandButton id="btnAceptar" value="Aceptar" ajax="false" actionListener="#{Cargar_RMOM_Dialog_Uno.cargar}" action="#{Reporte_Mensual_Otros_Medios_Uno.cargar_datos(Cargar_RMOM_Dialog_Uno.usuario, Cargar_RMOM_Dialog_Uno.empresa)}" icon="ui-icon-check" update=":formContenido,:formMensaje:mensaje2"/>
+                <p:commandButton id="btnCancelar" value="Cancelar" icon="ui-icon-close" oncomplete="PF('var_dlgSVFiscaliaRMOMCargar').hide();"/>
+            </div>
+        </h:form>
+    </p:dialog>
+    
+</ui:composition>

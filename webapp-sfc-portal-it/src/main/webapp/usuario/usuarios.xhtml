@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <f:facet name="first">
+            <meta name="viewport" content="text/html; charset=UTF-8; width=device-width; initial-scale=1.0" http-equiv="Content-Type"/>
+            <title>.:GRUPO TERRA - IT:.</title>
+        </f:facet>
+    </h:head>
+    <h:body>
+        <ui:composition>
+            <p:panel id="UsuarioPanel" header="Usuarios">
+                <h:panelGrid columns="6">
+                    <p:commandButton id="btnCrear" value="Crear" actionListener="#{UsuariosDialog.mostrar_dialog_crear_usuario(Usuarios.usuario)}" icon="ui-icon-plus" update="dialogUsuarios,:formDialogUsuarios,:formMensaje:mensaje2"/>
+                    <p:commandButton id="btnEliminar" value="Eliminar" actionListener="#{UsuariosDialog.mostrar_dialog_eliminar_usuario(Usuarios.usuario, Usuarios.sel_usuario.id_usuario)}" icon="ui-icon-trash" update="dialogUsuarios,:formDialogUsuarios,:formMensaje:mensaje2"/>
+                    <p:commandButton id="btnExcel" value="Excel" ajax="false" icon="ui-icon-calculator">
+                        <p:dataExporter type="csv" target="tblUsuarios" fileName="Usuarios" pageOnly="true"/>
+                    </p:commandButton>
+                    <p:commandButton id="btnResetPass" value="Reset-Pass" actionListener="#{Usuarios.reset_pass}" styleClass="ui-confirmdialog-yes" icon="ui-icon-heart" update=":formMensaje:mensaje2">
+                        <p:confirm header="Confirmación" message="Esta seguro desea realizar esta acción?" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton id="btnDesactivar" value="Desactivar" actionListener="#{Usuarios.desactivar}" styleClass="ui-confirmdialog-yes" icon="ui-icon-radio-off" update=":formContenido:tblUsuarios,:formMensaje:mensaje2">
+                        <p:confirm header="Confirmación" message="Esta seguro desea realizar esta acción?" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton id="btnActivar" value="Activar" actionListener="#{Usuarios.activar}" styleClass="ui-confirmdialog-yes" icon="ui-icon-radio-on" update=":formContenido:tblUsuarios,:formMensaje:mensaje2">
+                        <p:confirm header="Confirmación" message="Esta seguro desea realizar esta acción?" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:confirmDialog global="true">
+                        <p:commandButton value="SI" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+                        <p:commandButton value="NO" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+                    </p:confirmDialog>
+                </h:panelGrid>
+                <p:dataTable 
+                    id="tblUsuarios"
+                    var="usuario"
+                    widgetVar="varTblUsuarios"
+                    value="#{Usuarios.lista_usuario}"
+                    selectionMode="single"
+                    selection="#{Usuarios.sel_usuario}"
+                    rowKey="#{usuario.id_usuario}"
+                    paginator="true"
+                    rows="10"
+                    rowsPerPageTemplate="10,20,30"
+                    paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}">
+                    
+                    <p:ajax event="rowDblselect" listener="#{UsuariosDialog.mostrar_dialog_modificar_usuario(Usuarios.usuario, Usuarios.sel_usuario.id_usuario)}" update="dialogUsuarios,:formDialogUsuarios,:formMensaje:mensaje2" global="false"/>
+                    
+                    <p:column headerText="ID" sortBy="#{usuario.id_usuario}" filterBy="#{usuario.id_usuario}" filterMatchMode="contains">
+                        <h:outputText value="#{usuario.id_usuario}"/>
+                    </p:column>
+                    <p:column headerText="Usuario" sortBy="#{usuario.usuario}" filterBy="#{usuario.usuario}" filterMatchMode="contains">
+                        <h:outputText value="#{usuario.usuario}"/>
+                    </p:column>
+                    <p:column headerText="Rol" sortBy="#{usuario.rol}" filterBy="#{usuario.rol}" filterMatchMode="contains">
+                        <h:outputText value="#{usuario.rol}"/>
+                    </p:column>
+                    <p:column headerText="Activo" sortBy="#{usuario.activo}" filterBy="#{usuario.activo}" filterMatchMode="contains">
+                        <h:outputText value="#{usuario.activo}"/>
+                    </p:column>
+                    <p:column headerText="Editable" sortBy="#{usuario.editable}" filterBy="#{usuario.editable}" filterMatchMode="contains">
+                        <h:outputText value="#{usuario.editable}"/>
+                    </p:column>
+                    <p:column headerText="Eliminable" sortBy="#{usuario.eliminable}" filterBy="#{usuario.eliminable}" filterMatchMode="contains">
+                        <h:outputText value="#{usuario.eliminable}"/>
+                    </p:column>
+                </p:dataTable>
+                <p:outputLabel value="Doble click sobre la fila para modificar."/>
+            </p:panel>
+        </ui:composition>
+    </h:body>
+</html>

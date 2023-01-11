@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <f:facet name="first">
+            <meta name="viewport" content="text/html; charset=UTF-8; width=device-width; initial-scale=1.0" http-equiv="Content-Type"/>
+            <title>.:SFC-PORTAL-IT:.</title>
+        </f:facet>
+    </h:head>
+    <h:body>
+        <h:form id="form1">
+            <p:growl id="mensaje1" showDetail="true"/>
+            <div align="center">
+                <h:panelGrid columns="1">
+                    <h:panelGrid columns="1">
+                        <img src="imagenes/Logo_Servicios_Financieros_Compartidos.jpg" alt=""/>
+                    </h:panelGrid>
+                    <p:outputLabel value="Bienvenido." style="font-size: 14px; font-weight: bold; color: blue;"/>
+                    <p:panelGrid columns="2">
+                        <f:facet name="header">
+                            <div style="padding: 4px;">
+                                <p:outputLabel value="Ingrese usuario y contraseña." style="font-size: 14px; font-weight: bold;"/>
+                            </div>
+                        </f:facet>
+                        <p:outputLabel value="Usuario" style="font-size: 12px;"/>
+                        <p:inputText id="txtUsuario" value="#{Index.usuario}" style="font-size: 12px;"/>
+                        <p:outputLabel value="Contraseña" style="font-size: 12px;"/>
+                        <p:password id="passConstrasena" value="#{Index.contrasena}" style="font-size: 12px;"/>
+                        <f:facet name="footer">
+                            <div style="text-align: right;">
+                                <p:commandButton id="btnIngresar" value="Ingresar" action="#{Index.login}" update="mensaje1" style="font-size: 12px;"/>
+                            </div>
+                        </f:facet>
+                    </p:panelGrid>
+                </h:panelGrid>
+            </div>
+        </h:form>
+    </h:body>
+</html>

@@ -1,0 +1,28 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+    <p:dialog id="dialogCambiarPassUsuarios" header="Usuario" widgetVar="dialogCambiarPassUsuariosVar" modal="true" appendTo="@(body)" resizable="false" closable="true" closeOnEscape="true">
+        <h:form id="formDialogCambiarPassUsuarios">
+            <h:panelGrid columns="1">
+                <p:outputLabel value="Nueva contraseña"/>
+                <p:password id="passContrasena" value="#{CambiarPassUsuariosDialog.contrasena}" style="width: 400px;"/>
+                <p:outputLabel value="Re-Contraseña"/>
+                <p:password id="RepassContrasena" value="#{CambiarPassUsuariosDialog.recontrasena}" style="width: 400px;"/>
+            </h:panelGrid>
+            <div align="right">
+                <p:commandButton id="btnAceptar" value="Aceptar" actionListener="#{CambiarPassUsuariosDialog.modificar_usuario}" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" action="#{CambiarPassUsuarios.cargar_datos(CambiarPassUsuariosDialog.usuario)}" update=":formMensaje:mensaje2,:formContenido">
+                    <p:confirm header="Confirmación" message="Esta seguro desea realizar esta acción?" icon="ui-icon-alert"/>
+                </p:commandButton>
+                <p:commandButton id="btnCancelar" value="Cancelar" styleClass="ui-confirmdialog-no" icon="ui-icon-close" oncomplete="PF('dialogCambiarPassUsuariosVar').hide();"/>
+
+                <p:confirmDialog global="true">
+                    <p:commandButton value="SI" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+                    <p:commandButton value="NO" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+                </p:confirmDialog>
+            </div>
+        </h:form>
+    </p:dialog>
+</ui:composition>

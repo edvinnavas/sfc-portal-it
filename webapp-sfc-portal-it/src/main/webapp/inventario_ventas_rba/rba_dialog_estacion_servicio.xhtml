@@ -1,0 +1,74 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+    <p:dialog id="dlgEstacionServicio" header="Estación de servicio" widgetVar="varEstacionServicio" modal="true" appendTo="@(body)" resizable="false" closable="true" closeOnEscape="true">
+        <h:form id="formEstacionServicio">
+            <p:panelGrid columns="1">
+                <p:outputLabel value="Nombre"/>
+                <p:inputText id="txtNombre" disabled="#{Rba_Dialog_Estacion_Servicio.txt_nombre_estacion}" value="#{Rba_Dialog_Estacion_Servicio.nombre_estacion}" style="width: 482px;"/>
+            </p:panelGrid>
+            <p:panelGrid columns="3">
+                <p:outputLabel value="AB|E1"/>
+                <p:outputLabel value="COD|ENVOY"/>
+                <p:outputLabel value="COD|PAYWARE"/>
+                <p:inputText id="txtAbE1" disabled="#{Rba_Dialog_Estacion_Servicio.txt_cod_e1}" value="#{Rba_Dialog_Estacion_Servicio.cod_e1}" style="width: 140px;"/>
+                <p:inputText id="txtAbEnvoy" disabled="#{Rba_Dialog_Estacion_Servicio.txt_cod_envoy}" value="#{Rba_Dialog_Estacion_Servicio.cod_envoy}" style="width: 140px;"/>
+                <p:inputText id="txtAbPayware" disabled="#{Rba_Dialog_Estacion_Servicio.txt_cod_payware}" value="#{Rba_Dialog_Estacion_Servicio.cod_payware}" style="width: 140px;"/>
+                <p:outputLabel value="MCU|E1"/>
+                <p:outputLabel value="KCOO|E1"/>
+                <p:outputLabel value="DCTO|E1"/>
+                <p:inputText id="txtMcuE1" disabled="#{Rba_Dialog_Estacion_Servicio.txt_mcu_e1}" value="#{Rba_Dialog_Estacion_Servicio.mcu_e1}" style="width: 140px;"/>
+                <p:inputText id="txtKcooE1" disabled="#{Rba_Dialog_Estacion_Servicio.txt_kcoo_e1}" value="#{Rba_Dialog_Estacion_Servicio.kcoo_e1}" style="width: 140px;"/>
+                <p:inputText id="txtDctoE1" disabled="#{Rba_Dialog_Estacion_Servicio.txt_dcto_e1}" value="#{Rba_Dialog_Estacion_Servicio.dcto_e1}" style="width: 140px;"/>
+                <p:outputLabel value="SHAN|E1"/>
+                <p:outputLabel value="ROUT|E1"/>
+                <p:spacer height="0"/>
+                <p:inputText id="txtShanE1" disabled="#{Rba_Dialog_Estacion_Servicio.txt_shan_e1}" value="#{Rba_Dialog_Estacion_Servicio.shan_e1}" style="width: 140px;"/>
+                <p:inputText id="txtRoutE1" disabled="#{Rba_Dialog_Estacion_Servicio.txt_rout_e1}" value="#{Rba_Dialog_Estacion_Servicio.rout_e1}" style="width: 140px;"/>
+                <p:spacer height="0"/>
+            </p:panelGrid>
+            <p:dataTable 
+                id="dtCodNaf"
+                var="codn"
+                widgetVar="v_codn"
+                value="#{Rba_Dialog_Estacion_Servicio.lst_cod_naf}"
+                selectionMode="single"
+                selection="#{Rba_Dialog_Estacion_Servicio.sel_cod_naf}"
+                rowKey="#{codn.correlativo}"
+                reflow="true"
+                editable="true" 
+                editMode="cell"
+                style="width: 514px;">
+                <p:column headerText="Correlativo">
+                    <h:outputText value="#{codn.correlativo}"/>
+                </p:column>
+                <p:column headerText="Código NAF">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{codn.cod_naf}"/></f:facet>
+                        <f:facet name="input"><p:inputText value="#{codn.cod_naf}" style="width:96%"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <f:facet name="footer">
+                    <div align="left">
+                        <p:commandButton id="btnAgregarCodNaf" disabled="#{Rba_Dialog_Estacion_Servicio.btnAgregarCodNaf}" value="Agregar NAF" actionListener="#{Rba_Dialog_Estacion_Servicio.agregar_cod_naf}" update=":formMensaje:mensaje2,:formEstacionServicio:dtCodNaf"/>
+                        <p:commandButton id="btnEliminarCodNaf" disabled="#{Rba_Dialog_Estacion_Servicio.btnEliminarCodNaf}" value="Eliminar NAF" actionListener="#{Rba_Dialog_Estacion_Servicio.eliminar_cod_naf}" update=":formMensaje:mensaje2,:formEstacionServicio:dtCodNaf"/>
+                    </div>
+                </f:facet>
+            </p:dataTable>
+            <div align="right">
+                <p:commandButton id="btnAceptar" disabled="#{Rba_Dialog_Estacion_Servicio.btnAceptar}" value="Aceptar" actionListener="#{Rba_Dialog_Estacion_Servicio.aceptar}" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" action="#{Rba_Estacion_Servicio.cargar_datos(Rba_Dialog_Estacion_Servicio.usuario)}" update=":formMensaje:mensaje2,:formContenido">
+                    <p:confirm header="Confirmación" message="Esta seguro desea realizar esta acción?" icon="ui-icon-alert"/>
+                </p:commandButton>
+                <p:commandButton id="btnCancelar" value="Cancelar" styleClass="ui-confirmdialog-no" icon="ui-icon-close" oncomplete="PF('varEstacionServicio').hide();"/>
+
+                <p:confirmDialog global="true">
+                    <p:commandButton value="SI" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+                    <p:commandButton value="NO" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+                </p:confirmDialog>
+            </div>
+        </h:form>
+    </p:dialog>
+</ui:composition>

@@ -1,0 +1,30 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+    <p:dialog id="dlgReceptor" widgetVar="varReceptor" header="Receptor" appendTo="@(body)" modal="true" resizable="false" closeOnEscape="true" closable="true">
+        <h:form id="formReceptor">
+            <p:panelGrid columns="2">
+                <p:outputLabel value="Id-Receptor"/>
+                <p:inputText id="input_1" value="#{Fcr_Dialog_Receptor.id_receptor}" readonly="true" style="width: 400px;"/>
+                <p:outputLabel value="Tipo contribuyente"/>
+                <p:selectOneMenu id="input_2" value="#{Fcr_Dialog_Receptor.id_tipo_contribuyente}" style="width: 386px; background-color: yellow;">
+                    <f:selectItems value="#{Fcr_Dialog_Receptor.lst_tipo_contribuyente}"/>
+                </p:selectOneMenu>
+                <p:outputLabel value="TAX-ID"/>
+                <p:inputText id="input_3" value="#{Fcr_Dialog_Receptor.tax_id}" style="width: 400px;"/>
+                <p:outputLabel value="Nombre"/>
+                <p:inputText id="input_4" value="#{Fcr_Dialog_Receptor.nombre_cliente}" style="width: 400px;"/>
+                <p:outputLabel value="Dirección"/>
+                <p:inputText id="input_5" value="#{Fcr_Dialog_Receptor.direccion}" style="width: 400px;"/>
+                <p:outputLabel value="Correo electrónico"/>
+                <p:inputText id="input_6" value="#{Fcr_Dialog_Receptor.correo}" style="width: 400px;"/>
+                <p:outputLabel value="Código país"/>
+                <p:inputText id="input_7" value="#{Fcr_Dialog_Receptor.codigo_area}" style="width: 400px;"/>
+            </p:panelGrid>
+            <p:commandButton id="btnGuardar" disabled="#{Fcr_Dialog_Receptor.btnGuardar}" value="Guardar" icon="ui-icon-plus" actionListener="#{Fcr_Dialog_Receptor.modificar_receptor}" update=":formMensaje:mensaje2"/>
+        </h:form>
+    </p:dialog>
+</ui:composition>

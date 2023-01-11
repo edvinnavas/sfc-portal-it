@@ -1,0 +1,111 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <f:facet name="first">
+            <meta name="viewport" content="text/html; charset=UTF-8; width=device-width; initial-scale=1.0;" http-equiv="Content-Type"/>
+            <title>.:GRUPO TERRA - IT:.</title>
+        </f:facet>
+    </h:head>
+    <h:body>
+        <ui:composition>
+            <p:panel id="CargaDocDtePanel" header="#{CargaDocDte.ambiente_jde}" styleClass="mb-2" style="font-size: 14px; font-weight: bold;">
+                <h:panelGrid columns="11">
+                    <p:outputLabel value="Fecha inicial" style="font-size: 12px;"/>
+                    <p:calendar id="calFechaInicial" value="#{CargaDocDte.fecha_inicial}" pattern="dd/MM/yyyy" style="font-size: 12px;">
+                        <p:ajax event="dateSelect" listener="#{CargaDocDte.cargar_datos(CargaDocDte.ambiente, CargaDocDte.usuario, CargaDocDte.kcoo_compania_jde)}" update=":formContenido:tblCargaDocDte"/>
+                    </p:calendar>
+                    <p:outputLabel value="Fecha final" style="font-size: 12px;"/>
+                    <p:calendar id="calFechaFinal" value="#{CargaDocDte.fecha_final}" pattern="dd/MM/yyyy" style="font-size: 12px;">
+                        <p:ajax event="dateSelect" listener="#{CargaDocDte.cargar_datos(CargaDocDte.ambiente, CargaDocDte.usuario, CargaDocDte.kcoo_compania_jde)}" update=":formContenido:tblCargaDocDte"/>
+                    </p:calendar>
+                    <p:commandButton id="btnJdeFel" value="JDE-FEL" actionListener="#{CargaDocDte.jde_to_fel}" icon="ui-icon-plus" update=":formContenido:tblCargaDocDte,:formMensaje:mensaje2" style="font-size: 12px;">
+                        <p:confirm header="Confirmación" message="Esta seguro desea realizar esta acción?" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton id="btnDesmarcar" value="Desmarcar" actionListener="#{CargaDocDte.desmarcar}" icon="ui-icon-minus" update=":formContenido:tblCargaDocDte,:formMensaje:mensaje2" style="font-size: 12px;">
+                        <p:confirm header="Confirmación" message="Esta seguro desea realizar esta acción?" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton id="btnExcel" value="Excel" ajax="false" icon="ui-icon-calculator" style="font-size: 12px;">
+                        <p:dataExporter type="csv" target="tblCargaDocDte" fileName="DocumentosFel"/>
+                    </p:commandButton>
+                    <p:outputLabel value="Tipo documento" style="font-size: 12px;"/>
+                    <p:selectOneMenu id="somTipoDocumento" value="#{CargaDocDte.tipo_documento}" style="font-size: 12px;">
+                        <f:selectItems value="#{CargaDocDte.lst_tipo_documento}"/>
+                    </p:selectOneMenu>
+                    <p:commandButton id="btnArchivoFel" value="Archivo FEL" actionListener="#{CargaDocDteDialog.cargar_datos(CargaDocDte.ambiente, CargaDocDte.usuario, CargaDocDte.lista_dte, CargaDocDte.tipo_documento, CargaDocDte.fecha_inicial, CargaDocDte.fecha_final, CargaDocDte.kcoo_compania_jde)}" icon="ui-icon-document" update="dialogFelDescArchivo,:formFelDescArchivo" style="font-size: 12px;"/>
+                    <p:commandButton id="btnAutorizar" value="Autorizar" actionListener="#{Autorizar_Dialog.cargar_datos(CargaDocDte.ambiente, CargaDocDte.usuario, CargaDocDte.ambiente_jde_uni, CargaDocDte.kcoo_compania_jde)}" icon="ui-icon-document" update="dialogAutorizar,:formAutorizar" style="font-size: 12px;"/>
+                    
+                    <p:confirmDialog global="true">
+                        <p:commandButton value="SI" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" style="font-size: 12px;"/>
+                        <p:commandButton value="NO" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" style="font-size: 12px;"/>
+                    </p:confirmDialog>
+                </h:panelGrid>
+                <style type="text/css">
+                    .pendiente {
+                        background-color: orange !important;
+                        background-image: none !important;
+                        color: #000000 !important;
+                    }
+                </style>
+                <p:dataTable 
+                    id="tblCargaDocDte"
+                    var="dte"
+                    widgetVar="varTblCargaDocDte"
+                    value="#{CargaDocDte.lista_dte}"
+                    selectionMode="single"
+                    selection="#{CargaDocDte.sel_dte}"
+                    rowKey="#{dte.id_dte}"
+                    paginator="true"
+                    rows="10"
+                    rowsPerPageTemplate="10,20,30"
+                    paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                    rowStyleClass="#{dte.autorizado eq 'NO' ? 'pendiente' : null}"
+                    style="font-size: 12px;">
+
+                    <p:column headerText="ID" sortBy="#{dte.id_dte}" filterBy="#{dte.id_dte}" filterMatchMode="contains">
+                        <h:outputText value="#{dte.id_dte}"/>
+                    </p:column>
+                    <p:column headerText="AB-Cliente" sortBy="#{dte.ab_cliente}" filterBy="#{dte.ab_cliente}" filterMatchMode="contains">
+                        <h:outputText value="#{dte.ab_cliente}"/>
+                    </p:column>
+                    <p:column headerText="Cliente" sortBy="#{dte.cliente}" filterBy="#{dte.cliente}" filterMatchMode="contains">
+                        <h:outputText value="#{dte.cliente}"/>
+                    </p:column>
+                    <p:column headerText="No Orden" sortBy="#{dte.no_orden}" filterBy="#{dte.no_orden}" filterMatchMode="contains">
+                        <h:outputText value="#{dte.no_orden}"/>
+                    </p:column>
+                    <p:column headerText="Tipo orden" sortBy="#{dte.tipo_orden}" filterBy="#{dte.tipo_orden}" filterMatchMode="contains">
+                        <h:outputText value="#{dte.tipo_orden}"/>
+                    </p:column>
+                    <p:column headerText="No documento" sortBy="#{dte.no_documento}" filterBy="#{dte.no_documento}" filterMatchMode="contains">
+                        <h:outputText value="#{dte.no_documento}"/>
+                    </p:column>
+                    <p:column headerText="Fecha documento" sortBy="#{dte.fecha_documento}" filterBy="#{dte.fecha_documento}" filterMatchMode="contains">
+                        <h:outputText value="#{dte.fecha_documento}">
+                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Enviado" sortBy="#{dte.enviado}" filterBy="#{dte.enviado}" filterMatchMode="contains">
+                        <h:outputText value="#{dte.enviado}"/>
+                    </p:column>
+                    <p:column headerText="Autorizado" sortBy="#{dte.autorizado}" filterBy="#{dte.autorizado}" filterMatchMode="contains">
+                        <h:outputText value="#{dte.autorizado}"/>
+                    </p:column>
+                    <p:column headerText="Ambiente" sortBy="#{dte.ambiente}" filterBy="#{dte.ambiente}" filterMatchMode="contains">
+                        <h:outputText value="#{dte.ambiente}"/>
+                    </p:column>
+                </p:dataTable>
+                <p:outputLabel value="Doble click sobre la fila para modificar."/>
+            </p:panel>
+            <p:blockUI widgetVar="blocker1" block=":formContenido:CargaDocDtePanel" trigger=":formContenido:calFechaInicial,:formContenido:calFechaFinal,:formContenido:btnJdeFel,:formContenido:btnDesmarcar">
+                <h:panelGrid columns="1">
+                    <img src="imagenes/ajax-loader.gif" alt=""/>
+                </h:panelGrid>
+            </p:blockUI>
+        </ui:composition>
+    </h:body>
+</html>

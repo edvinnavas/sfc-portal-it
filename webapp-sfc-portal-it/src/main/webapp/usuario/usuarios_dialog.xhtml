@@ -1,0 +1,42 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+    <p:dialog id="dialogUsuarios" header="Usuario" widgetVar="dialogUsuariosVar" modal="true" appendTo="@(body)" resizable="false" closable="true" closeOnEscape="true">
+        <h:form id="formDialogUsuarios">
+            <h:panelGrid columns="1">
+                <p:outputLabel value="Usuario"/>
+                <p:inputText id="txtUsuario" disabled="#{UsuariosDialog.txt_usuario}" value="#{UsuariosDialog.usuario_dialog}" style="width: 400px;"/>
+                <p:outputLabel value="Nombre completo"/>
+                <p:inputText id="txtNombreCompleto" disabled="#{UsuariosDialog.txt_nombre_completo}" value="#{UsuariosDialog.nombre_completo}" style="width: 400px;"/>
+                <p:outputLabel value="Correo"/>
+                <p:inputText id="txtCorreo" disabled="#{UsuariosDialog.txt_correo}" value="#{UsuariosDialog.correo}" style="width: 400px;"/>
+                <p:outputLabel value="Fecha de nacimiento"/>
+                <p:calendar id="calFechaNacimiento" disabled="#{UsuariosDialog.cal_fecha_nacimiento}" value="#{UsuariosDialog.fecha_nacimiento}" pattern="dd/MM/yyyy" style="width: 400px;"/>
+                <p:outputLabel value="Contraseña"/>
+                <p:password id="passContrasena" disabled="#{UsuariosDialog.pass_contrasena}" value="#{UsuariosDialog.contrasena}" style="width: 400px;"/>
+                <p:outputLabel value="Re-Contraseña"/>
+                <p:password id="passReContrasena" disabled="#{UsuariosDialog.pass_recontrasena}" value="#{UsuariosDialog.recontrasena}" style="width: 400px;"/>
+                <p:outputLabel value="Rol"/>
+                <p:selectOneMenu id="somRol" disabled="#{UsuariosDialog.som_rol}" value="#{UsuariosDialog.id_rol}" style="width: 385px;">
+                    <f:selectItems value="#{UsuariosDialog.lst_rol}"/>
+                </p:selectOneMenu>
+                <p:outputLabel value="Descripción"/>
+                <p:inputTextarea id="areDescripcion" disabled="#{UsuariosDialog.are_descripcion}" value="#{UsuariosDialog.descripcion}" style="width: 400px;"/>
+            </h:panelGrid>
+            <div align="right">
+                <p:commandButton id="btnAceptar" disabled="#{UsuariosDialog.btn_aceptar}" value="Aceptar" actionListener="#{UsuariosDialog.aceptar}" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" action="#{Usuarios.cargar_datos(UsuariosDialog.usuario)}" update=":formMensaje:mensaje2,:formContenido">
+                    <p:confirm header="Confirmación" message="Esta seguro desea realizar esta acción?" icon="ui-icon-alert"/>
+                </p:commandButton>
+                <p:commandButton id="btnCancelar" value="Cancelar" styleClass="ui-confirmdialog-no" icon="ui-icon-close" oncomplete="PF('dialogUsuariosVar').hide();"/>
+
+                <p:confirmDialog global="true">
+                    <p:commandButton value="SI" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+                    <p:commandButton value="NO" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+                </p:confirmDialog>
+            </div>
+        </h:form>
+    </p:dialog>
+</ui:composition>

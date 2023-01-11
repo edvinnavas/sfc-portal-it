@@ -1,0 +1,41 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+    <p:dialog id="dlgTotales" widgetVar="varTotales" header="Total" appendTo="@(body)" modal="true" resizable="false" closeOnEscape="true" closable="true">
+        <h:form id="formTotales">
+            <p:panelGrid columns="2">
+                <p:outputLabel value="Id Total"/>
+                <p:inputText id="input_1" value="#{Fcr_Dialog_Totales.id_totales}" readonly="true" style="width: 400px;"/>
+                <p:outputLabel value="Moneda"/>
+                <p:inputText id="input_2" value="#{Fcr_Dialog_Totales.moneda}" readonly="true" style="width: 400px;"/>
+                <p:outputLabel value="Tipo Cambio"/>
+                <p:inputText id="input_3" value="#{Fcr_Dialog_Totales.tipo_cambio}" readonly="true" style="width: 400px;"/>
+                <p:outputLabel value="SubTotal"/>
+                <p:inputText id="input_4" value="#{Fcr_Dialog_Totales.subtotal}" readonly="true" style="width: 400px;"/>
+                <p:outputLabel value="Total Descuento"/>
+                <p:inputText id="input_5" value="#{Fcr_Dialog_Totales.total_descuento}" readonly="true" style="width: 400px;"/>
+                <p:outputLabel value="Total Venta Neta"/>
+                <p:inputText id="input_6" value="#{Fcr_Dialog_Totales.total_venta_neta}" readonly="true" style="width: 400px;"/>
+                <p:outputLabel value="Total Exento"/>
+                <p:inputText id="input_7" value="#{Fcr_Dialog_Totales.total_exento}" readonly="true" style="width: 400px;"/>
+                <p:outputLabel value="Total Impuesto"/>
+                <p:inputText id="input_8" value="#{Fcr_Dialog_Totales.total_impuesto}" readonly="true" style="width: 400px;"/>
+                <p:outputLabel value="Total Venta"/>
+                <p:inputText id="input_9" value="#{Fcr_Dialog_Totales.total_venta}" readonly="true" style="width: 400px;"/>
+                <p:outputLabel value="Total Comprobante"/>
+                <p:inputText id="input_10" value="#{Fcr_Dialog_Totales.total_comprobante}" readonly="true" style="width: 400px;"/>
+                <p:outputLabel value="Total Serv. Gravados"/>
+                <p:inputText id="input_11" value="#{Fcr_Dialog_Totales.total_servicios_gravados}" readonly="true" style="width: 400px;"/>
+                <p:outputLabel value="Total Serv. Excentos"/>
+                <p:inputText id="input_12" value="#{Fcr_Dialog_Totales.total_servicios_exentos}" readonly="true" style="width: 400px;"/>
+                <p:outputLabel value="Total Merca. Gravados"/>
+                <p:inputText id="input_13" value="#{Fcr_Dialog_Totales.total_mercaderia_gravados}" readonly="true" style="width: 400px;"/>
+                <p:outputLabel value="Total Merca. Excentos"/>
+                <p:inputText id="input_14" value="#{Fcr_Dialog_Totales.total_mercaderia_exentos}" readonly="true" style="width: 400px;"/>
+            </p:panelGrid>
+        </h:form>
+    </p:dialog>
+</ui:composition>

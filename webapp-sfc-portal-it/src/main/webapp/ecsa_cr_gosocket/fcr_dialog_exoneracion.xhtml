@@ -1,0 +1,36 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+    <p:dialog id="dlgExoneracion" widgetVar="varExoneracion" header="Exoneracion" appendTo="@(body)" modal="true" resizable="false" closeOnEscape="true" closable="true">
+        <h:form id="formExoneracion">
+            <p:panelGrid columns="2">
+                <p:outputLabel value="Id Exoneracion"/>
+                <p:inputText id="input_1" value="#{Fcr_Dialog_Exoneracion.id_exoneracion}" readonly="true" style="width: 400px;"/>
+                <p:outputLabel value="Id Documento"/>
+                <p:inputText id="input_2" value="#{Fcr_Dialog_Exoneracion.id_documento}" readonly="true" style="width: 400px;"/>
+                <p:outputLabel value="Activo"/>
+                <p:selectOneMenu id="input_3" value="#{Fcr_Dialog_Exoneracion.activo}" disabled="#{Fcr_Dialog_Exoneracion.btnGuardar}" style="width: 386px; background-color: yellow;">
+                    <f:selectItems value="#{Fcr_Dialog_Exoneracion.lst_activo}"/>
+                </p:selectOneMenu>
+                <p:outputLabel value="Tipo exoneración"/>
+                <p:selectOneMenu id="input_4" value="#{Fcr_Dialog_Exoneracion.id_tipo_exoneracion}" disabled="#{Fcr_Dialog_Exoneracion.btnGuardar}" style="width: 386px; background-color: yellow;">
+                    <f:selectItems value="#{Fcr_Dialog_Exoneracion.lst_tipo_exoneracion}"/>
+                </p:selectOneMenu>
+                <p:outputLabel value="Número de documento"/>
+                <p:inputText id="input_5" value="#{Fcr_Dialog_Exoneracion.num_doc}" readonly="#{Fcr_Dialog_Exoneracion.btnGuardar}" style="width: 400px;"/>
+                <p:outputLabel value="Fecha emisión"/>
+                <p:calendar id="input_6" value="#{Fcr_Dialog_Exoneracion.fecha_emision}" disabled="#{Fcr_Dialog_Exoneracion.btnGuardar}" pattern="yyyy/MM/dd" style="width: 400px;"/>
+                <p:outputLabel value="Nombre institución"/>
+                <p:inputText id="input_7" value="#{Fcr_Dialog_Exoneracion.nombre_institucion}" readonly="#{Fcr_Dialog_Exoneracion.btnGuardar}" style="width: 400px;"/>
+                <p:outputLabel value="Porcentaje exoneración"/>
+                <p:spinner id="input_8" value="#{Fcr_Dialog_Exoneracion.porcentaje_exoneracion}" readonly="#{Fcr_Dialog_Exoneracion.btnGuardar}" min="0" max="100" stepFactor="1" style="background-color: yellow;"/>
+                <p:outputLabel value="Monto exoneración"/>
+                <p:spinner id="input_9" value="#{Fcr_Dialog_Exoneracion.monto_exoneracion}" readonly="#{Fcr_Dialog_Exoneracion.btnGuardar}" min="0.00" decimalPlaces="2" stepFactor="0.01" style="background-color: yellow;"/>
+            </p:panelGrid>
+            <p:commandButton id="btnGuardar" disabled="#{Fcr_Dialog_Exoneracion.btnGuardar}" value="Guardar" icon="ui-icon-plus" actionListener="#{Fcr_Dialog_Exoneracion.modificar_exoneracion}" update=":formMensaje:mensaje2"/>
+        </h:form>
+    </p:dialog>
+</ui:composition>

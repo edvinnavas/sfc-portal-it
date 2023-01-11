@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <f:facet name="first">
+            <meta name="viewport" content="text/html; charset=UTF-8; width=device-width; initial-scale=1.0" http-equiv="Content-Type"/>
+            <title>.:GRUPO TERRA - IT:.</title>
+        </f:facet>
+    </h:head>
+    <h:body>
+        <ui:composition>
+            <p:panel id="RolPanel" header="Roles">
+                <h:panelGrid columns="4">
+                    <p:commandButton id="btnCrear" value="Crear" actionListener="#{RolesDialog.mostrar_dialog_crear_rol(Roles.usuario)}" icon="ui-icon-plus" update="dialogRoles,:formDialogRoles,:formMensaje:mensaje2"/>
+                    <p:commandButton id="btnEliminar" value="Eliminar" actionListener="#{RolesDialog.mostrar_dialog_eliminar_rol(Roles.usuario, Roles.sel_rol.id_rol)}" icon="ui-icon-trash" update="dialogRoles,:formDialogRoles,:formMensaje:mensaje2"/>
+                    <p:commandButton id="btnExcel" value="Excel" ajax="false" icon="ui-icon-calculator">
+                        <p:dataExporter type="csv" target="tblRoles" fileName="Roles" pageOnly="true"/>
+                    </p:commandButton>
+                </h:panelGrid>
+                <p:dataTable 
+                    id="tblRoles"
+                    var="rol"
+                    widgetVar="varTblRoles"
+                    value="#{Roles.lista_rol}"
+                    selectionMode="single"
+                    selection="#{Roles.sel_rol}"
+                    rowKey="#{rol.id_rol}"
+                    paginator="true"
+                    rows="10"
+                    rowsPerPageTemplate="10,20,30"
+                    paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}">
+                    
+                    <p:ajax event="rowDblselect" listener="#{RolesDialog.mostrar_dialog_modificar_rol(Roles.usuario, Roles.sel_rol.id_rol)}" update="dialogRoles,:formDialogRoles,:formMensaje:mensaje2" global="false"/>
+                    
+                    <p:column headerText="ID" sortBy="#{rol.id_rol}" filterBy="#{rol.id_rol}" filterMatchMode="contains">
+                        <h:outputText value="#{rol.id_rol}"/>
+                    </p:column>
+                    <p:column headerText="Nombre" sortBy="#{rol.nombre}" filterBy="#{rol.nombre}" filterMatchMode="contains">
+                        <h:outputText value="#{rol.nombre}"/>
+                    </p:column>
+                    <p:column headerText="Activo" sortBy="#{rol.activo}" filterBy="#{rol.activo}" filterMatchMode="contains">
+                        <h:outputText value="#{rol.activo}"/>
+                    </p:column>
+                    <p:column headerText="Editable" sortBy="#{rol.editable}" filterBy="#{rol.editable}" filterMatchMode="contains">
+                        <h:outputText value="#{rol.editable}"/>
+                    </p:column>
+                    <p:column headerText="Eliminable" sortBy="#{rol.eliminable}" filterBy="#{rol.eliminable}" filterMatchMode="contains">
+                        <h:outputText value="#{rol.eliminable}"/>
+                    </p:column>
+                </p:dataTable>
+                <p:outputLabel value="Doble click sobre la fila para modificar."/>
+            </p:panel>
+        </ui:composition>
+    </h:body>
+</html>

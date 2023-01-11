@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <f:facet name="first">
+            <meta name="viewport" content="text/html; charset=UTF-8; width=device-width; initial-scale=1.0" http-equiv="Content-Type"/>
+            <title>.:GRUPO TERRA - IT:.</title>
+        </f:facet>
+    </h:head>
+    <h:body>
+        <ui:composition>
+            <p:panel id="SVFiscaliaRMEPanel" header="#{Reporte_Mensual_Efectivo_Uno.titulo}">
+                <h:panelGrid columns="4">
+                    <p:commandButton id="btnCargar" value="Cargar" actionListener="#{Cargar_RME_Dialog_Uno.cargar_datos(Reporte_Mensual_Efectivo_Uno.usuario, Reporte_Mensual_Efectivo_Uno.empresa)}" icon="fa fa-upload" update="dlgSVFiscaliaRMECargar,:formSVFiscaliaRMECargar,:formMensaje:mensaje2"/>
+                    <p:commandButton id="btnEliminar" value="Eliminar" actionListener="#{Reporte_Mensual_Efectivo_Uno.eliminar_trans}" icon="fa fa-remove" update="tblSVFiscaliaRME,:formMensaje:mensaje2">
+                        <p:confirm header="Confirmación" message="Esta seguro desea realizar esta acción?" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                
+                    <p:confirmDialog global="true">
+                        <p:commandButton value="SI" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+                        <p:commandButton value="NO" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+                    </p:confirmDialog>
+                </h:panelGrid>
+                <style type="text/css">
+                    .pendiente {
+                        background-color: orange !important;
+                        background-image: none !important;
+                        color: #000000 !important;
+                    }
+                </style>
+                <p:dataTable 
+                    id="tblSVFiscaliaRME"
+                    var="rme"
+                    widgetVar="var_tblSVFiscaliaRME"
+                    value="#{Reporte_Mensual_Efectivo_Uno.lista_rme}"
+                    selectionMode="single"
+                    selection="#{Reporte_Mensual_Efectivo_Uno.sel_rme}"
+                    rowKey="#{rme.id_trans}"
+                    paginator="true"
+                    rows="50"
+                    rowsPerPageTemplate="50,100,150"
+                    paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                    rowStyleClass="#{rme.codigo_mensaje eq '0' ? 'pendiente' : null}">
+                    
+                    <p:column headerText="Id Transacción" sortBy="#{rme.id_trans}" filterBy="#{rme.id_trans}" filterMatchMode="contains">
+                        <h:outputText value="#{rme.id_trans}"/>
+                    </p:column>
+                    <p:column headerText="Token" sortBy="#{rme.token_valido}" filterBy="#{rme.token_valido}" filterMatchMode="contains">
+                        <h:outputText value="#{rme.token_valido}"/>
+                    </p:column>
+                    <p:column headerText="Fecha Reporte" sortBy="#{rme.fecha_reporte}" filterBy="#{rme.fecha_reporte}" filterMatchMode="contains">
+                        <h:outputText value="#{rme.fecha_reporte}">
+                            <f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Código Reporta" sortBy="#{rme.codigo_persona_reporta}" filterBy="#{rme.codigo_persona_reporta}" filterMatchMode="contains">
+                        <h:outputText value="#{rme.codigo_persona_reporta}"/>
+                    </p:column>
+                    <p:column headerText="Cargo Reporta" sortBy="#{rme.cargo_persona_reporta}" filterBy="#{rme.cargo_persona_reporta}" filterMatchMode="contains">
+                        <h:outputText value="#{rme.cargo_persona_reporta}"/>
+                    </p:column>
+                    <p:column headerText="Código Mensaje" sortBy="#{rme.codigo_mensaje}" filterBy="#{rme.codigo_mensaje}" filterMatchMode="contains">
+                        <h:outputText value="#{rme.codigo_mensaje}"/>
+                    </p:column>
+                    <p:column headerText="Descripción Mensaje" sortBy="#{rme.descripcionmensaje}" filterBy="#{rme.descripcionmensaje}" filterMatchMode="contains">
+                        <h:outputText value="#{rme.descripcionmensaje}"/>
+                    </p:column>
+                    <p:column headerText="Código Transacción" sortBy="#{rme.codigotransaccion}" filterBy="#{rme.codigotransaccion}" filterMatchMode="contains">
+                        <h:outputText value="#{rme.codigotransaccion}"/>
+                    </p:column>
+                    <p:column headerText="Registros Procesados" sortBy="#{rme.registrosprocesados}" filterBy="#{rme.registrosprocesados}" filterMatchMode="contains">
+                        <h:outputText value="#{rme.registrosprocesados}"/>
+                    </p:column>
+                </p:dataTable>
+                <p:outputLabel value="Doble click sobre la fila para modificar."/>
+            </p:panel>
+            <p:blockUI widgetVar="blocker1" block=":formContenido:SVFiscaliaRMEPanel" trigger=":formContenido:btnEliminar">
+                <h:panelGrid columns="1">
+                <img src="imagenes/ajax-loader.gif" alt=""/>
+                </h:panelGrid>
+            </p:blockUI>
+        </ui:composition>
+    </h:body>
+</html>

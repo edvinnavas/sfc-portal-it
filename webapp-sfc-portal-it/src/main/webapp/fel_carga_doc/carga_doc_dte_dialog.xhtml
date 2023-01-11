@@ -1,0 +1,17 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+    <p:dialog id="dialogFelDescArchivo" header="Descargar archivo" widgetVar="dialogFelDescArchivoVar" modal="true" appendTo="@(body)" resizable="false" closable="true" closeOnEscape="true">
+        <h:form id="formFelDescArchivo">
+            <h:panelGrid columns="2">
+                <p:commandButton id="btnArchivoFel" value="Archivo FEL" ajax="false" actionListener="#{CargaDocDteDialog.archivo_fel}" icon="ui-icon-document">
+                    <p:fileDownload value="#{CargaDocDteDialog.file}"/>
+                </p:commandButton>
+                <p:commandButton id="btnCancelar" value="Cerrar" actionListener="#{CargaDocDte.cargar_datos(CargaDocDteDialog.ambiente, CargaDocDteDialog.usuario, CargaDocDteDialog.kcoo_compania_jde)}" icon="ui-icon-close" oncomplete="PF('dialogFelDescArchivoVar').hide();" update=":formContenido"/>
+            </h:panelGrid>
+        </h:form>
+    </p:dialog>
+</ui:composition>
