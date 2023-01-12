@@ -26,9 +26,9 @@
                             </div>
                         </f:facet>
                         <p:outputLabel value="Usuario" style="font-size: 12px;"/>
-                        <p:inputText id="txtUsuario" value="#{Index.usuario}" style="font-size: 12px;"/>
+                        <p:inputText id="txtUsuario" value="#{Index.usuario}" style="font-size: 12px;" autocomplete="false"/>
                         <p:outputLabel value="Contraseña" style="font-size: 12px;"/>
-                        <p:password id="passConstrasena" value="#{Index.contrasena}" style="font-size: 12px;"/>
+                        <p:password id="passConstrasena" value="#{Index.contrasena}" style="font-size: 12px;" autocomplete="false"/>
                         <f:facet name="footer">
                             <div style="text-align: right;">
                                 <p:commandButton id="btnIngresar" value="Ingresar" action="#{Index.login}" update="mensaje1" style="font-size: 12px;"/>

@@ -30,6 +30,8 @@ public class Index implements Serializable {
 
     public Index() {
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+        this.usuario = "";
+        this.contrasena = "";
     }
 
     public String login() {

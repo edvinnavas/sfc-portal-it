@@ -464,7 +464,7 @@ public class Control_Fel_Energia implements Serializable {
 
             // CODIGO_EXPORTADOR
             String id_tipo_receptor = "";
-            cadenasql = "SELECT NVL(TRIM(G.ABTX2),4) FROM " + ambiente + ".F0101@JDENERGIA G WHERE G.ABAN8=" + kcoo.trim();
+            cadenasql = "SELECT NVL(TRIM(G.ABTX2),4) FROM " + ambiente + ".F0101@JDENERGIA G WHERE G.ABAN8=" + an8;
             stmt = conn.createStatement();
             rs = stmt.executeQuery(cadenasql);
             while (rs.next()) {
