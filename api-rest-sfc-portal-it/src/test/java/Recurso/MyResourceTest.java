@@ -1,29 +1,30 @@
 package Recurso;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.WebTarget;
-
+import jakarta.ws.rs.client.Client;
+import jakarta.ws.rs.client.ClientBuilder;
+import jakarta.ws.rs.client.WebTarget;
+import java.io.Serializable;
 import org.glassfish.grizzly.http.server.HttpServer;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import static org.junit.Assert.assertEquals;
+public class MyResourceTest implements Serializable {
 
-public class MyResourceTest {
+    private static final long serialVersionUID = 1L;
 
     private HttpServer server;
     private WebTarget target;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         server = Main.startServer();
         Client c = ClientBuilder.newClient();
         target = c.target(Main.BASE_URI);
     }
 
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         server.stop();
     }

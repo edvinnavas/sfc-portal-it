@@ -5,14 +5,14 @@ import Control.Control_Evento;
 import Control.Control_Fel_Energia;
 import Control.Control_Usuario;
 import java.io.Serializable;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.DELETE;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
 
 @Path("portal-it")
 public class MyResource implements Serializable {
@@ -246,6 +246,24 @@ public class MyResource implements Serializable {
         try {
             Control_Drive control_drive = new Control_Drive();
             resultado = control_drive.drive_fel_energia(ambiente, cadenasql);
+        } catch (Exception ex) {
+            resultado = "ERROR: " + ex.toString();
+        }
+
+        return resultado;
+    }
+    
+    @POST
+    @Path("drive-cargas-masivas/{ambiente}")
+    public String drive_carga_masiva(
+            @PathParam("ambiente") String ambiente,
+            String cadenasql) {
+
+        String resultado;
+
+        try {
+            Control_Drive control_drive = new Control_Drive();
+            resultado = control_drive.drive_cargas_masivas(ambiente, cadenasql);
         } catch (Exception ex) {
             resultado = "ERROR: " + ex.toString();
         }

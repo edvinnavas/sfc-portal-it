@@ -12,6 +12,9 @@ public class Control_Base_Datos implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    final String host_interfase_db = "10.252.7.204";
+    final String host_mysql_db = "10.254.7.208";
+    
     public Control_Base_Datos() {
     }
 
@@ -31,7 +34,33 @@ public class Control_Base_Datos implements Serializable {
             }
 
             DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-            resultado = DriverManager.getConnection("jdbc:oracle:thin:@//10.252.7.204:1521/unopetrol", usuario_db, contrasena_db);
+            resultado = DriverManager.getConnection("jdbc:oracle:thin:@//" + this.host_interfase_db + ":1521/unopetrol", usuario_db, contrasena_db);
+            // System.out.println("Conexión satisfactoria: " + usuario_db);
+        } catch (Exception ex) {
+            resultado = null;
+            System.out.println("PROYECTO:api-grupoterra-svfel-v3|CLASE:" + this.getClass().getName() + "|METODO:obtener_conexion()|ERROR:" + ex.toString());
+        }
+
+        return resultado;
+    }
+    
+    public Connection obtener_conexion_cargas_masivas(String ambiente) {
+        Connection resultado;
+
+        try {
+            String usuario_db;
+            String contrasena_db;
+
+            if (ambiente.equals("PY")) {
+                usuario_db = "CARGAS_MASIVAS_TEST";
+                contrasena_db = "5C5j75@@pwmD";
+            } else {
+                usuario_db = "CARGAS_MASIVAS";
+                contrasena_db = "jJ7!730tjYzK";
+            }
+
+            DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+            resultado = DriverManager.getConnection("jdbc:oracle:thin:@//" + this.host_interfase_db + ":1521/unopetrol", usuario_db, contrasena_db);
             // System.out.println("Conexión satisfactoria: " + usuario_db);
         } catch (Exception ex) {
             resultado = null;
@@ -49,7 +78,7 @@ public class Control_Base_Datos implements Serializable {
             String contrasena_db = "T3rR@_20i9";
 
             Class.forName("com.mysql.jdbc.Driver");
-            resultado = DriverManager.getConnection("jdbc:mysql://10.254.7.208:3306/it_app_db?autoReconnect=true&useSSL=false", usuario_db, contrasena_db);
+            resultado = DriverManager.getConnection("jdbc:mysql://" + this.host_mysql_db + ":3306/it_app_db?autoReconnect=true&useSSL=false", usuario_db, contrasena_db);
             // System.out.println("Conexión satisfactoria: " + usuario_db);
         } catch (Exception ex) {
             resultado = null;
