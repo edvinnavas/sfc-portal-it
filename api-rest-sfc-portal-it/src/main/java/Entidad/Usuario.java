@@ -1,131 +1,43 @@
 package Entidad;
 
 import java.io.Serializable;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class Usuario implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
+    
     private Long id_usuario;
-    private String usuario;
     private String nombre_completo;
-    private String correo;
-    private Long fecha_nacimiento;
+    private String nombre_usuario;
     private String contrasena;
-    private String descripcion;
+    private String correo_electronico;
     private Integer activo;
-    private Integer editable;
-    private Integer eliminable;
-    private Long id_rol;
+    private String descripcion;
+    private Rol rol;
+    private String fecha_hora;
 
-    public Usuario(Long id_usuario, String usuario, String nombre_completo, String correo, Long fecha_nacimiento, String contrasena, String descripcion, Integer activo, Integer editable, Integer eliminable, Long id_rol) {
+    public Usuario(Long id_usuario, String nombre_completo, String nombre_usuario, String contrasena, String correo_electronico, Integer activo, String descripcion, Rol rol, String fecha_hora) {
         this.id_usuario = id_usuario;
-        this.usuario = usuario;
         this.nombre_completo = nombre_completo;
-        this.correo = correo;
-        this.fecha_nacimiento = fecha_nacimiento;
+        this.nombre_usuario = nombre_usuario;
         this.contrasena = contrasena;
-        this.descripcion = descripcion;
+        this.correo_electronico = correo_electronico;
         this.activo = activo;
-        this.editable = editable;
-        this.eliminable = eliminable;
-        this.id_rol = id_rol;
+        this.descripcion = descripcion;
+        this.rol = rol;
+        this.fecha_hora = fecha_hora;
     }
 
     public Usuario() {
     }
 
-    public Long getId_usuario() {
-        return id_usuario;
-    }
-
-    public void setId_usuario(Long id_usuario) {
-        this.id_usuario = id_usuario;
-    }
-
-    public String getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(String usuario) {
-        this.usuario = usuario;
-    }
-
-    public String getNombre_completo() {
-        return nombre_completo;
-    }
-
-    public void setNombre_completo(String nombre_completo) {
-        this.nombre_completo = nombre_completo;
-    }
-
-    public String getCorreo() {
-        return correo;
-    }
-
-    public void setCorreo(String correo) {
-        this.correo = correo;
-    }
-
-    public Long getFecha_nacimiento() {
-        return fecha_nacimiento;
-    }
-
-    public void setFecha_nacimiento(Long fecha_nacimiento) {
-        this.fecha_nacimiento = fecha_nacimiento;
-    }
-
-    public String getContrasena() {
-        return contrasena;
-    }
-
-    public void setContrasena(String contrasena) {
-        this.contrasena = contrasena;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
-    public Integer getActivo() {
-        return activo;
-    }
-
-    public void setActivo(Integer activo) {
-        this.activo = activo;
-    }
-
-    public Integer getEditable() {
-        return editable;
-    }
-
-    public void setEditable(Integer editable) {
-        this.editable = editable;
-    }
-
-    public Integer getEliminable() {
-        return eliminable;
-    }
-
-    public void setEliminable(Integer eliminable) {
-        this.eliminable = eliminable;
-    }
-
-    public Long getId_rol() {
-        return id_rol;
-    }
-
-    public void setId_rol(Long id_rol) {
-        this.id_rol = id_rol;
-    }
-
     @Override
     public String toString() {
-        return "Usuario{" + "id_usuario=" + id_usuario + ", usuario=" + usuario + ", nombre_completo=" + nombre_completo + ", correo=" + correo + ", fecha_nacimiento=" + fecha_nacimiento + ", contrasena=" + contrasena + ", descripcion=" + descripcion + ", activo=" + activo + ", editable=" + editable + ", eliminable=" + eliminable + ", id_rol=" + id_rol + '}';
+        return "Usuario{" + "id_usuario=" + id_usuario + ", nombre_completo=" + nombre_completo + ", nombre_usuario=" + nombre_usuario + ", contrasena=" + contrasena + ", correo_electronico=" + correo_electronico + ", activo=" + activo + ", descripcion=" + descripcion + ", rol=" + rol + ", fecha_hora=" + fecha_hora + '}';
     }
-
+    
 }

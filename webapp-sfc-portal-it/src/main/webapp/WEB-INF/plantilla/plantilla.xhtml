@@ -4,15 +4,14 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>.:UNO-CORP:.</title>
-        <ui:insert name="head"/>
+        <title>.:SFC:.</title>
     </h:head>
     <h:body onload="#{Plantilla.onload(IndexBean.usuario_sesion)}">
         <h:form id="formPlantilla">
             <div class="card" style="float: none;">
                 <h:panelGrid columns="1">
-                    <p:outputLabel value="UNO-CORP." style="color: black; font-weight: bold; font-size: 30px;"/>
-                    <p:outputLabel value="Seguimieto de viajes." style="color: black; font-weight: bold; font-size: 16px;"/>
+                    <p:outputLabel value="Servicios Compartidos." style="color: black; font-weight: bold; font-size: 30px;"/>
+                    <p:outputLabel value="Portal-TI." style="color: black; font-weight: bold; font-size: 16px;"/>
                     <p:outputLabel value="#{Plantilla.nombre_sesion_usuario}" style="color: red; font-weight: bold; font-size: 12px;"/>
                 </h:panelGrid>
             </div>

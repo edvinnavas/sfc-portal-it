@@ -5,20 +5,20 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="WEB-INF/plantilla/plantilla.xhtml">
     <ui:define name="contenido">
-        <p:panel id="panelInicio" header="Inicio">
+        <p:panel id="panelInicio" header="Inicio" style="font-weight: bold; font-size: 12px;">
             <p:growl id="msgInicio" showDetail="true"/>
-            <p:dataTable id="tblInicio" var="registro_tabla" value="#{Inicio.lst_reg_tbl_inicio}">
-                <p:column headerText="Id">
-                    <h:outputText value="#{registro_tabla.id_reg_tbl_inicio}" />
+            <p:dataTable id="tblInicio" var="registro_tabla" value="#{Inicio.lst_reg_tbl_inicio}" style="font-weight: bold; font-size: 12px;">
+                <p:column headerText="Id" style="font-weight: bold; font-size: 12px;">
+                    <h:outputText value="#{registro_tabla.id_reg_tbl_inicio}" style="font-size: 12px;"/>
                 </p:column>
-                <p:column headerText="Name">
-                    <h:outputText value="#{registro_tabla.asunto}" />
+                <p:column headerText="Name" style="font-weight: bold; font-size: 12px;">
+                    <h:outputText value="#{registro_tabla.asunto}" style="font-size: 12px;"/>
                 </p:column>
-                <p:column headerText="Category">
-                    <h:outputText value="#{registro_tabla.fecha}" />
+                <p:column headerText="Category" style="font-weight: bold; font-size: 12px;">
+                    <h:outputText value="#{registro_tabla.fecha}" style="font-size: 12px;"/>
                 </p:column>
-                <p:column headerText="Quantity">
-                    <h:outputText value="#{registro_tabla.leido}" />
+                <p:column headerText="Quantity" style="font-weight: bold; font-size: 12px;">
+                    <h:outputText value="#{registro_tabla.leido}" style="font-size: 12px;"/>
                 </p:column>
             </p:dataTable>
         </p:panel>
