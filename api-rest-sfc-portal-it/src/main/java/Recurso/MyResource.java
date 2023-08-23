@@ -56,4 +56,23 @@ public class MyResource implements Serializable {
         return resultado;
     }
 
+    @GET
+    @Path("lista_dte_cr/{ambiente}/{fecha}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String lista_dte_cr(
+            @PathParam("ambiente") String ambiente, 
+            @PathParam("fecha") String fecha) {
+        
+        String resultado;
+
+        try {
+            Control.Ctrl_FelCr ctrl_felcr = new Control.Ctrl_FelCr();
+            resultado = ctrl_felcr.lista_dte_cr(ambiente, fecha);
+        } catch (Exception ex) {
+            resultado = "PROYECTO: api-rest-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: lista_dte_cr(), ERRROR: " + ex.toString();
+        }
+
+        return resultado;
+    }
+    
 }

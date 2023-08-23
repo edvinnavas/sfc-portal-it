@@ -11,7 +11,6 @@ import java.util.List;
 public class Ctrl_Base_Datos implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // final String host_interfase_db = "10.252.7.204";
     
     public Ctrl_Base_Datos() {
     }
@@ -30,6 +29,33 @@ public class Ctrl_Base_Datos implements Serializable {
         } catch (Exception ex) {
             resultado = null;
             System.out.println("PROYECTO: api-rest-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: obtener_conexion_mysql(), ERRROR: " + ex.toString());
+        }
+
+        return resultado;
+    }
+    
+    public Connection obtener_conexion_felcr(String ambiente) {
+        Connection resultado;
+
+        try {
+            String host_interfase_db = "10.252.7.204";
+            String usuario_db;
+            String contrasena_db;
+            
+            if(ambiente.equals("PY")) {
+                usuario_db = "FACT_CR_TEST";
+                contrasena_db = "cr2019";
+            } else {
+                usuario_db = "FACT_CR";
+                contrasena_db = ")_YJMC52B(U%\\QK}";
+            }
+            
+            DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+            resultado = DriverManager.getConnection("jdbc:oracle:thin:@//" + host_interfase_db + ":1521/unopetrol", usuario_db, contrasena_db);
+            // System.out.println("Conexión satisfactoria: " + usuario_db);
+        } catch (Exception ex) {
+            resultado = null;
+            System.out.println("PROYECTO: api-rest-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: obtener_conexion_felcr(), ERRROR: " + ex.toString());
         }
 
         return resultado;

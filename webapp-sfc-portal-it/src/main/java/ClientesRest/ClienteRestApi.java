@@ -34,7 +34,7 @@ public class ClienteRestApi implements Serializable {
             WebTarget webTarget = this.client.target(BASE_URI).path("autenticar/" + usuario + "/" + contrasena);
             Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
             Response response = invocationBuilder.get();
-            System.out.println("CONEXION REST-API-PORTAL-TI: " + response.getStatus());
+            // System.out.println("CONEXION REST-API-PORTAL-TI: " + response.getStatus());
             if (response.getStatus() == 200) {
                 resultado = response.readEntity(String.class);
             } else {
@@ -42,6 +42,26 @@ public class ClienteRestApi implements Serializable {
             }
         } catch (Exception ex) {
             System.out.println("PROYECTO: webapp-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: autenticar(), ERRROR: " + ex.toString());
+        }
+
+        return resultado;
+    }
+    
+    public String lista_dte_cr(String ambiente, String fecha) {
+        String resultado = "";
+
+        try {
+            WebTarget webTarget = this.client.target(BASE_URI).path("lista_dte_cr/" + ambiente + "/" + fecha);
+            Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+            Response response = invocationBuilder.get();
+            // System.out.println("CONEXION REST-API-PORTAL-TI: " + response.getStatus());
+            if (response.getStatus() == 200) {
+                resultado = response.readEntity(String.class);
+            } else {
+                resultado = response.getStatus() + ": " + response.getStatusInfo();
+            }
+        } catch (Exception ex) {
+            System.out.println("PROYECTO: webapp-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: lista_dte_cr(), ERRROR: " + ex.toString());
         }
 
         return resultado;

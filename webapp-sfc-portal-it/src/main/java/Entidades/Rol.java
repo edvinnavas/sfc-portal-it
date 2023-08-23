@@ -4,7 +4,11 @@ import java.io.Serializable;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 public class Rol implements Serializable {
@@ -16,17 +20,6 @@ public class Rol implements Serializable {
     private Integer activo;
     private String fecha_hora;
     private List<Menu> lista_menu;
-
-    public Rol(Long id_rol, String nombre, Integer activo, String fecha_hora, List<Menu> lista_menu) {
-        this.id_rol = id_rol;
-        this.nombre = nombre;
-        this.activo = activo;
-        this.fecha_hora = fecha_hora;
-        this.lista_menu = lista_menu;
-    }
-
-    public Rol() {
-    }
 
     @Override
     public String toString() {
