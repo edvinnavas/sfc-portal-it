@@ -9,8 +9,8 @@ docker run -d --name SFC-MYSQL -p 3306:3306 --restart=always --env MYSQL_ROOT_PA
 	mysql> GRANT ALL ON db_portal_it.* TO 'user_portal_it'@'%';
 
 docker run -d --name SFC-PAYARA -p 4848:4848 -p 8016:8080 --restart=always --env TZ=America/Guatemala -v "/SFC_PORTAL_IT":/SFC_PORTAL_IT payara/server-full:6.2023.6
-	CONTEXT-ROOT-PD: /apps
-	CONTEXT-ROOT-PY: /apps-test
+	CONTEXT-ROOT-PD: apps
+	CONTEXT-ROOT-PY: apps-test
 
 docker build -t sfcterra/api-sfc-portal-it:1.0.0 .
 docker run -t -i --name PORTAL-IT-API -p 8015:8015 --restart=always --env TZ=America/Guatemala -v "/SFC_PORTAL_IT":/SFC_PORTAL_IT sfcterra/api-sfc-portal-it:1.0.0
