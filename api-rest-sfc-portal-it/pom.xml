@@ -62,6 +62,20 @@
             <artifactId>lombok</artifactId>
             <version>1.18.28</version>
         </dependency>
+        <dependency>
+            <groupId>sfc.com</groupId>
+            <artifactId>ApiFactMiscelanea</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${lib.ApiFactMiscelanea}</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>sfc.com</groupId>
+            <artifactId>ApiJson</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${lib.ApiJsonAllDep}</systemPath>
+        </dependency>
     </dependencies>
 
     <build>
@@ -101,6 +115,8 @@
 
     <properties>
         <jersey.version>3.1.2</jersey.version>
+        <lib.ApiFactMiscelanea>${basedir}/src/main/resources/ApiFactMiscelanea-0.6.0.jar</lib.ApiFactMiscelanea>
+        <lib.ApiJsonAllDep>${basedir}/src/main/resources/ApiJson-1.5.7-jar-with-dependencies.jar</lib.ApiJsonAllDep>
         <junit-jupiter.version>5.9.1</junit-jupiter.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <surefire.mvn.plugin.version>3.0.0-M7</surefire.mvn.plugin.version>

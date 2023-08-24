@@ -11,7 +11,7 @@ import java.util.List;
 public class Ctrl_Base_Datos implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     public Ctrl_Base_Datos() {
     }
 
@@ -33,7 +33,7 @@ public class Ctrl_Base_Datos implements Serializable {
 
         return resultado;
     }
-    
+
     public Connection obtener_conexion_felcr(String ambiente) {
         Connection resultado;
 
@@ -41,15 +41,15 @@ public class Ctrl_Base_Datos implements Serializable {
             String host_interfase_db = "10.252.7.204";
             String usuario_db;
             String contrasena_db;
-            
-            if(ambiente.equals("PY")) {
+
+            if (ambiente.equals("PY")) {
                 usuario_db = "FACT_CR_TEST";
                 contrasena_db = "cr2019";
             } else {
                 usuario_db = "FACT_CR";
                 contrasena_db = ")_YJMC52B(U%\\QK}";
             }
-            
+
             DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
             resultado = DriverManager.getConnection("jdbc:oracle:thin:@//" + host_interfase_db + ":1521/unopetrol", usuario_db, contrasena_db);
             // System.out.println("Conexión satisfactoria: " + usuario_db);
@@ -60,7 +60,63 @@ public class Ctrl_Base_Datos implements Serializable {
 
         return resultado;
     }
-    
+
+    public Connection obtener_conexion_jde_petroleos(String ambiente) {
+        Connection resultado;
+
+        try {
+            String host_interfase_db;
+            String db_name;
+            String usuario_db;
+            String contrasena_db;
+
+            if (ambiente.equals("PY")) {
+                host_interfase_db = "10.252.7.207";
+                db_name = "jdepy";
+                usuario_db = "PRODDTA";
+                contrasena_db = "PRODDTA";
+            } else {
+                host_interfase_db = "10.252.7.201";
+                db_name = "jdepd";
+                usuario_db = "CRPDTA";
+                contrasena_db = "CRPDTA";
+            }
+
+            DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+            resultado = DriverManager.getConnection("jdbc:oracle:thin:@//" + host_interfase_db + ":1521/" + db_name, usuario_db, contrasena_db);
+            // System.out.println("Conexión satisfactoria: " + usuario_db);
+        } catch (Exception ex) {
+            resultado = null;
+            System.out.println("PROYECTO: api-rest-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: obtener_conexion_felcr(), ERRROR: " + ex.toString());
+        }
+
+        return resultado;
+    }
+
+    public String AmbienteEsquemaJde(String ambiente) {
+        String resultado;
+
+        if (ambiente.equals("PY")) {
+            resultado = "CRPDTA";
+        } else {
+            resultado = "PRODDTA";
+        }
+
+        return resultado;
+    }
+
+    public String AmbienteDBLinkJde(String ambiente) {
+        String resultado;
+
+        if (ambiente.equals("PY")) {
+            resultado = "JDEPY";
+        } else {
+            resultado = "JDEPD";
+        }
+
+        return resultado;
+    }
+
     public String ObtenerString(String cadenasql, Connection conn) {
         String resultado = null;
 
@@ -172,6 +228,22 @@ public class Ctrl_Base_Datos implements Serializable {
             resultado = new ArrayList<>();
             resultado.add(-1);
             System.out.println("PROYECTO: api-rest-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: ObtenerVectorEntero(), ERRROR: " + ex.toString());
+        }
+
+        return resultado;
+    }
+
+    public Integer ExecuteStatementDB(String cadenasql, Connection conn) {
+        Integer resultado = 1;
+
+        try {
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate(cadenasql);
+            stmt.close();
+
+            resultado = 0;
+        } catch (Exception ex) {
+            resultado = -1;
         }
 
         return resultado;

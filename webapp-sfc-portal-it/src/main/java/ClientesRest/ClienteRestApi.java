@@ -2,6 +2,7 @@ package ClientesRest;
 
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
+import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.client.Invocation;
 import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.core.MediaType;
@@ -47,11 +48,11 @@ public class ClienteRestApi implements Serializable {
         return resultado;
     }
     
-    public String lista_dte_cr(String ambiente, String fecha) {
+    public String lista_dtes(String ambiente, String fecha) {
         String resultado = "";
 
         try {
-            WebTarget webTarget = this.client.target(BASE_URI).path("lista_dte_cr/" + ambiente + "/" + fecha);
+            WebTarget webTarget = this.client.target(BASE_URI).path("felcr/lista_dtes/" + ambiente + "/" + fecha);
             Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
             Response response = invocationBuilder.get();
             // System.out.println("CONEXION REST-API-PORTAL-TI: " + response.getStatus());
@@ -66,5 +67,172 @@ public class ClienteRestApi implements Serializable {
 
         return resultado;
     }
+    
+    public String cargar_docs(String parametros) {
+        String resultado = "";
 
+        try {
+            WebTarget webTarget = this.client.target(BASE_URI).path("felcr/cargar_docs");
+            String data = parametros;
+            Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+            Response response = invocationBuilder.post(Entity.text(data));
+            // System.out.println("CONEXION REST-API-PORTAL-TI: " + response.getStatus());
+            if (response.getStatus() == 200) {
+                resultado = response.readEntity(String.class);
+            } else {
+                resultado = response.getStatus() + ": " + response.getStatusInfo();
+            }
+        } catch (Exception ex) {
+            System.out.println("PROYECTO: webapp-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: cargar_docs(), ERRROR: " + ex.toString());
+        }
+
+        return resultado;
+    }
+
+    public String gosocket(String parametros) {
+        String resultado = "";
+
+        try {
+            WebTarget webTarget = this.client.target(BASE_URI).path("felcr/gosocket");
+            String data = parametros;
+            Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+            Response response = invocationBuilder.post(Entity.text(data));
+            // System.out.println("CONEXION REST-API-PORTAL-TI: " + response.getStatus());
+            if (response.getStatus() == 200) {
+                resultado = response.readEntity(String.class);
+            } else {
+                resultado = response.getStatus() + ": " + response.getStatusInfo();
+            }
+        } catch (Exception ex) {
+            System.out.println("PROYECTO: webapp-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: gosocket(), ERRROR: " + ex.toString());
+        }
+
+        return resultado;
+    }
+    
+    public String modificar_referencia(String parametros) {
+        String resultado = "";
+
+        try {
+            WebTarget webTarget = this.client.target(BASE_URI).path("felcr/modificar_referencia");
+            String data = parametros;
+            Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+            Response response = invocationBuilder.post(Entity.text(data));
+            // System.out.println("CONEXION REST-API-PORTAL-TI: " + response.getStatus());
+            if (response.getStatus() == 200) {
+                resultado = response.readEntity(String.class);
+            } else {
+                resultado = response.getStatus() + ": " + response.getStatusInfo();
+            }
+        } catch (Exception ex) {
+            System.out.println("PROYECTO: webapp-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: modificar_referencia(), ERRROR: " + ex.toString());
+        }
+
+        return resultado;
+    }
+    
+    public String anular_documento(String parametros) {
+        String resultado = "";
+
+        try {
+            WebTarget webTarget = this.client.target(BASE_URI).path("felcr/anular_documento");
+            String data = parametros;
+            Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+            Response response = invocationBuilder.post(Entity.text(data));
+            // System.out.println("CONEXION REST-API-PORTAL-TI: " + response.getStatus());
+            if (response.getStatus() == 200) {
+                resultado = response.readEntity(String.class);
+            } else {
+                resultado = response.getStatus() + ": " + response.getStatusInfo();
+            }
+        } catch (Exception ex) {
+            System.out.println("PROYECTO: webapp-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: anular_documento(), ERRROR: " + ex.toString());
+        }
+
+        return resultado;
+    }
+    
+    public String re_facturar(String parametros) {
+        String resultado = "";
+
+        try {
+            WebTarget webTarget = this.client.target(BASE_URI).path("felcr/re_facturar");
+            String data = parametros;
+            Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+            Response response = invocationBuilder.post(Entity.text(data));
+            // System.out.println("CONEXION REST-API-PORTAL-TI: " + response.getStatus());
+            if (response.getStatus() == 200) {
+                resultado = response.readEntity(String.class);
+            } else {
+                resultado = response.getStatus() + ": " + response.getStatusInfo();
+            }
+        } catch (Exception ex) {
+            System.out.println("PROYECTO: webapp-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: re_facturar(), ERRROR: " + ex.toString());
+        }
+
+        return resultado;
+    }
+    
+    public String modificar_receptor(String parametros) {
+        String resultado = "";
+
+        try {
+            WebTarget webTarget = this.client.target(BASE_URI).path("felcr/modificar_receptor");
+            String data = parametros;
+            Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+            Response response = invocationBuilder.post(Entity.text(data));
+            // System.out.println("CONEXION REST-API-PORTAL-TI: " + response.getStatus());
+            if (response.getStatus() == 200) {
+                resultado = response.readEntity(String.class);
+            } else {
+                resultado = response.getStatus() + ": " + response.getStatusInfo();
+            }
+        } catch (Exception ex) {
+            System.out.println("PROYECTO: webapp-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: modificar_receptor(), ERRROR: " + ex.toString());
+        }
+
+        return resultado;
+    }
+    
+    public String modificar_exoneracion(String parametros) {
+        String resultado = "";
+
+        try {
+            WebTarget webTarget = this.client.target(BASE_URI).path("felcr/modificar_exoneracion");
+            String data = parametros;
+            Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+            Response response = invocationBuilder.post(Entity.text(data));
+            // System.out.println("CONEXION REST-API-PORTAL-TI: " + response.getStatus());
+            if (response.getStatus() == 200) {
+                resultado = response.readEntity(String.class);
+            } else {
+                resultado = response.getStatus() + ": " + response.getStatusInfo();
+            }
+        } catch (Exception ex) {
+            System.out.println("PROYECTO: webapp-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: modificar_exoneracion(), ERRROR: " + ex.toString());
+        }
+
+        return resultado;
+    }
+    
+    public String modificar_otros_cargos(String parametros) {
+        String resultado = "";
+
+        try {
+            WebTarget webTarget = this.client.target(BASE_URI).path("felcr/modificar_otros_cargos");
+            String data = parametros;
+            Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+            Response response = invocationBuilder.post(Entity.text(data));
+            // System.out.println("CONEXION REST-API-PORTAL-TI: " + response.getStatus());
+            if (response.getStatus() == 200) {
+                resultado = response.readEntity(String.class);
+            } else {
+                resultado = response.getStatus() + ": " + response.getStatusInfo();
+            }
+        } catch (Exception ex) {
+            System.out.println("PROYECTO: webapp-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: modificar_otros_cargos(), ERRROR: " + ex.toString());
+        }
+
+        return resultado;
+    }
 }

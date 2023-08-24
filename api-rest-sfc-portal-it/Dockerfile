@@ -11,11 +11,12 @@ RUN echo "America/Guatemala" > /etc/timezone
 WORKDIR /opt/app
 
 # SELECTIVELY ADD THE POM FILE AND INSTALL DEPENDENCIES.
-COPY pom.xml /opt/app/
-RUN mvn install
-
-# REST OF THE PROJECTS.
 COPY src /opt/app/src
+RUN chmod -R 777 /opt/app/src
+
+COPY pom.xml /opt/app/
+
+RUN mvn install
 RUN mvn package
 
 # LOCAL APPLICATION PORT

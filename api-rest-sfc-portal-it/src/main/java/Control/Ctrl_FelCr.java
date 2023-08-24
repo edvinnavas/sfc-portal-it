@@ -15,7 +15,7 @@ public class Ctrl_FelCr implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public String lista_dte_cr(String ambiente, String fecha) {
+    public String lista_dtes(String ambiente, String fecha) {
         String resultado = "";
 
         Connection conn = null;
@@ -25,10 +25,10 @@ public class Ctrl_FelCr implements Serializable {
             conn = ctrl_base_datos.obtener_conexion_felcr(ambiente);
 
             conn.setAutoCommit(false);
-            
+
             SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyyMMdd");
             Date fecha_facturacion = dateFormat1.parse(fecha);
-            
+
             Integer anio = fecha_facturacion.getYear() + 1900;
             Integer mes = fecha_facturacion.getMonth() + 1;
             Integer dia = fecha_facturacion.getDate();
@@ -72,7 +72,7 @@ public class Ctrl_FelCr implements Serializable {
                     + "C.NOMBRE_RECEPTOR, "
                     + "SUBSTR(C.FECHA_ENVIO,7,2) || '/' || SUBSTR(C.FECHA_ENVIO,5,2) || '/' || SUBSTR(C.FECHA_ENVIO,0,4) || ' ' || SUBSTR(C.FECHA_ENVIO,9,2) || ':' || SUBSTR(C.FECHA_ENVIO,11,2) || ':' || SUBSTR(C.FECHA_ENVIO,13,2) FECHA_ENVIO, "
                     + "C.PROCESS_RESULT, "
-                    + "C.PROCESADO, " 
+                    + "C.PROCESADO, "
                     + "CASE WHEN R.ID_DOCUMENT_TYPE_REF=10 THEN 'SI' ELSE 'NO' END REFACTURACION "
                     + "FROM "
                     + "CONVERT_DOCUMENT C "
@@ -119,10 +119,10 @@ public class Ctrl_FelCr implements Serializable {
                     conn.rollback();
                     conn.setAutoCommit(true);
                     conn = null;
-                    resultado = "PROYECTO: api-rest-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: lista_dte_cr(), ERRROR: " + ex.toString();
+                    resultado = "PROYECTO: api-rest-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: lista_dtes(), ERRROR: " + ex.toString();
                 }
             } catch (Exception ex1) {
-                resultado = "PROYECTO: api-rest-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: rollback-lista_dte_cr(), ERRROR: " + ex.toString();
+                resultado = "PROYECTO: api-rest-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: rollback-lista_dtes(), ERRROR: " + ex.toString();
             }
         } finally {
             try {
@@ -130,8 +130,112 @@ public class Ctrl_FelCr implements Serializable {
                     conn.close();
                 }
             } catch (Exception ex) {
-                resultado = "PROYECTO: api-rest-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: finally-lista_dte_cr(), ERRROR: " + ex.toString();
+                resultado = "PROYECTO: api-rest-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: finally-lista_dtes(), ERRROR: " + ex.toString();
             }
+        }
+
+        return resultado;
+    }
+
+    public String cargar_docs(String ambiente, String usuario, Integer anio, Integer mes, Integer dia, String tabla) {
+        String resultado;
+
+        try {
+            Control.felcr.Control_Convert_Document controllerConverDocument = new Control.felcr.Control_Convert_Document();
+            resultado = controllerConverDocument.Cargar_Convert_Document(ambiente, anio, mes, dia, tabla);
+        } catch (Exception ex) {
+            resultado = "1," + ex.toString();
+        }
+
+        return resultado;
+    }
+
+    public String gosocket(String ambiente, String usuario, Integer id_document_convert) {
+        String resultado;
+
+        try {
+            Control.felcr.Control_Convert_Document controllerConverDocument = new Control.felcr.Control_Convert_Document();
+            resultado = controllerConverDocument.gosocket(ambiente, id_document_convert);
+        } catch (Exception ex) {
+            resultado = "1," + ex.toString();
+        }
+
+        return resultado;
+    }
+
+    public String modificar_referencia(String ambiente, String usuario, Integer id_referencia, String no_documento_ref, String id_batch, String comentario_adjunto, Integer id_codigo_ref, String tipo_nota_credito) {
+        String resultado;
+
+        try {
+            Control.felcr.Control_Referencia controllerReferencia = new Control.felcr.Control_Referencia();
+            resultado = controllerReferencia.Modificar_Referencia(ambiente, id_referencia, no_documento_ref, id_batch, comentario_adjunto, id_codigo_ref, tipo_nota_credito);
+        } catch (Exception ex) {
+            resultado = "1," + ex.toString();
+        }
+
+        return resultado;
+    }
+
+    public String anular_documento(String ambiente, String usuario, Integer id_convert_document, String refacturacion) {
+        String resultado;
+
+        try {
+            Control.felcr.Control_Convert_Document controllerConverDocument = new Control.felcr.Control_Convert_Document();
+            resultado = controllerConverDocument.Anular_documento(ambiente, usuario, id_convert_document, refacturacion);
+        } catch (Exception ex) {
+            resultado = "1," + ex.toString();
+        }
+
+        return resultado;
+    }
+
+    public String re_facturar(String ambiente, String usuario, Integer id_convert_document, String tabla) {
+        String resultado;
+
+        try {
+            Control.felcr.Control_Convert_Document controllerConverDocument = new Control.felcr.Control_Convert_Document();
+            resultado = controllerConverDocument.re_facturar(ambiente, usuario, id_convert_document, tabla);
+        } catch (Exception ex) {
+            resultado = "1," + ex.toString();
+        }
+
+        return resultado;
+    }
+
+    public String modificar_receptor(String ambiente, String usuario, Integer id_receptor, Integer id_tipo_contribuyente, String tax_id, String nombre_cliente, String direccion, String correo, String codigo_area) {
+        String resultado;
+
+        try {
+            Control.felcr.Control_Receptor controllerReceptor = new Control.felcr.Control_Receptor();
+            resultado = controllerReceptor.Modificar_Receptor(ambiente, id_receptor, id_tipo_contribuyente, tax_id, nombre_cliente, direccion, correo, codigo_area);
+        } catch (Exception ex) {
+            resultado = "1," + ex.toString();
+        }
+
+        return resultado;
+    }
+
+    public String modificar_exoneracion(String ambiente, Integer id_exoneracion, Integer id_documento, String activo_exoneracion, Integer id_tipo_exoneracion, String num_doc, String fecha_emision, String nombre_institucion, Double porcentaje_exoneracion, Double monto_exoneracion) {
+        String resultado;
+
+        try {
+            Control.felcr.Control_Exoneracion controllerExoneracion = new Control.felcr.Control_Exoneracion();
+            resultado = controllerExoneracion.Modificar_Exoneracion(ambiente, id_exoneracion, id_documento, activo_exoneracion, id_tipo_exoneracion, num_doc, fecha_emision, nombre_institucion, porcentaje_exoneracion, monto_exoneracion);
+        } catch (Exception ex) {
+            resultado = "1," + ex.toString();
+        }
+
+        return resultado;
+    }
+
+    public String modificar_otros_cargos(String ambiente, Integer id_otros_cargos, Integer id_documento, String activo_otros_cargos, Integer id_tipo_otros_cargos, String numero_identificacion, String razon_social, String descripcion, Double porcentaje_otros_cargos, Double monto_otros_cargos) {
+        String resultado;
+
+        try {
+            Control.felcr.Control_Otros_Cargos controllerOtrosCargos = new Control.felcr.Control_Otros_Cargos();
+            resultado = controllerOtrosCargos.Modificar_Otros_Cargos(ambiente, id_otros_cargos, id_documento, activo_otros_cargos, id_tipo_otros_cargos, numero_identificacion, razon_social, descripcion, porcentaje_otros_cargos, monto_otros_cargos);
+        } catch (Exception ex) {
+            resultado = "1," + ex.toString();
         }
 
         return resultado;

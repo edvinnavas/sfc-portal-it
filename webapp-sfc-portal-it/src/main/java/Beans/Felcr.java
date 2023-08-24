@@ -31,10 +31,17 @@ public class Felcr implements Serializable {
     private Date fecha_facturacion;
     private String tabla;
     private List<SelectItem> lst_tabla;
+    private String ambiente;
 
     @PostConstruct
     public void init() {
         try {
+            if(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath().trim().equals("/apps")) {
+                this.ambiente = "PD";
+            } else {
+                this.ambiente = "PY";
+            }
+            
             this.lst_reg_tbl_dtecr = new ArrayList<>();
             this.fecha_facturacion = new Date();
             this.lst_tabla = new ArrayList<>();
@@ -58,11 +65,10 @@ public class Felcr implements Serializable {
     }
 
     public void filtrar_tabla() {
-        try {
+        try {            
             SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyyMMdd");
-            
             ClientesRest.ClienteRestApi cliente_rest_api = new ClientesRest.ClienteRestApi();
-            String json_result = cliente_rest_api.lista_dte_cr("PD", dateFormat1.format(this.fecha_facturacion));
+            String json_result = cliente_rest_api.lista_dtes(this.ambiente, dateFormat1.format(this.fecha_facturacion));
 
             Type lista_viaje_type = new TypeToken<List<Entidades.RegTblDteCr>>() {
             }.getType();
