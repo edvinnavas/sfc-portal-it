@@ -16,16 +16,16 @@
                 <p:selectOneMenu id="somEstado" value="#{Felcr.tabla}" style="font-size: 12px;">
                     <f:selectItems value="#{Felcr.lst_tabla}"/>
                 </p:selectOneMenu>
-                <p:commandButton id="btnGoSocket" value="GoSocket" actionListener="#{Felcr.filtrar_tabla}" icon="pi pi-send" update="tblDtes">
+                <p:commandButton id="btnGoSocket" value="GoSocket" actionListener="#{Felcr.enviar_gosocket}" icon="pi pi-send" update="tblDtes,msgFelcr">
                     <p:confirm header="Confirmación" message="Seguro desea realizar esta acción?" icon="pi pi-exclamation-triangle"/>
                 </p:commandButton>
-                <p:commandButton id="btnCargarDocs" value="Cargar Docs." actionListener="#{Felcr.filtrar_tabla}" icon="pi pi-upload" update="tblDtes">
+                <p:commandButton id="btnCargarDocs" value="Cargar Docs." actionListener="#{Felcr.extraer_docs_jde}" icon="pi pi-upload" update="tblDtes,msgFelcr">
                     <p:confirm header="Confirmación" message="Seguro desea realizar esta acción?" icon="pi pi-exclamation-triangle"/>
                 </p:commandButton>
-                <p:commandButton id="btnAnularDoc" value="Anular Doc" actionListener="#{Felcr.filtrar_tabla}" icon="pi pi-trash" update="tblDtes">
+                <p:commandButton id="btnAnularDoc" value="Anular Doc" actionListener="#{Felcr.filtrar_tabla}" icon="pi pi-trash" update="tblDtes,msgFelcr">
                     <p:confirm header="Confirmación" message="Seguro desea realizar esta acción?" icon="pi pi-exclamation-triangle"/>
                 </p:commandButton>
-                <p:commandButton id="btnReFacturar" value="Re-Facturar" actionListener="#{Felcr.filtrar_tabla}" icon="pi pi-reply" update="tblDtes">
+                <p:commandButton id="btnReFacturar" value="Re-Facturar" actionListener="#{Felcr.filtrar_tabla}" icon="pi pi-reply" update="tblDtes,msgFelcr">
                     <p:confirm header="Confirmación" message="Seguro desea realizar esta acción?" icon="pi pi-exclamation-triangle"/>
                 </p:commandButton>
                 <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
@@ -82,6 +82,7 @@
                     <h:outputText value="#{dte.procesado}"/>
                 </p:column>
             </p:dataTable>
+            <p:outputLabel value="#{Felcr.nombre_usuario}" rendered="true"/>
         </p:panel>
     </ui:define>
 </ui:composition>

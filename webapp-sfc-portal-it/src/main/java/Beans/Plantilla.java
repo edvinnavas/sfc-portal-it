@@ -1,6 +1,5 @@
 package Beans;
 
-import Entidades.UsuarioSesion;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
@@ -17,14 +16,14 @@ public class Plantilla implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private UsuarioSesion usuario_sesion;
+    private Entidades.UsuarioSesion usuario_sesion;
     private String nombre_sesion_usuario;
 
-    public void onload(UsuarioSesion usuario_sesion) {
+    public void onload(Entidades.UsuarioSesion usuario_sesion) {
         try {
             if (usuario_sesion.getId_usuario() != null) {
                 this.usuario_sesion = usuario_sesion;
-                this.nombre_sesion_usuario = "Usuario: " + this.usuario_sesion.getNombre_sesion_usuario();
+                this.nombre_sesion_usuario = "Usuario: " + this.usuario_sesion.getNombre_usuario();
             } else {
                 FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
             }

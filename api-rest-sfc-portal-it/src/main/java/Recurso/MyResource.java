@@ -93,6 +93,7 @@ public class MyResource implements Serializable {
         return resultado;
     }
     
+    /*
     @POST
     @Path("felcr/gosocket")
     public String gosocket(String parametros) {
@@ -110,6 +111,7 @@ public class MyResource implements Serializable {
 
         return resultado;
     }
+    */
     
     @POST
     @Path("felcr/modificar_referencia")

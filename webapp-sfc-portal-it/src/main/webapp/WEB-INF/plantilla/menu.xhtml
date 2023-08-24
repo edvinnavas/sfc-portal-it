@@ -23,7 +23,7 @@
         <p:submenu rendered="#{Plantilla.render_menu('menu-Felcr')}" label="FELCR" icon="pi pi-file">
             <p:menuitem rendered="#{Plantilla.render_menu('menuItem-Felcr-Config')}" value="Config. FELCR" icon="pi pi-unlock" action="felcr_config.xhtml" update=":formPlantilla"/>
             <p:divider/>
-            <p:menuitem rendered="#{Plantilla.render_menu('menuItem-Felcr')}" value="FELCR" icon="pi pi-unlock" action="felcr.xhtml" update=":formPlantilla"/>
+            <p:menuitem rendered="#{Plantilla.render_menu('menuItem-Felcr')}" value="FELCR" icon="pi pi-unlock" action="felcr.xhtml" actionListener="#{Felcr.cargar_vista(Plantilla.usuario_sesion)}" update=":formPlantilla"/>
         </p:submenu>
         <p:divider layout="vertical"/>
         <p:menuitem value="Salir" icon="pi pi-power-off" action="#{Plantilla.logout}"/>

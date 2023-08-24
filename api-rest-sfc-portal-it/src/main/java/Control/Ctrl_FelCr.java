@@ -136,26 +136,13 @@ public class Ctrl_FelCr implements Serializable {
 
         return resultado;
     }
-
+    
     public String cargar_docs(String ambiente, String usuario, Integer anio, Integer mes, Integer dia, String tabla) {
         String resultado;
 
         try {
             Control.felcr.Control_Convert_Document controllerConverDocument = new Control.felcr.Control_Convert_Document();
             resultado = controllerConverDocument.Cargar_Convert_Document(ambiente, anio, mes, dia, tabla);
-        } catch (Exception ex) {
-            resultado = "1," + ex.toString();
-        }
-
-        return resultado;
-    }
-
-    public String gosocket(String ambiente, String usuario, Integer id_document_convert) {
-        String resultado;
-
-        try {
-            Control.felcr.Control_Convert_Document controllerConverDocument = new Control.felcr.Control_Convert_Document();
-            resultado = controllerConverDocument.gosocket(ambiente, id_document_convert);
         } catch (Exception ex) {
             resultado = "1," + ex.toString();
         }
