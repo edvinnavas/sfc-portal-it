@@ -81,7 +81,7 @@ public class MyResource implements Serializable {
         String resultado;
 
         try {
-            System.out.println("PARAMETROS: " + parametros);
+            // System.out.println("PARAMETROS: " + parametros);
             String[] credenciales = parametros.split("♣");
             Control.Ctrl_FelCr ctrl_felcr = new Control.Ctrl_FelCr();
             resultado = ctrl_felcr.cargar_docs(credenciales[0], credenciales[1], Integer.valueOf(credenciales[2]), Integer.valueOf(credenciales[3]), Integer.valueOf(credenciales[4]), credenciales[5]);
@@ -93,33 +93,13 @@ public class MyResource implements Serializable {
         return resultado;
     }
     
-    /*
-    @POST
-    @Path("felcr/gosocket")
-    public String gosocket(String parametros) {
-        String resultado;
-
-        try {
-            System.out.println("PARAMETROS: " + parametros);
-            String[] credenciales = parametros.split("♣");
-            Control.Ctrl_FelCr ctrl_felcr = new Control.Ctrl_FelCr();
-            resultado = ctrl_felcr.gosocket(credenciales[0], credenciales[1], Integer.valueOf(credenciales[2]));
-        } catch (Exception ex) {
-            resultado = "PROYECTO: api-rest-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: gosocket(), ERRROR: " + ex.toString();
-            System.out.println("PROYECTO: api-rest-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: gosocket(), ERRROR: " + ex.toString());
-        }
-
-        return resultado;
-    }
-    */
-    
     @POST
     @Path("felcr/modificar_referencia")
     public String modificar_referencia(String parametros) {
         String resultado;
 
         try {
-            System.out.println("PARAMETROS: " + parametros);
+            // System.out.println("PARAMETROS: " + parametros);
             String[] credenciales = parametros.split("♣");
             Control.Ctrl_FelCr ctrl_felcr = new Control.Ctrl_FelCr();
             resultado = ctrl_felcr.modificar_referencia(credenciales[0], credenciales[1], Integer.valueOf(credenciales[2]), credenciales[3], credenciales[4], credenciales[5], Integer.valueOf(credenciales[6]), credenciales[7]);
@@ -137,7 +117,7 @@ public class MyResource implements Serializable {
         String resultado;
 
         try {
-            System.out.println("PARAMETROS: " + parametros);
+            // System.out.println("PARAMETROS: " + parametros);
             String[] credenciales = parametros.split("♣");
             Control.Ctrl_FelCr ctrl_felcr = new Control.Ctrl_FelCr();
             resultado = ctrl_felcr.anular_documento(credenciales[0], credenciales[1], Integer.valueOf(credenciales[2]), credenciales[3]);
@@ -155,7 +135,7 @@ public class MyResource implements Serializable {
         String resultado;
 
         try {
-            System.out.println("PARAMETROS: " + parametros);
+            // System.out.println("PARAMETROS: " + parametros);
             String[] credenciales = parametros.split("♣");
             Control.Ctrl_FelCr ctrl_felcr = new Control.Ctrl_FelCr();
             resultado = ctrl_felcr.re_facturar(credenciales[0], credenciales[1], Integer.valueOf(credenciales[2]), credenciales[3]);
@@ -173,7 +153,7 @@ public class MyResource implements Serializable {
         String resultado;
 
         try {
-            System.out.println("PARAMETROS: " + parametros);
+            // System.out.println("PARAMETROS: " + parametros);
             String[] credenciales = parametros.split("♣");
             Control.Ctrl_FelCr ctrl_felcr = new Control.Ctrl_FelCr();
             resultado = ctrl_felcr.modificar_receptor(credenciales[0], credenciales[1], Integer.valueOf(credenciales[2]), Integer.valueOf(credenciales[3]), credenciales[4], credenciales[5], credenciales[6], credenciales[7], credenciales[8]);
@@ -191,7 +171,7 @@ public class MyResource implements Serializable {
         String resultado;
 
         try {
-            System.out.println("PARAMETROS: " + parametros);
+            // System.out.println("PARAMETROS: " + parametros);
             String[] credenciales = parametros.split("♣");
             Control.Ctrl_FelCr ctrl_felcr = new Control.Ctrl_FelCr();
             resultado = ctrl_felcr.modificar_exoneracion(credenciales[0], Integer.valueOf(credenciales[1]), Integer.valueOf(credenciales[2]), credenciales[3], Integer.valueOf(credenciales[4]), credenciales[5], credenciales[6], credenciales[7], Double.valueOf(credenciales[8]), Double.valueOf(credenciales[9]));
@@ -209,7 +189,7 @@ public class MyResource implements Serializable {
         String resultado;
 
         try {
-            System.out.println("PARAMETROS: " + parametros);
+            // System.out.println("PARAMETROS: " + parametros);
             String[] credenciales = parametros.split("♣");
             Control.Ctrl_FelCr ctrl_felcr = new Control.Ctrl_FelCr();
             resultado = ctrl_felcr.modificar_otros_cargos(credenciales[0], Integer.valueOf(credenciales[1]), Integer.valueOf(credenciales[2]), credenciales[3], Integer.valueOf(credenciales[4]), credenciales[5], credenciales[6], credenciales[7], Double.valueOf(credenciales[8]), Double.valueOf(credenciales[9]));

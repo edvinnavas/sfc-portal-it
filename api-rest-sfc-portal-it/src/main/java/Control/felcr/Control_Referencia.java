@@ -72,7 +72,6 @@ public class Control_Referencia implements Serializable {
 
             /* ============================================== TEXTO DE OBSERVACION ADJUNTA =============================== */
             String id_comentarios = doco + "|" + tipo_orden + "|" + no_compania;
-            ctrl_base_datos.obtener_conexion_jde_petroleos(ambiente);
             Connection conn_jde = ctrl_base_datos.obtener_conexion_jde_petroleos(ambiente);
             String comentarios = ctrl_base_datos.ObtenerString("SELECT NVL(REPLACE(SUBSTR(REPLACE(UTL_RAW.CAST_TO_VARCHAR2(DBMS_LOB.SUBSTR(A.GDTXFT,32000,1)),CHR(0),''),160,(LENGTH(REPLACE(UTL_RAW.CAST_TO_VARCHAR2(DBMS_LOB.SUBSTR(A.GDTXFT,32000,1)),CHR(0),''))-166)-2),'''',''),' ') TEXTO_1 FROM " + ctrl_base_datos.AmbienteEsquemaJde(ambiente) + ".F00165 A WHERE A.GDTXKY = '" + id_comentarios + "'", conn_jde);
             if (conn_jde != null) {
@@ -275,7 +274,6 @@ public class Control_Referencia implements Serializable {
 
             /* ============================================== TEXTO DE OBSERVACION ADJUNTA =============================== */
             String id_comentarios = doco + "|" + tipo_orden + "|" + no_compania;
-            ctrl_base_datos.obtener_conexion_jde_petroleos(ambiente);
             Connection conn_jde = ctrl_base_datos.obtener_conexion_jde_petroleos(ambiente);
             String comentarios = ctrl_base_datos.ObtenerString("SELECT NVL(REPLACE(SUBSTR(REPLACE(UTL_RAW.CAST_TO_VARCHAR2(DBMS_LOB.SUBSTR(A.GDTXFT,32000,1)),CHR(0),''),160,(LENGTH(REPLACE(UTL_RAW.CAST_TO_VARCHAR2(DBMS_LOB.SUBSTR(A.GDTXFT,32000,1)),CHR(0),''))-166)-2),'''',''),' ') TEXTO_1 FROM " + ctrl_base_datos.AmbienteEsquemaJde(ambiente) + ".F00165 A WHERE A.GDTXKY = '" + id_comentarios + "'", conn_jde);
             if (conn_jde != null) {

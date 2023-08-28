@@ -87,8 +87,9 @@ public class Felcr implements Serializable {
             }
             if (this.sel_reg_tbl_dtecr != null) {
                 if (this.sel_reg_tbl_dtecr.getProcesado().trim().equals("NO")) {
-                    String parametros = this.ambiente + "♣" + this.nombre_usuario + "♣" + this.sel_reg_tbl_dtecr.getId_convert_document();
+                    String parametros = this.ambiente + "♣" + this.sel_reg_tbl_dtecr.getId_convert_document();
                     ClientesRest.ClienteRestApi cliente_rest_api = new ClientesRest.ClienteRestApi();
+                    System.out.println("PARAMETROS-FELCR: " + parametros);
                     String resultado = cliente_rest_api.gosocket(parametros);
                     String opcion = resultado.substring(0, 1);
                     if (opcion.equals("0")) {

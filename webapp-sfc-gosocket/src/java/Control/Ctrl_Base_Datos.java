@@ -14,26 +14,7 @@ public class Ctrl_Base_Datos implements Serializable {
 
     public Ctrl_Base_Datos() {
     }
-
-    public Connection obtener_conexion_mysql() {
-        Connection resultado;
-
-        try {
-            String host_mysql_db = "10.253.7.250";
-            String usuario_db = "user_portal_it";
-            String contrasena_db = "sfctadmin";
-
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            resultado = DriverManager.getConnection("jdbc:mysql://" + host_mysql_db + ":3306/db_portal_it", usuario_db, contrasena_db);
-            // System.out.println("Conexión satisfactoria: " + usuario_db);
-        } catch (Exception ex) {
-            resultado = null;
-            System.out.println("PROYECTO: api-rest-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: obtener_conexion_mysql(), ERRROR: " + ex.toString());
-        }
-
-        return resultado;
-    }
-
+    
     public Connection obtener_conexion_felcr(String ambiente) {
         Connection resultado;
 

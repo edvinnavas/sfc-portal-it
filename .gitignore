@@ -1,2 +1,6 @@
 /webapp-sfc-portal-it/target/
 /api-rest-sfc-portal-it/target/
+/webapp-sfc-portal-it-gosocket/target/
+/webapp-sfc-gosocket/nbproject/private/
+/webapp-sfc-gosocket/build/
+/webapp-sfc-gosocket/dist/

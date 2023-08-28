@@ -15,6 +15,7 @@ public class ClienteRestApi implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private static final String BASE_URI = "http://10.253.7.250:8015/portal-it/";
+    private static final String BASE_URI_GOSOCKET = "http://10.253.7.250:8019/webapp-sfc-gosocket/portal-it/";
     private ClientConfig clientConfig;
     private Client client;
 
@@ -88,16 +89,17 @@ public class ClienteRestApi implements Serializable {
 
         return resultado;
     }
-
+    
     public String gosocket(String parametros) {
         String resultado = "";
 
         try {
-            WebTarget webTarget = this.client.target(BASE_URI).path("felcr/gosocket");
+            System.out.println("PARAMETROS-CLIENTE-WS: " + parametros);
+            WebTarget webTarget = this.client.target(BASE_URI_GOSOCKET).path("gosocket/gosocket");
             String data = parametros;
-            Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+            Invocation.Builder invocationBuilder = webTarget.request(MediaType.TEXT_PLAIN);
             Response response = invocationBuilder.post(Entity.text(data));
-            // System.out.println("CONEXION REST-API-PORTAL-TI: " + response.getStatus());
+            System.out.println("CONEXION REST-API-PORTAL-TI: " + response.getStatus());
             if (response.getStatus() == 200) {
                 resultado = response.readEntity(String.class);
             } else {
