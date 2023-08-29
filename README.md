@@ -16,3 +16,7 @@ docker run -d --name SFC-GLASSFISH4-1 -p 4949:4848 -p 8019:8080 --restart=always
 
 docker build -t sfcterra/api-sfc-portal-it:1.0.0 .
 docker run -t -i --name PORTAL-IT-API -p 8015:8015 --restart=always --env TZ=America/Guatemala -v "/SFC_PORTAL_IT":/SFC_PORTAL_IT sfcterra/api-sfc-portal-it:1.0.0
+
+Enlaces Pos-Manager.
+https://posmanager.ete.mx/WebFactElect/
+https://posmanager.endtoend.com.mx/WebFactElect/
