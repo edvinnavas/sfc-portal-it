@@ -69,6 +69,66 @@ public class ClienteRestApi implements Serializable {
         return resultado;
     }
     
+    public String felcr_obtener_document(String ambiente, Long id_convert_document) {
+        String resultado = "";
+
+        try {
+            WebTarget webTarget = this.client.target(BASE_URI).path("felcr/obtener_document/" + ambiente + "/" + id_convert_document);
+            Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+            Response response = invocationBuilder.get();
+            // System.out.println("CONEXION REST-API-PORTAL-TI: " + response.getStatus());
+            if (response.getStatus() == 200) {
+                resultado = response.readEntity(String.class);
+            } else {
+                resultado = response.getStatus() + ": " + response.getStatusInfo();
+            }
+        } catch (Exception ex) {
+            System.out.println("PROYECTO: webapp-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: felcr_obtener_document(), ERRROR: " + ex.toString());
+        }
+
+        return resultado;
+    }
+    
+    public String felcr_obtener_referencia(String ambiente, Long id_document) {
+        String resultado = "";
+
+        try {
+            WebTarget webTarget = this.client.target(BASE_URI).path("felcr/obtener_referencia/" + ambiente + "/" + id_document);
+            Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+            Response response = invocationBuilder.get();
+            // System.out.println("CONEXION REST-API-PORTAL-TI: " + response.getStatus());
+            if (response.getStatus() == 200) {
+                resultado = response.readEntity(String.class);
+            } else {
+                resultado = response.getStatus() + ": " + response.getStatusInfo();
+            }
+        } catch (Exception ex) {
+            System.out.println("PROYECTO: webapp-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: felcr_obtener_referencia(), ERRROR: " + ex.toString());
+        }
+
+        return resultado;
+    }
+    
+    public String obtener_cat_codigo_ref(String ambiente) {
+        String resultado = "";
+
+        try {
+            WebTarget webTarget = this.client.target(BASE_URI).path("felcr/obtener_cat_codigo_ref/" + ambiente);
+            Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+            Response response = invocationBuilder.get();
+            // System.out.println("CONEXION REST-API-PORTAL-TI: " + response.getStatus());
+            if (response.getStatus() == 200) {
+                resultado = response.readEntity(String.class);
+            } else {
+                resultado = response.getStatus() + ": " + response.getStatusInfo();
+            }
+        } catch (Exception ex) {
+            System.out.println("PROYECTO: webapp-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: obtener_cat_codigo_ref(), ERRROR: " + ex.toString());
+        }
+
+        return resultado;
+    }
+    
     public String cargar_docs(String parametros) {
         String resultado = "";
 
@@ -94,12 +154,11 @@ public class ClienteRestApi implements Serializable {
         String resultado = "";
 
         try {
-            System.out.println("PARAMETROS-CLIENTE-WS: " + parametros);
             WebTarget webTarget = this.client.target(BASE_URI_GOSOCKET).path("gosocket/gosocket");
             String data = parametros;
             Invocation.Builder invocationBuilder = webTarget.request(MediaType.TEXT_PLAIN);
             Response response = invocationBuilder.post(Entity.text(data));
-            System.out.println("CONEXION REST-API-PORTAL-TI: " + response.getStatus());
+            // System.out.println("CONEXION REST-API-PORTAL-TI: " + response.getStatus());
             if (response.getStatus() == 200) {
                 resultado = response.readEntity(String.class);
             } else {

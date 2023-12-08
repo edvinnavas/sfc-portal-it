@@ -75,6 +75,62 @@ public class MyResource implements Serializable {
         return resultado;
     }
     
+    @GET
+    @Path("felcr/obtener_document/{ambiente}/{id_convert_document}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String obtener_document(
+            @PathParam("ambiente") String ambiente,
+            @PathParam("id_convert_document") Long id_convert_document) {
+
+        String resultado;
+
+        try {
+            Control.Ctrl_FelCr ctrl_felcr = new Control.Ctrl_FelCr();
+            resultado = ctrl_felcr.obtener_document(ambiente, id_convert_document);
+        } catch (Exception ex) {
+            resultado = "PROYECTO: api-rest-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: obtener_document(), ERRROR: " + ex.toString();
+        }
+
+        return resultado;
+    }
+    
+    @GET
+    @Path("felcr/obtener_referencia/{ambiente}/{id_document}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String obtener_referencia(
+            @PathParam("ambiente") String ambiente,
+            @PathParam("id_document") Long id_document) {
+
+        String resultado;
+
+        try {
+            Control.Ctrl_FelCr ctrl_felcr = new Control.Ctrl_FelCr();
+            resultado = ctrl_felcr.obtener_referencia(ambiente, id_document);
+        } catch (Exception ex) {
+            resultado = "PROYECTO: api-rest-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: obtener_referencia(), ERRROR: " + ex.toString();
+        }
+
+        return resultado;
+    }
+    
+    @GET
+    @Path("felcr/obtener_cat_codigo_ref/{ambiente}")
+    public String obtener_cat_codigo_ref(
+            @PathParam("ambiente") String ambiente) {
+        
+        String resultado = "";
+        
+        try {
+            Control.Ctrl_FelCr ctrl_felcr = new Control.Ctrl_FelCr();
+            resultado = ctrl_felcr.obtener_cat_codigo_ref(ambiente);
+        } catch (Exception ex) {
+            resultado = "PROYECTO: api-rest-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: obtener_cat_codigo_ref(), ERRROR: " + ex.toString();
+            System.out.println("PROYECTO: api-rest-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: obtener_cat_codigo_ref(), ERRROR: " + ex.toString());
+        }
+        
+        return resultado;
+    }
+    
     @POST
     @Path("felcr/cargar_docs")
     public String cargar_docs(String parametros) {

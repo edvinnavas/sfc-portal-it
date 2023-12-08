@@ -54,7 +54,7 @@ public class Ctrl_FelCr implements Serializable {
                 dia_letra = dia.toString();
             }
 
-            List<Entidad.RegTblDteCr> lista_reg_tbl_dte_cr = new ArrayList<>();
+            List<Entidad.felcr.RegTblDteCr> lista_reg_tbl_dte_cr = new ArrayList<>();
             String cadenasql = "SELECT "
                     + "C.ID_CONVERT_DOCUMENT, "
                     + "C.SYNC_POINT, "
@@ -84,7 +84,7 @@ public class Ctrl_FelCr implements Serializable {
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(cadenasql);
             while (rs.next()) {
-                Entidad.RegTblDteCr reg_tbl_dte_cr = new Entidad.RegTblDteCr();
+                Entidad.felcr.RegTblDteCr reg_tbl_dte_cr = new Entidad.felcr.RegTblDteCr();
                 reg_tbl_dte_cr.setId_convert_document(rs.getInt(1));
                 reg_tbl_dte_cr.setSync_point(rs.getString(2));
                 reg_tbl_dte_cr.setPasswords(rs.getString(3));
@@ -131,6 +131,232 @@ public class Ctrl_FelCr implements Serializable {
                 }
             } catch (Exception ex) {
                 resultado = "PROYECTO: api-rest-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: finally-lista_dtes(), ERRROR: " + ex.toString();
+            }
+        }
+
+        return resultado;
+    }
+    
+    public String obtener_document(String ambiente, Long id_convert_document) {
+        String resultado = "";
+
+        Connection conn = null;
+
+        try {
+            Ctrl_Base_Datos ctrl_base_datos = new Ctrl_Base_Datos();
+            conn = ctrl_base_datos.obtener_conexion_felcr(ambiente);
+
+            conn.setAutoCommit(false);
+
+            Entidad.felcr.RegDglDocument reg_dgl_document = new Entidad.felcr.RegDglDocument();
+
+            String sql = "SELECT "
+                    + "C.ID_CONVERT_DOCUMENT, "
+                    + "C.SYNC_POINT, "
+                    + "C.PASSWORDS, "
+                    + "C.ID_DOCUMENT_TYPE, "
+                    + "C.ID_DTE, "
+                    + "C.ID_DOCUMENTO, "
+                    + "C.CONTENIDOTC, "
+                    + "C.NO_ORDEN_E1, "
+                    + "C.TIPO_ORDEN_E1, "
+                    + "C.NO_COMPANIA, "
+                    + "SUBSTR(C.FECHA_DOCUMENTO,7,2) || '/' || SUBSTR(C.FECHA_DOCUMENTO,5,2) || '/' || SUBSTR(C.FECHA_DOCUMENTO,0,4) || ' ' || SUBSTR(C.FECHA_DOCUMENTO,9,2) || ':' || SUBSTR(C.FECHA_DOCUMENTO,11,2) || ':' || SUBSTR(C.FECHA_DOCUMENTO,13,2) FECHA_DOCUMENTO, "
+                    + "C.NO_FACTURA, "
+                    + "C.TAX_ID_RECEPTOR, "
+                    + "C.NOMBRE_RECEPTOR, "
+                    + "SUBSTR(C.FECHA_ENVIO,7,2) || '/' || SUBSTR(C.FECHA_ENVIO,5,2) || '/' || SUBSTR(C.FECHA_ENVIO,0,4) || ' ' || SUBSTR(C.FECHA_ENVIO,9,2) || ':' || SUBSTR(C.FECHA_ENVIO,11,2) || ':' || SUBSTR(C.FECHA_ENVIO,13,2) FECHA_ENVIO, "
+                    + "C.PROCESS_RESULT, "
+                    + "C.PROCESADO, "
+                    + "C.ABAN8_E1 "
+                    + "FROM "
+                    + "CONVERT_DOCUMENT C "
+                    + "WHERE "
+                    + "C.ID_CONVERT_DOCUMENT=" + id_convert_document;
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                reg_dgl_document.setId_convert_document(rs.getLong(1));
+                reg_dgl_document.setSync_point(rs.getString(2));
+                reg_dgl_document.setPasswords(rs.getString(3));
+                reg_dgl_document.setDocument_type(rs.getString(4));
+                reg_dgl_document.setId_dte(rs.getLong(5));
+                reg_dgl_document.setId_documento(rs.getLong(6));
+                reg_dgl_document.setContenidotc(rs.getString(7));
+                reg_dgl_document.setNo_orden_e1(rs.getString(8));
+                reg_dgl_document.setTipo_orden_e1(rs.getString(9));
+                reg_dgl_document.setNo_compania(rs.getString(10));
+                reg_dgl_document.setFecha_documento(rs.getString(11));
+                reg_dgl_document.setNo_factura(rs.getString(12));
+                reg_dgl_document.setTax_id_receptor(rs.getString(13));
+                reg_dgl_document.setNombre_receptor(rs.getString(14));
+                reg_dgl_document.setFecha_envio(rs.getString(15));
+                reg_dgl_document.setProcess_result(rs.getString(16));
+                reg_dgl_document.setProcesado(rs.getString(17));
+                reg_dgl_document.setAban8_d1(rs.getString(18));
+            }
+            rs.close();
+            stmt.close();
+
+            conn.commit();
+            conn.setAutoCommit(true);
+
+            Gson gson = new GsonBuilder().serializeNulls().create();
+            resultado = gson.toJson(reg_dgl_document);
+        } catch (Exception ex) {
+            try {
+                if (conn != null) {
+                    conn.rollback();
+                    conn.setAutoCommit(true);
+                    conn = null;
+                    resultado = "PROYECTO: api-rest-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: obtener_document(), ERRROR: " + ex.toString();
+                }
+            } catch (Exception ex1) {
+                resultado = "PROYECTO: api-rest-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: rollback-obtener_document(), ERRROR: " + ex.toString();
+            }
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (Exception ex) {
+                resultado = "PROYECTO: api-rest-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: finally-obtener_document(), ERRROR: " + ex.toString();
+            }
+        }
+
+        return resultado;
+    }
+    
+    public String obtener_referencia(String ambiente, Long id_document) {
+        String resultado = "";
+
+        Connection conn = null;
+
+        try {
+            Ctrl_Base_Datos ctrl_base_datos = new Ctrl_Base_Datos();
+            conn = ctrl_base_datos.obtener_conexion_felcr(ambiente);
+
+            conn.setAutoCommit(false);
+
+            Entidad.felcr.RegDglReferencia reg_dgl_referencia = new Entidad.felcr.RegDglReferencia();
+
+            String sql = "SELECT "
+                    + "R.ID_REFERENCIA, "
+                    + "R.ID_DOCUMENTO, "
+                    + "R.ID_DOCUMENT_TYPE_REF, "
+                    + "R.NO_DOCUMENTO_REF, "
+                    + "R.ID_BATCH, "
+                    + "R.FECHA_DOCUMENTO_REF, "
+                    + "R.RAZONREF, "
+                    + "R.ID_CODIGO_REF, "
+                    + "R.COMENTARIO_ADJUNTO, "
+                    + "R.TIPO_DESPACHO, "
+                    + "R.TIPO_NOTA_CREDITO "
+                    + "FROM "
+                    + "REFERENCIA R "
+                    + "WHERE "
+                    + "R.ID_DOCUMENTO = " + id_document;
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                reg_dgl_referencia.setId_referencia(rs.getLong(1));
+                reg_dgl_referencia.setId_documento(rs.getLong(2));
+                reg_dgl_referencia.setId_document_type_ref(rs.getLong(3));
+                reg_dgl_referencia.setNo_documento_ref(rs.getString(4));
+                reg_dgl_referencia.setId_batch(rs.getString(5));
+                reg_dgl_referencia.setFecha_documento_ref(rs.getString(6));
+                reg_dgl_referencia.setRazonref(rs.getString(7));
+                reg_dgl_referencia.setId_codigo_ref(rs.getLong(8));
+                reg_dgl_referencia.setComentario_adjunto(rs.getString(9));
+                reg_dgl_referencia.setTipo_despacho(rs.getInt(10));
+                reg_dgl_referencia.setTipo_nota_credito(rs.getString(11));
+            }
+            rs.close();
+            stmt.close();
+
+            conn.commit();
+            conn.setAutoCommit(true);
+
+            Gson gson = new GsonBuilder().serializeNulls().create();
+            resultado = gson.toJson(reg_dgl_referencia);
+        } catch (Exception ex) {
+            try {
+                if (conn != null) {
+                    conn.rollback();
+                    conn.setAutoCommit(true);
+                    conn = null;
+                    resultado = "PROYECTO: api-rest-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: obtener_referencia(), ERRROR: " + ex.toString();
+                }
+            } catch (Exception ex1) {
+                resultado = "PROYECTO: api-rest-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: rollback-obtener_referencia(), ERRROR: " + ex.toString();
+            }
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (Exception ex) {
+                resultado = "PROYECTO: api-rest-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: finally-obtener_referencia(), ERRROR: " + ex.toString();
+            }
+        }
+
+        return resultado;
+    }
+    
+    public String obtener_cat_codigo_ref(String ambiente) {
+        String resultado = "";
+
+        Connection conn = null;
+
+        try {
+            Ctrl_Base_Datos ctrl_base_datos = new Ctrl_Base_Datos();
+            conn = ctrl_base_datos.obtener_conexion_felcr(ambiente);
+
+            conn.setAutoCommit(false);
+
+            List<Entidad.felcr.Cat_Codigo_Ref> lst_cat_codigo_ref = new ArrayList<>();
+
+            String sql = "SELECT "
+                    + "F.ID_CODIGO_REF, "
+                    + "F.COD_CODIGO_REF, "
+                    + "F.DESCRIPTION "
+                    + "FROM "
+                    + "CODIGO_REF F";
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                Entidad.felcr.Cat_Codigo_Ref cat_codigo_ref = new Entidad.felcr.Cat_Codigo_Ref();
+                cat_codigo_ref.setID_CODIGO_REF(rs.getLong(1));
+                cat_codigo_ref.setCOD_CODIGO_REF(rs.getString(2));
+                cat_codigo_ref.setDESCRIPTION(rs.getString(3));
+                lst_cat_codigo_ref.add(cat_codigo_ref);
+            }
+            rs.close();
+            stmt.close();
+
+            conn.commit();
+            conn.setAutoCommit(true);
+
+            Gson gson = new GsonBuilder().serializeNulls().create();
+            resultado = gson.toJson(lst_cat_codigo_ref);
+        } catch (Exception ex) {
+            try {
+                if (conn != null) {
+                    conn.rollback();
+                    conn.setAutoCommit(true);
+                    conn = null;
+                    resultado = "PROYECTO: api-rest-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: obtener_cat_codigo_ref(), ERRROR: " + ex.toString();
+                }
+            } catch (Exception ex1) {
+                resultado = "PROYECTO: api-rest-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: rollback-obtener_cat_codigo_ref(), ERRROR: " + ex.toString();
+            }
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (Exception ex) {
+                resultado = "PROYECTO: api-rest-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: finally-obtener_cat_codigo_ref(), ERRROR: " + ex.toString();
             }
         }
 

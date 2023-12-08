@@ -1,4 +1,4 @@
-package Entidad;
+package Entidad.felcr;
 
 import java.io.Serializable;
 import lombok.Getter;

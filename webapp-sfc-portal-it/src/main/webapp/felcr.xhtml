@@ -6,40 +6,56 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="WEB-INF/plantilla/plantilla.xhtml">
     <ui:define name="contenido">
-        <p:panel header="DTE's Costa Rica." style="font-weight: bold; font-size: 12px;">
+        <style type="text/css">
+            .pendiente {
+                background-color: orange !important;
+                background-image: none !important;
+                color: #000000 !important;
+            }
+            .ui-calendar input {
+                font-size: 10px !important;
+            }
+            .ui-selectonemenu-label {
+                font-size: 10px !important;
+            }
+            .ui-dialog-titlebar {
+                padding-left: 10px !important;
+                padding-top: 5px !important;
+                padding-right: 0px !important;
+                padding-bottom: 0px !important;
+            }
+            .titulo_panel {
+                font-size: 14px !important;
+                font-weight: bold !important;
+            }
+        </style>
+        <p:panel header="DTE's Costa Rica." styleClass="titulo_panel">
             <p:growl id="msgFelcr" showDetail="true"/>
-            <p:panelGrid columns="7">
-                <p:outputLabel value="Fecha facturación" style="font-weight: bold; font-size: 12px;"/>
-                <p:calendar id="calFechaFacturacion" value="#{Felcr.fecha_facturacion}" pattern="dd/MM/yyyy" style="font-size: 12px;">
+            <p:panelGrid columns="8">
+                <p:outputLabel value="Fecha facturación" style="font-weight: bold; font-size: 10px;"/>
+                <p:calendar id="calFechaFacturacion" value="#{Felcr.fecha_facturacion}" pattern="dd/MM/yyyy">
                     <p:ajax event="dateSelect" listener="#{Felcr.filtrar_tabla}" update="tblDtes"/>
                 </p:calendar>
-                <p:selectOneMenu id="somEstado" value="#{Felcr.tabla}" style="font-size: 12px;">
+                <p:selectOneMenu id="somEstado" value="#{Felcr.tabla}">
                     <f:selectItems value="#{Felcr.lst_tabla}"/>
                 </p:selectOneMenu>
-                <p:commandButton id="btnGoSocket" value="GoSocket" actionListener="#{Felcr.enviar_gosocket}" icon="pi pi-send" update="tblDtes,msgFelcr">
+                <p:commandButton id="btnGoSocket" value="GoSocket" actionListener="#{Felcr.enviar_gosocket}" icon="pi pi-send" update="tblDtes,msgFelcr" style="font-size: 10px;">
                     <p:confirm header="Confirmación" message="Seguro desea realizar esta acción?" icon="pi pi-exclamation-triangle"/>
                 </p:commandButton>
-                <p:commandButton id="btnCargarDocs" value="Cargar Docs." actionListener="#{Felcr.extraer_docs_jde}" icon="pi pi-upload" update="tblDtes,msgFelcr">
+                <p:commandButton id="btnCargarDocs" value="Cargar Docs." actionListener="#{Felcr.extraer_docs_jde}" icon="pi pi-upload" update="tblDtes,msgFelcr" style="font-size: 10px;">
                     <p:confirm header="Confirmación" message="Seguro desea realizar esta acción?" icon="pi pi-exclamation-triangle"/>
                 </p:commandButton>
-                <p:commandButton id="btnAnularDoc" value="Anular Doc" actionListener="#{Felcr.filtrar_tabla}" icon="pi pi-trash" update="tblDtes,msgFelcr">
+                <p:commandButton id="btnAnularDoc" value="Anular Doc" actionListener="#{Felcr.filtrar_tabla}" icon="pi pi-trash" update="tblDtes,msgFelcr" style="font-size: 10px;">
                     <p:confirm header="Confirmación" message="Seguro desea realizar esta acción?" icon="pi pi-exclamation-triangle"/>
                 </p:commandButton>
-                <p:commandButton id="btnReFacturar" value="Re-Facturar" actionListener="#{Felcr.filtrar_tabla}" icon="pi pi-reply" update="tblDtes,msgFelcr">
+                <p:commandButton id="btnReFacturar" value="Re-Facturar" actionListener="#{Felcr.filtrar_tabla}" icon="pi pi-reply" update="tblDtes,msgFelcr" style="font-size: 10px;">
                     <p:confirm header="Confirmación" message="Seguro desea realizar esta acción?" icon="pi pi-exclamation-triangle"/>
                 </p:commandButton>
-                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
-                    <p:commandButton value="SI" type="button" styleClass="ui-confirmdialog-yes" />
-                    <p:commandButton value="NO" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350" style="font-size: 10px;">
+                    <p:commandButton value="SI" type="button" styleClass="ui-confirmdialog-yes" style="font-size: 10px;"/>
+                    <p:commandButton value="NO" type="button" styleClass="ui-confirmdialog-no ui-button-flat" style="font-size: 10px;"/>
                 </p:confirmDialog>
             </p:panelGrid>
-            <style type="text/css">
-                .pendiente {
-                    background-color: orange !important;
-                    background-image: none !important;
-                    color: #000000 !important;
-                }
-            </style>
             <p:dataTable 
                 id="tblDtes" 
                 var="dte" 
@@ -48,41 +64,114 @@
                 selectionMode="single" 
                 selection="#{Felcr.sel_reg_tbl_dtecr}" 
                 rowKey="#{dte.id_convert_document}"
-                paginator="true" 
-                rows="10" 
-                rowsPerPageTemplate="10,20,30" 
-                paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
                 rowStyleClass="#{dte.procesado eq 'NO' ? 'pendiente' : null}"
-                style="font-size: 12px;">
-                <p:column headerText="No. Orden E1" sortBy="#{dte.no_orden_e1}" filterBy="#{dte.no_orden_e1}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
+                style="font-size: 10px;">
+                
+                <p:ajax event="rowDblselect" listener="#{Felcr.mostrar_document_convert}" update="formPlantilla:formConverDocument:pnlConverDocument" global="false"/>
+                
+                <p:column headerText="No. Orden E1" sortBy="#{dte.no_orden_e1}" filterBy="#{dte.no_orden_e1}" filterMatchMode="contains" style="width: 200px; font-size: 10px; font-weight: bold;">
                     <h:outputText value="#{dte.no_orden_e1}"/>
                 </p:column>
-                <p:column headerText="Tipo Orden E1" sortBy="#{dte.tipo_orden_e1}" filterBy="#{dte.tipo_orden_e1}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
+                <p:column headerText="Tipo Orden E1" sortBy="#{dte.tipo_orden_e1}" filterBy="#{dte.tipo_orden_e1}" filterMatchMode="contains" style="width: 200px; font-size: 10px; font-weight: bold;">
                     <h:outputText value="#{dte.tipo_orden_e1}"/>
                 </p:column>
-                <p:column headerText="No. Documento E1" sortBy="#{dte.no_factura}" filterBy="#{dte.no_factura}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
+                <p:column headerText="No. Documento E1" sortBy="#{dte.no_factura}" filterBy="#{dte.no_factura}" filterMatchMode="contains" style="width: 200px; font-size: 10px; font-weight: bold;">
                     <h:outputText value="#{dte.no_factura}"/>
                 </p:column>
-                <p:column headerText="Fecha Documento E1" sortBy="#{dte.fecha_documento}" filterBy="#{dte.fecha_documento}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
+                <p:column headerText="Fecha Documento E1" sortBy="#{dte.fecha_documento}" filterBy="#{dte.fecha_documento}" filterMatchMode="contains" style="width: 200px; font-size: 10px; font-weight: bold;">
                     <h:outputText value="#{dte.fecha_documento}"/>
                 </p:column>
-                <p:column headerText="Tax Id Receptor" sortBy="#{dte.tax_id_receptor}" filterBy="#{dte.tax_id_receptor}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
+                <p:column headerText="Tax Id Receptor" sortBy="#{dte.tax_id_receptor}" filterBy="#{dte.tax_id_receptor}" filterMatchMode="contains" style="width: 200px; font-size: 10px; font-weight: bold;">
                     <h:outputText value="#{dte.tax_id_receptor}"/>
                 </p:column>
-                <p:column headerText="Nombre Receptor" sortBy="#{dte.nombre_receptor}" filterBy="#{dte.nombre_receptor}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
+                <p:column headerText="Nombre Receptor" sortBy="#{dte.nombre_receptor}" filterBy="#{dte.nombre_receptor}" filterMatchMode="contains" style="width: 200px; font-size: 10px; font-weight: bold;">
                     <h:outputText value="#{dte.nombre_receptor}"/>
                 </p:column>
-                <p:column headerText="Fecha Envío" sortBy="#{dte.fecha_envio}" filterBy="#{dte.fecha_envio}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
+                <p:column headerText="Fecha Envío" sortBy="#{dte.fecha_envio}" filterBy="#{dte.fecha_envio}" filterMatchMode="contains" style="width: 200px; font-size: 10px; font-weight: bold;">
                     <h:outputText value="#{dte.fecha_envio}"/>
                 </p:column>
-                <p:column headerText="Re-facturación" sortBy="#{dte.refacturacion}" filterBy="#{dte.refacturacion}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
+                <p:column headerText="Re-facturación" sortBy="#{dte.refacturacion}" filterBy="#{dte.refacturacion}" filterMatchMode="contains" style="width: 200px; font-size: 10px; font-weight: bold;">
                     <h:outputText value="#{dte.refacturacion}"/>
                 </p:column>
-                <p:column headerText="Procesado" sortBy="#{dte.procesado}" filterBy="#{dte.procesado}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
+                <p:column headerText="Procesado" sortBy="#{dte.procesado}" filterBy="#{dte.procesado}" filterMatchMode="contains" style="width: 200px; font-size: 10px; font-weight: bold;">
                     <h:outputText value="#{dte.procesado}"/>
                 </p:column>
             </p:dataTable>
-            <p:outputLabel value="#{Felcr.nombre_usuario}" rendered="true"/>
         </p:panel>
+        <p:dialog id="dlgConverDocument" header="Convert-Document" widgetVar="widvarConverDocument" modal="true" resizable="false" closable="true" closeOnEscape="true" style="font-size:10px; font-weight:bold;">
+            <h:form id="formConverDocument">
+                <h:panelGrid id="pnlConverDocument" columns="2" cellpadding="3" style="font-size: 10px;">
+                    <p:outputLabel value="Id Convert Document" style="font-weight: bold; font-size: 10px;"/>
+                    <p:inputText id="txtConverDocument" value="#{Felcr.txtConverDocument}" readonly="true" style="font-size: 10px; width: 470px;"/>
+                    <p:outputLabel value="Document Type" style="font-weight: bold; font-size: 10px;"/>
+                    <p:inputText id="txtDocumentType" value="#{Felcr.txtDocumentType}" readonly="true" style="font-size: 10px; width: 470px;"/>
+                    <p:outputLabel value="No Orden E1" style="font-weight: bold; font-size: 10px;"/>
+                    <p:inputText id="txtNoOrderE1" value="#{Felcr.txtNoOrderE1}" readonly="true" style="font-size: 10px; width: 470px;"/>
+                    <p:outputLabel value="Tipo Orden E1" style="font-weight: bold; font-size: 10px;"/>
+                    <p:inputText id="txtTipoOrdenE1" value="#{Felcr.txtTipoOrdenE1}" readonly="true" style="font-size: 10px; width: 470px;"/>
+                    <p:outputLabel value="No Compañia" style="font-weight: bold; font-size: 10px;"/>
+                    <p:inputText id="txtNoCompania" value="#{Felcr.txtNoCompania}" readonly="true" style="font-size: 10px; width: 470px;"/>
+                    <p:outputLabel value="Fecha Documento" style="font-weight: bold; font-size: 10px;"/>
+                    <p:inputText id="txtFechaDocumento" value="#{Felcr.txtFechaDocumento}" readonly="true" style="font-size: 10px; width: 470px;"/>
+                    <p:outputLabel value="No Factura" style="font-weight: bold; font-size: 10px;"/>
+                    <p:inputText id="txtNoFactura" value="#{Felcr.txtNoFactura}" readonly="true" style="font-size: 10px; width: 470px;"/>
+                    <p:outputLabel value="Código cliente" style="font-weight: bold; font-size: 10px;"/>
+                    <p:inputText id="txtCodigoCliente" value="#{Felcr.txtCodigoCliente}" readonly="true" style="font-size: 10px; width: 470px;"/>
+                    <p:outputLabel value="Tax Id Receptor" style="font-weight: bold; font-size: 10px;"/>
+                    <p:inputText id="txtTaxIdReceptor" value="#{Felcr.txtTaxIdReceptor}" readonly="true" style="font-size: 10px; width: 470px;"/>
+                    <p:outputLabel value="Nombre Receptor" style="font-weight: bold; font-size: 10px;"/>
+                    <p:inputText id="txtNombreReceptor" value="#{Felcr.txtNombreReceptor}" readonly="true" style="font-size: 10px; width: 470px;"/>
+                    <p:outputLabel value="Fecha envío" style="font-weight: bold; font-size: 10px;"/>
+                    <p:inputText id="txtFechaEnvio" value="#{Felcr.txtFechaEnvio}" readonly="true" style="font-size: 10px; width: 470px;"/>
+                    <p:outputLabel value="Process Result" style="font-weight: bold; font-size: 10px;"/>
+                    <p:inputText id="txtProcessResult" value="#{Felcr.txtProcessResult}" readonly="true" style="font-size: 10px; width: 470px;"/>
+                    <p:outputLabel value="Procesado" style="font-weight: bold; font-size: 10px;"/>
+                    <p:inputText id="txtProcesado" value="#{Felcr.txtProcesado}" readonly="true" style="font-size: 10px; width: 470px;"/>
+                </h:panelGrid>
+            </h:form>
+            <h:panelGrid id="pnlConverDocumentBtn" columns="6" cellpadding="3" style="font-size: 10px;">
+                <p:commandButton id="btnReferencia" value="Referencia" actionListener="#{Felcr.mostrar_referencia}" icon="pi pi-file" update="formPlantilla:formReferencia:pnlReferencia,formPlantilla:pnlReferenciaBtn" style="font-size: 10px;"/>
+                <p:commandButton id="btnTotal" value="Total" icon="pi pi-file" style="font-size: 10px;"/>
+                <p:commandButton id="btnDetalle" value="Detalle" icon="pi pi-file" style="font-size: 10px;"/>
+                <p:commandButton id="btnReceptor" value="Receptor" icon="pi pi-file" style="font-size: 10px;"/>
+                <p:commandButton id="btnExoneracion" value="Exoneración" icon="pi pi-file" style="font-size: 10px;"/>
+                <p:commandButton id="btnOtrosCargos" value="Otros cargos" icon="pi pi-file" style="font-size: 10px;"/>
+            </h:panelGrid>
+        </p:dialog>
+        <p:dialog id="dlgReferencia" header="Referencia" widgetVar="widvarReferencia" modal="true" resizable="false" closable="true" closeOnEscape="true" style="font-size:10px; font-weight:bold;">
+            <h:form id="formReferencia">
+                <h:panelGrid id="pnlReferencia" columns="2" style="font-size: 10px;">
+                    <p:outputLabel value="Id Referencia" style="font-weight: bold; font-size: 10px;"/>
+                    <p:inputText id="txtIdReferencia" value="#{Felcr.txtIdReferencia}" readonly="true" style="font-size: 10px; width: 350px;"/>
+                    <p:outputLabel value="Id Documento" style="font-weight: bold; font-size: 10px;"/>
+                    <p:inputText id="txtIdDocumento" value="#{Felcr.txtIdDocumento}" readonly="true" style="font-size: 10px; width: 350px;"/>
+                    <p:outputLabel value="Id Documento Type Ref" style="font-weight: bold; font-size: 10px;"/>
+                    <p:inputText id="txtIdDocumentoTypeRef" value="#{Felcr.txtIdDocumentoTypeRef}" readonly="true" style="font-size: 10px; width: 350px;"/>
+                    <p:outputLabel value="Fecha Documento Ref" style="font-weight: bold; font-size: 10px;"/>
+                    <p:inputText id="txtFechaDocumentoRef" value="#{Felcr.txtFechaDocumentoRef}" readonly="true" style="font-size: 10px; width: 350px;"/>
+                    <p:outputLabel value="Razón Ref" style="font-weight: bold; font-size: 10px;"/>
+                    <p:inputText id="txtRazonRef" value="#{Felcr.txtRazonRef}" readonly="true" style="font-size: 10px; width: 350px;"/>
+                    <p:outputLabel value="Id Código Ref" style="font-weight: bold; font-size: 10px;"/>
+                    <p:selectOneMenu id="somIdCodigoRef" value="#{Felcr.somIdCodigoRef}" style="font-size: 10px; background-color: yellow;">
+                        <f:selectItems value="#{Felcr.lst_somIdCodigoRef}"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel value="Tipo Despacho" style="font-weight: bold; font-size: 10px;"/>
+                    <p:inputText id="txtTipoDespacho" value="#{Felcr.txtTipoDespacho}" style="font-size: 10px; width: 350px; background-color: yellow;"/>
+                    <p:outputLabel value="No Documento Ref" style="font-weight: bold; font-size: 10px;"/>
+                    <p:inputText id="txtNoDocumentoRef" value="#{Felcr.txtNoDocumentoRef}" style="font-size: 10px; width: 350px; background-color: yellow;"/>
+                    <p:outputLabel value="Id Batch" style="font-weight: bold; font-size: 10px;"/>
+                    <p:inputText id="txtIdBatch" value="#{Felcr.txtIdBatch}" style="font-size: 10px; width: 350px; background-color: yellow;"/>
+                    <p:outputLabel value="Comentario Adjunto" style="font-weight: bold; font-size: 10px;"/>
+                    <p:inputTextarea id="txtareaComenarioAdjunto" value="#{Felcr.txtareaComenarioAdjunto}" style="font-size: 10px; width: 350px; background-color: yellow;"/>
+                    <p:outputLabel value="Tipo Nota Crédito" style="font-weight: bold; font-size: 10px;"/>
+                    <p:selectOneMenu id="somIdTipoNotaCredito" value="#{Felcr.somIdTipoNotaCredito}" style="font-size: 10px; background-color: yellow;">
+                        <f:selectItems value="#{Felcr.lst_somIdTipoNotaCredito}"/>
+                    </p:selectOneMenu>
+                </h:panelGrid>
+            </h:form>
+            <h:panelGrid id="pnlReferenciaBtn" columns="6" cellpadding="3" style="font-size: 10px;">
+                <p:commandButton id="btnGuardarReferencia" disabled="#{Felcr.btnGuardarReferenciaDisabled}" value="Guardar" actionListener="#{Felcr.guardar_referencia}" icon="pi pi-save" update="formPlantilla:msgFelcr" oncomplete="PF('widvarReferencia').hide()" style="font-size: 10px;"/>
+            </h:panelGrid>
+        </p:dialog>
     </ui:define>
 </ui:composition>

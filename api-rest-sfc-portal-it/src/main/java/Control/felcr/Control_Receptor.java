@@ -37,6 +37,85 @@ public class Control_Receptor implements Serializable {
             }
 
             if (id_receptor > 0) {
+                //NOMBRE DE RECEPTOR.
+                cadenasql = "SELECT N.WWMLNM FROM " + ctrl_base_datos.AmbienteEsquemaJde(ambiente) + ".F0111@" + ctrl_base_datos.AmbienteDBLinkJde(ambiente) + " N WHERE N.WWIDLN=0 AND N.WWAN8=" + an8;
+                stmt = conn.createStatement();
+                rs = stmt.executeQuery(cadenasql);
+                String nombre_receptor = "";
+                while (rs.next()) {
+                    nombre_receptor = rs.getString(1);
+                }
+                rs.close();
+                stmt.close();
+
+                //CORREO DE RECEPTOR.
+                cadenasql = "SELECT T.EAEMAL FROM " + ctrl_base_datos.AmbienteEsquemaJde(ambiente) + ".F01151@" + ctrl_base_datos.AmbienteDBLinkJde(ambiente) + " T WHERE T.EAETP='E' AND T.EAAN8=" + an8 + " AND "
+                        + "T.EAIDLN=(SELECT N.WWIDLN FROM " + ctrl_base_datos.AmbienteEsquemaJde(ambiente) + ".F0111@" + ctrl_base_datos.AmbienteDBLinkJde(ambiente) + " N "
+                        + "WHERE TRIM(N.WWMLNM)='Facturacion Electronica CR' AND N.WWAN8=" + an8 + ")";
+                stmt = conn.createStatement();
+                rs = stmt.executeQuery(cadenasql);
+                String mail_receptor = "-";
+                while (rs.next()) {
+                    mail_receptor = rs.getString(1);
+                }
+                rs.close();
+                stmt.close();
+
+                //CODIGO PAIS Y TELEFONO DE RECEPTOR.
+                cadenasql = "SELECT T.WPAR1, T.WPPH1 FROM " + ctrl_base_datos.AmbienteEsquemaJde(ambiente) + ".F0115@" + ctrl_base_datos.AmbienteDBLinkJde(ambiente) + " T WHERE T.WPAN8=" + an8;
+                stmt = conn.createStatement();
+                rs = stmt.executeQuery(cadenasql);
+                String codigo_pais = "-";
+                String telefono = "-";
+                while (rs.next()) {
+                    codigo_pais = rs.getString(1);
+                    telefono = rs.getString(2);
+                }
+                rs.close();
+                stmt.close();
+
+                if (codigo_pais.trim() == null) {
+                    codigo_pais = "506";
+                } else {
+                    if (codigo_pais.trim().equals("")) {
+                        codigo_pais = "506";
+                    }
+                }
+
+                //DIRECCION DE RECEPTOR.
+                cadenasql = "SELECT TRIM(D.ALADD1) || ' ' || TRIM(D.ALADD2) || ' ' || TRIM(D.ALADD3) || ' ' || TRIM(D.ALADD4) "
+                        + "FROM " + ctrl_base_datos.AmbienteEsquemaJde(ambiente) + ".F0116@" + ctrl_base_datos.AmbienteDBLinkJde(ambiente) + " D "
+                        + "WHERE D.ALAN8=" + an8;
+                stmt = conn.createStatement();
+                rs = stmt.executeQuery(cadenasql);
+                String direccion_receptor = "-";
+                while (rs.next()) {
+                    direccion_receptor = rs.getString(1);
+                }
+                rs.close();
+                stmt.close();
+
+                cadenasql = "UPDATE RECEPTOR ( "
+                        + "ID_TIPO_CONTRIBUYENTE='" + id_tipo_contribuyente + "', "
+                        + "NRODOCRECEP='" + id_tax.trim() + "', "
+                        + "NMBRECEP='" + nombre_receptor.trim().replaceAll("'", "") + "', "
+                        + "PRIMERNOMBRE='" + nombre_receptor.trim().replaceAll("'", "") + "', "
+                        + "CDGINTRECEP='" + "-" + "', "
+                        + "CALLE='" + direccion_receptor.trim().replaceAll("'", "") + "', "
+                        + "DEPARTAMENTO='" + "0" + "', "
+                        + "DISTRITO='" + "00" + "', "
+                        + "CIUDAD='" + "00" + "', "
+                        + "MUNICIPIO='" + "00" + "', "
+                        + "EMAIL='" + mail_receptor.trim().replaceAll("'", "") + "', "
+                        + "CODIGOPAIS='" + codigo_pais.trim().replaceAll("'", "") + "', "
+                        + "TELEFONO='" + telefono.trim().replaceAll("'", "") + "', "
+                        + "EXTENSION='" + "000" + "', "
+                        + "FAX='" + "0000-0000" + "' "
+                        + "WHERE ID_RECEPTOR=" + id_receptor;
+                stmt = conn.createStatement();
+                stmt.executeUpdate(cadenasql);
+                stmt.close();
+
                 resultado = id_receptor;
             } else {
                 //SIGUIENTE ID_RECEPTOR.
