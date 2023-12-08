@@ -95,7 +95,7 @@ public class Control_Receptor implements Serializable {
                 rs.close();
                 stmt.close();
 
-                cadenasql = "UPDATE RECEPTOR ( "
+                cadenasql = "UPDATE RECEPTOR SET "
                         + "ID_TIPO_CONTRIBUYENTE='" + id_tipo_contribuyente + "', "
                         + "NRODOCRECEP='" + id_tax.trim() + "', "
                         + "NMBRECEP='" + nombre_receptor.trim().replaceAll("'", "") + "', "

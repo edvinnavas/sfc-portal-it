@@ -18,4 +18,4 @@ docker build -t edvinnavas/api-sfc-portal-it:1.0.0 .
 docker build -t sfcterra/api-sfc-portal-it:1.0.0 .
 
 docker run -p 8015:8015 -t -i --name PORTAL-IT-API --memory=2048m --restart=always -v "C:\VolumeDocker\SFC_PORTAL_IT":/SFC_PORTAL_IT --env TZ=America/Guatemala edvinnavas/api-sfc-portal-it:1.0.0
-docker run -t -i --name PORTAL-IT-API -p 8015:8015 --memory=2048m --restart=always --env TZ=America/Guatemala -v "/SFC_PORTAL_IT":/SFC_PORTAL_IT sfcterra/api-sfc-portal-it:1.0.0
+docker run -p 8015:8015 -t -i --name PORTAL-IT-API --memory=2048m --restart=always -v "/SFC_PORTAL_IT":/SFC_PORTAL_IT --env TZ=America/Guatemala sfcterra/api-sfc-portal-it:1.0.0

@@ -319,4 +319,31 @@ public class Felcr implements Serializable {
         }
     }
     
+    public void anular_documento() {
+        try {
+            HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+            this.usuario_sesion = (Entidades.UsuarioSesion) session.getAttribute("usuario_sesion");
+            
+            if(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath().trim().equals("/apps")) {
+                this.ambiente = "PD";
+            } else {
+                this.ambiente = "PY";
+            }
+            
+            String parametros = this.ambiente + "♣" + this.usuario_sesion.getNombre_usuario() + "♣" + this.sel_reg_tbl_dtecr.getId_convert_document() + "♣" + this.sel_reg_tbl_dtecr.getRefacturacion();
+            ClientesRest.ClienteRestApi cliente_rest_api = new ClientesRest.ClienteRestApi();
+            String resultado = cliente_rest_api.anular_documento(parametros);
+            String opcion = resultado.substring(0, 1);
+            if (opcion.equals("0")) {
+                this.filtrar_tabla();
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje del sistema...", resultado.substring(2)));
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Mensaje del sistema...", resultado.substring(2)));
+            }
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Mensaje del sistema.", ex.toString()));
+            System.out.println("PROYECTO: webapp-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: anular_documento(), ERRROR: " + ex.toString());
+        }
+    }
+    
 }
