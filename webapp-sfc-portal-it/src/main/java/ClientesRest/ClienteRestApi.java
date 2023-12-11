@@ -109,6 +109,26 @@ public class ClienteRestApi implements Serializable {
         return resultado;
     }
     
+    public String felcr_obtener_totales(String ambiente, Long id_document) {
+        String resultado = "";
+
+        try {
+            WebTarget webTarget = this.client.target(BASE_URI).path("felcr/obtener_totales/" + ambiente + "/" + id_document);
+            Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+            Response response = invocationBuilder.get();
+            // System.out.println("CONEXION REST-API-PORTAL-TI: " + response.getStatus());
+            if (response.getStatus() == 200) {
+                resultado = response.readEntity(String.class);
+            } else {
+                resultado = response.getStatus() + ": " + response.getStatusInfo();
+            }
+        } catch (Exception ex) {
+            System.out.println("PROYECTO: webapp-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: felcr_obtener_totales(), ERRROR: " + ex.toString());
+        }
+
+        return resultado;
+    }
+    
     public String obtener_cat_codigo_ref(String ambiente) {
         String resultado = "";
 

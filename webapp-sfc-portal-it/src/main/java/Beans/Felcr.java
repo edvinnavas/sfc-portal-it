@@ -36,7 +36,7 @@ public class Felcr implements Serializable {
     private List<SelectItem> lst_tabla;
     private String ambiente;
     // private String nombre_usuario;
-    
+
     // Dialogo ConvertDocument.
     private String txtConverDocument;
     private String txtDocumentType;
@@ -67,19 +67,35 @@ public class Felcr implements Serializable {
     private String somIdTipoNotaCredito;
     private List<SelectItem> lst_somIdTipoNotaCredito;
     private Boolean btnGuardarReferenciaDisabled;
-    
+
+    // Dialogo Totales.
+    private String txtIdTotal;
+    private String txtMoneda;
+    private String txtTipoCambio;
+    private String txtSubTotal;
+    private String txtTotalDescuento;
+    private String txtTotalVentaNeta;
+    private String txtTotalExento;
+    private String txtTotalImpuesto;
+    private String txtTotalVenta;
+    private String txtTotalComprobante;
+    private String txtTotalServGravados;
+    private String txtTotalServExcentos;
+    private String txtTotalMercaGravados;
+    private String txtTotalMercaExcentos;
+
     @PostConstruct
     public void init() {
         try {
             HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
             this.usuario_sesion = (Entidades.UsuarioSesion) session.getAttribute("usuario_sesion");
-            
-            if(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath().trim().equals("/apps")) {
+
+            if (FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath().trim().equals("/apps")) {
                 this.ambiente = "PD";
             } else {
                 this.ambiente = "PY";
             }
-            
+
             this.lst_reg_tbl_dtecr = new ArrayList<>();
             this.fecha_facturacion = new Date();
             this.lst_tabla = new ArrayList<>();
@@ -95,10 +111,10 @@ public class Felcr implements Serializable {
     public void cargar_vista(Entidades.UsuarioSesion usuario_sesion) {
         try {
             this.usuario_sesion = usuario_sesion;
-            
+
             HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
             session.setAttribute("usuario_sesion", this.usuario_sesion);
-            
+
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje del sistema.", "Vista-DTE-CR."));
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Mensaje del sistema.", ex.toString()));
@@ -110,38 +126,38 @@ public class Felcr implements Serializable {
         try {
             HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
             this.usuario_sesion = (Entidades.UsuarioSesion) session.getAttribute("usuario_sesion");
-            
-            if(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath().trim().equals("/apps")) {
+
+            if (FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath().trim().equals("/apps")) {
                 this.ambiente = "PD";
             } else {
                 this.ambiente = "PY";
             }
-            
+
             SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyyMMdd");
             ClientesRest.ClienteRestApi cliente_rest_api = new ClientesRest.ClienteRestApi();
             String json_result = cliente_rest_api.lista_dtes(this.ambiente, dateFormat1.format(this.fecha_facturacion));
 
             Type lista_viaje_type = new TypeToken<List<Entidades.RegTblDteCr>>() {
             }.getType();
-            
+
             this.lst_reg_tbl_dtecr = new Gson().fromJson(json_result, lista_viaje_type);
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Mensaje del sistema.", ex.toString()));
             System.out.println("PROYECTO: webapp-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: filtrar_tabla(), ERRROR: " + ex.toString());
         }
     }
-    
+
     public void enviar_gosocket() {
         try {
             HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
             this.usuario_sesion = (Entidades.UsuarioSesion) session.getAttribute("usuario_sesion");
-            
-            if(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath().trim().equals("/apps")) {
+
+            if (FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath().trim().equals("/apps")) {
                 this.ambiente = "PD";
             } else {
                 this.ambiente = "PY";
             }
-            
+
             if (this.sel_reg_tbl_dtecr != null) {
                 if (this.sel_reg_tbl_dtecr.getProcesado().trim().equals("NO")) {
                     String parametros = this.ambiente + "♣" + this.sel_reg_tbl_dtecr.getId_convert_document();
@@ -170,13 +186,13 @@ public class Felcr implements Serializable {
         try {
             HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
             this.usuario_sesion = (Entidades.UsuarioSesion) session.getAttribute("usuario_sesion");
-            
-            if(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath().trim().equals("/apps")) {
+
+            if (FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath().trim().equals("/apps")) {
                 this.ambiente = "PD";
             } else {
                 this.ambiente = "PY";
             }
-            
+
             Integer anio = this.fecha_facturacion.getYear() + 1900;
             Integer mes = this.fecha_facturacion.getMonth() + 1;
             Integer dia = this.fecha_facturacion.getDate();
@@ -195,24 +211,24 @@ public class Felcr implements Serializable {
             System.out.println("PROYECTO: webapp-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: extraer_docs_jde(), ERRROR: " + ex.toString());
         }
     }
-    
+
     public void mostrar_document_convert() {
         try {
             HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
             this.usuario_sesion = (Entidades.UsuarioSesion) session.getAttribute("usuario_sesion");
-            
-            if(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath().trim().equals("/apps")) {
+
+            if (FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath().trim().equals("/apps")) {
                 this.ambiente = "PD";
             } else {
                 this.ambiente = "PY";
             }
-            
+
             ClientesRest.ClienteRestApi cliente_rest_api = new ClientesRest.ClienteRestApi();
             String json_result = cliente_rest_api.felcr_obtener_document(this.ambiente, Long.valueOf(this.sel_reg_tbl_dtecr.getId_convert_document().toString()));
-            
+
             Type reg_dgl_document_type = new TypeToken<Entidades.RegDglDocument>() {
             }.getType();
-            
+
             Entidades.RegDglDocument reg_dgl_document = new Gson().fromJson(json_result, reg_dgl_document_type);
             this.txtConverDocument = reg_dgl_document.getId_convert_document().toString();
             this.txtDocumentType = reg_dgl_document.getDocument_type();
@@ -227,25 +243,25 @@ public class Felcr implements Serializable {
             this.txtFechaEnvio = reg_dgl_document.getFecha_envio();
             this.txtProcessResult = reg_dgl_document.getProcess_result();
             this.txtProcesado = reg_dgl_document.getProcesado();
-            
+
             PrimeFaces.current().executeScript("PF('widvarConverDocument').show();");
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Mensaje del sistema.", ex.toString()));
             System.out.println("PROYECTO: webapp-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: mostrar_document_convert(), ERRROR: " + ex.toString());
         }
     }
-    
+
     public void mostrar_referencia() {
         try {
             HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
             this.usuario_sesion = (Entidades.UsuarioSesion) session.getAttribute("usuario_sesion");
-            
-            if(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath().trim().equals("/apps")) {
+
+            if (FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath().trim().equals("/apps")) {
                 this.ambiente = "PD";
             } else {
                 this.ambiente = "PY";
             }
-            
+
             ClientesRest.ClienteRestApi cliente_rest_api = new ClientesRest.ClienteRestApi();
             String json_result = cliente_rest_api.obtener_cat_codigo_ref(this.ambiente);
 
@@ -258,11 +274,11 @@ public class Felcr implements Serializable {
             for (Integer i = 0; i < cat_codigo_ref.size(); i++) {
                 this.lst_somIdCodigoRef.add(new SelectItem(cat_codigo_ref.get(i).getID_CODIGO_REF(), cat_codigo_ref.get(i).getDESCRIPTION()));
             }
-            
+
             this.lst_somIdTipoNotaCredito = new ArrayList<>();
-            this.lst_somIdTipoNotaCredito.add(new SelectItem("TOTAL","TOTAL"));
-            this.lst_somIdTipoNotaCredito.add(new SelectItem("PARCIAL","PARCIAL"));
-            
+            this.lst_somIdTipoNotaCredito.add(new SelectItem("TOTAL", "TOTAL"));
+            this.lst_somIdTipoNotaCredito.add(new SelectItem("PARCIAL", "PARCIAL"));
+
             json_result = cliente_rest_api.felcr_obtener_referencia(this.ambiente, Long.valueOf(this.sel_reg_tbl_dtecr.getId_documento().toString()));
 
             Type reg_dgl_referencia_type = new TypeToken<Entidades.RegDglReferencia>() {
@@ -280,7 +296,7 @@ public class Felcr implements Serializable {
             this.txtIdBatch = reg_dgl_referencia.getId_batch();
             this.txtareaComenarioAdjunto = reg_dgl_referencia.getComentario_adjunto();
             this.somIdTipoNotaCredito = reg_dgl_referencia.getTipo_nota_credito();
-            if(this.sel_reg_tbl_dtecr.getProcesado().equals("SI")) {
+            if (this.sel_reg_tbl_dtecr.getProcesado().equals("SI")) {
                 this.btnGuardarReferenciaDisabled = true;
             } else {
                 this.btnGuardarReferenciaDisabled = false;
@@ -292,18 +308,58 @@ public class Felcr implements Serializable {
             System.out.println("PROYECTO: webapp-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: mostrar_referencia(), ERRROR: " + ex.toString());
         }
     }
-    
-    public void guardar_referencia() {
+
+    public void mostrar_totales() {
         try {
             HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
             this.usuario_sesion = (Entidades.UsuarioSesion) session.getAttribute("usuario_sesion");
-            
-            if(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath().trim().equals("/apps")) {
+
+            if (FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath().trim().equals("/apps")) {
                 this.ambiente = "PD";
             } else {
                 this.ambiente = "PY";
             }
             
+            ClientesRest.ClienteRestApi cliente_rest_api = new ClientesRest.ClienteRestApi();
+            String json_result = cliente_rest_api.felcr_obtener_totales(this.ambiente, Long.valueOf(this.sel_reg_tbl_dtecr.getId_convert_document().toString()));
+
+            Type reg_dgl_totales_type = new TypeToken<Entidades.RegDglTotales>() {
+            }.getType();
+
+            Entidades.RegDglTotales reg_dgl_totales = new Gson().fromJson(json_result, reg_dgl_totales_type);
+            this.txtIdTotal = reg_dgl_totales.getId_totales().toString();
+            this.txtMoneda = reg_dgl_totales.getMoneda();
+            this.txtTipoCambio = reg_dgl_totales.getTipo_cambio().toString();
+            this.txtSubTotal = reg_dgl_totales.getSubtotal().toString();
+            this.txtTotalDescuento = reg_dgl_totales.getTotal_descuento().toString();
+            this.txtTotalVentaNeta = reg_dgl_totales.getTotal_venta_neta().toString();
+            this.txtTotalExento = reg_dgl_totales.getTotal_exento().toString();
+            this.txtTotalImpuesto = reg_dgl_totales.getTotal_impuesto().toString();
+            this.txtTotalVenta = reg_dgl_totales.getTotal_venta().toString();
+            this.txtTotalComprobante = reg_dgl_totales.getTotal_comprobante().toString();
+            this.txtTotalServGravados = reg_dgl_totales.getTotal_servicios_gravados().toString();
+            this.txtTotalServExcentos = reg_dgl_totales.getTotal_servicios_exentos().toString();
+            this.txtTotalMercaGravados = reg_dgl_totales.getTotal_mercaderia_gravados().toString();
+            this.txtTotalMercaExcentos = reg_dgl_totales.getTotal_mercaderia_exentos().toString();
+
+            PrimeFaces.current().executeScript("PF('widvarTotales').show();");
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Mensaje del sistema.", ex.toString()));
+            System.out.println("PROYECTO: webapp-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: mostrar_totales(), ERRROR: " + ex.toString());
+        }
+    }
+
+    public void guardar_referencia() {
+        try {
+            HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+            this.usuario_sesion = (Entidades.UsuarioSesion) session.getAttribute("usuario_sesion");
+
+            if (FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath().trim().equals("/apps")) {
+                this.ambiente = "PD";
+            } else {
+                this.ambiente = "PY";
+            }
+
             String parametros = this.ambiente + "♣" + this.usuario_sesion.getNombre_usuario() + "♣" + this.txtIdReferencia + "♣" + this.txtNoDocumentoRef + "♣" + this.txtIdBatch + "♣" + this.txtareaComenarioAdjunto + "♣" + this.somIdCodigoRef + "♣" + this.somIdTipoNotaCredito;
             ClientesRest.ClienteRestApi cliente_rest_api = new ClientesRest.ClienteRestApi();
             String resultado = cliente_rest_api.modificar_referencia(parametros);
@@ -318,18 +374,18 @@ public class Felcr implements Serializable {
             System.out.println("PROYECTO: webapp-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: guardar_referencia(), ERRROR: " + ex.toString());
         }
     }
-    
+
     public void anular_documento() {
         try {
             HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
             this.usuario_sesion = (Entidades.UsuarioSesion) session.getAttribute("usuario_sesion");
-            
-            if(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath().trim().equals("/apps")) {
+
+            if (FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath().trim().equals("/apps")) {
                 this.ambiente = "PD";
             } else {
                 this.ambiente = "PY";
             }
-            
+
             String parametros = this.ambiente + "♣" + this.usuario_sesion.getNombre_usuario() + "♣" + this.sel_reg_tbl_dtecr.getId_convert_document() + "♣" + this.sel_reg_tbl_dtecr.getRefacturacion();
             ClientesRest.ClienteRestApi cliente_rest_api = new ClientesRest.ClienteRestApi();
             String resultado = cliente_rest_api.anular_documento(parametros);
@@ -345,5 +401,5 @@ public class Felcr implements Serializable {
             System.out.println("PROYECTO: webapp-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: anular_documento(), ERRROR: " + ex.toString());
         }
     }
-    
+
 }

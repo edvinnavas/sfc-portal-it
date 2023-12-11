@@ -303,6 +303,89 @@ public class Ctrl_FelCr implements Serializable {
         return resultado;
     }
     
+    public String obtener_totales(String ambiente, Long id_document_convert) {
+        String resultado = "";
+
+        Connection conn = null;
+
+        try {
+            Ctrl_Base_Datos ctrl_base_datos = new Ctrl_Base_Datos();
+            conn = ctrl_base_datos.obtener_conexion_felcr(ambiente);
+
+            conn.setAutoCommit(false);
+
+            Entidad.felcr.RegDglTotales reg_dgl_totales = new Entidad.felcr.RegDglTotales();
+
+            String sql = "SELECT "
+                    + "TOT.ID_TOTALES, "
+                    + "TOT.MONEDA, "
+                    + "TOT.FCTCONV, "
+                    + "TOT.SUBTOTAL, "
+                    + "TOT.MNTDCTO, "
+                    + "TOT.MNTBASE, "
+                    + "TOT.MNTEXE, "
+                    + "TOT.MNTIMP, "
+                    + "TOT.SALDOANTERIOR, "
+                    + "TOT.VLRPAGAR, "
+                    + "TOT.MONTOCONCEPTO1, "
+                    + "TOT.MONTOCONCEPTO2, "
+                    + "TOT.MONTOCONCEPTO3, "
+                    + "TOT.MONTOCONCEPTO4 "
+                    + "FROM TOTALES TOT WHERE TOT.ID_TOTALES IN ( "
+                    + "SELECT ENC.ID_TOTALES FROM ENCABEZADO ENC WHERE ENC.ID_ENCABEZADO IN ( "
+                    + "SELECT DOC.ID_ENCABEZADO FROM DOCUMENTO DOC WHERE DOC.ID_DOCUMENTO IN ( "
+                    + "SELECT DTE.ID_DOCUMENTO FROM DTE DTE WHERE (DTE.ID_DTE, DTE.ID_DOCUMENTO) IN ( "
+                    + "SELECT CON.ID_DTE, CON.ID_DOCUMENTO FROM CONVERT_DOCUMENT CON WHERE CON.ID_CONVERT_DOCUMENT=" + id_document_convert + "))))";
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                reg_dgl_totales.setId_totales(rs.getLong(1));
+                reg_dgl_totales.setMoneda(rs.getString(2));
+                reg_dgl_totales.setTipo_cambio(rs.getDouble(3));
+                reg_dgl_totales.setSubtotal(rs.getDouble(4));
+                reg_dgl_totales.setTotal_descuento(rs.getDouble(5));
+                reg_dgl_totales.setTotal_venta_neta(rs.getDouble(6));
+                reg_dgl_totales.setTotal_exento(rs.getDouble(7));
+                reg_dgl_totales.setTotal_impuesto(rs.getDouble(8));
+                reg_dgl_totales.setTotal_venta(rs.getDouble(9));
+                reg_dgl_totales.setTotal_comprobante(rs.getDouble(10));
+                reg_dgl_totales.setTotal_servicios_gravados(rs.getDouble(11));
+                reg_dgl_totales.setTotal_servicios_exentos(rs.getDouble(12));
+                reg_dgl_totales.setTotal_mercaderia_gravados(rs.getDouble(13));
+                reg_dgl_totales.setTotal_mercaderia_exentos(rs.getDouble(14));
+            }
+            rs.close();
+            stmt.close();
+
+            conn.commit();
+            conn.setAutoCommit(true);
+
+            Gson gson = new GsonBuilder().serializeNulls().create();
+            resultado = gson.toJson(reg_dgl_totales);
+        } catch (Exception ex) {
+            try {
+                if (conn != null) {
+                    conn.rollback();
+                    conn.setAutoCommit(true);
+                    conn = null;
+                    resultado = "PROYECTO: api-rest-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: obtener_totales(), ERRROR: " + ex.toString();
+                }
+            } catch (Exception ex1) {
+                resultado = "PROYECTO: api-rest-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: rollback-obtener_totales(), ERRROR: " + ex.toString();
+            }
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (Exception ex) {
+                resultado = "PROYECTO: api-rest-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: finally-obtener_totales(), ERRROR: " + ex.toString();
+            }
+        }
+
+        return resultado;
+    }
+    
     public String obtener_cat_codigo_ref(String ambiente) {
         String resultado = "";
 

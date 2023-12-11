@@ -29,6 +29,7 @@
                 font-weight: bold !important;
             }
         </style>
+        
         <p:panel header="DTE's Costa Rica." styleClass="titulo_panel">
             <p:growl id="msgFelcr" showDetail="true"/>
             <p:panelGrid columns="8">
@@ -98,6 +99,7 @@
                 </p:column>
             </p:dataTable>
         </p:panel>
+        
         <p:dialog id="dlgConverDocument" header="Convert-Document" widgetVar="widvarConverDocument" modal="true" resizable="false" closable="true" closeOnEscape="true" style="font-size:10px; font-weight:bold;">
             <h:panelGrid id="pnlConverDocument" columns="2" cellpadding="3" style="font-size: 10px;">
                 <p:outputLabel value="Id Convert Document" style="font-weight: bold; font-size: 10px;"/>
@@ -129,7 +131,7 @@
                 <f:facet name="footer">
                     <div class="card" style="padding-top: 10px;">
                         <p:commandButton id="btnReferencia" value="Referencia" actionListener="#{Felcr.mostrar_referencia}" icon="pi pi-file" update="formPlantilla:pnlReferencia" style="font-size: 10px; margin-right: .5rem;"/>
-                        <p:commandButton id="btnTotal" value="Total" icon="pi pi-file" style="font-size: 10px; margin-right: .5rem;"/>
+                        <p:commandButton id="btnTotal" value="Total" actionListener="#{Felcr.mostrar_totales}" icon="pi pi-file" update="formPlantilla:pnlTotales" style="font-size: 10px; margin-right: .5rem;"/>
                         <p:commandButton id="btnDetalle" value="Detalle" icon="pi pi-file" style="font-size: 10px; margin-right: .5rem;"/>
                         <p:commandButton id="btnReceptor" value="Receptor" icon="pi pi-file" style="font-size: 10px; margin-right: .5rem;"/>
                         <p:commandButton id="btnExoneracion" value="Exoneración" icon="pi pi-file" style="font-size: 10px; margin-right: .5rem;"/>
@@ -138,6 +140,7 @@
                 </f:facet>
             </h:panelGrid>
         </p:dialog>
+        
         <p:dialog id="dlgReferencia" header="Referencia" widgetVar="widvarReferencia" modal="true" resizable="false" closable="true" closeOnEscape="true" style="font-size:10px; font-weight:bold;">
             <h:panelGrid id="pnlReferencia" columns="2" style="font-size: 10px;">
                 <p:outputLabel value="Id Referencia" style="font-weight: bold; font-size: 10px;"/>
@@ -173,5 +176,39 @@
                 </f:facet>
             </h:panelGrid>
         </p:dialog>
+        
+        <p:dialog id="dlgTotales" header="Totales" widgetVar="widvarTotales" modal="true" resizable="false" closable="true" closeOnEscape="true" style="font-size:10px; font-weight:bold;">
+            <h:panelGrid id="pnlTotales" columns="2" style="font-size: 10px;">
+                <p:outputLabel value="Id Total" style="font-weight: bold; font-size: 10px;"/>
+                <p:inputText id="txtIdTotal" value="#{Felcr.txtIdTotal}" readonly="true" style="font-size: 10px; width: 350px;"/>
+                <p:outputLabel value="Moneda" style="font-weight: bold; font-size: 10px;"/>
+                <p:inputText id="txtMoneda" value="#{Felcr.txtMoneda}" readonly="true" style="font-size: 10px; width: 350px;"/>
+                <p:outputLabel value="Tipo Cambio" style="font-weight: bold; font-size: 10px;"/>
+                <p:inputText id="txtTipoCambio" value="#{Felcr.txtTipoCambio}" readonly="true" style="font-size: 10px; width: 350px;"/>
+                <p:outputLabel value="SubTotal" style="font-weight: bold; font-size: 10px;"/>
+                <p:inputText id="txtSubTotal" value="#{Felcr.txtSubTotal}" readonly="true" style="font-size: 10px; width: 350px;"/>
+                <p:outputLabel value="Total Descuento" style="font-weight: bold; font-size: 10px;"/>
+                <p:inputText id="txtTotalDescuento" value="#{Felcr.txtTotalDescuento}" readonly="true" style="font-size: 10px; width: 350px;"/>
+                <p:outputLabel value="Total Venta Neta" style="font-weight: bold; font-size: 10px;"/>
+                <p:inputText id="txtTotalVentaNeta" value="#{Felcr.txtTotalVentaNeta}" readonly="true" style="font-size: 10px; width: 350px;"/>
+                <p:outputLabel value="Total Exento" style="font-weight: bold; font-size: 10px;"/>
+                <p:inputText id="txtTotalExento" value="#{Felcr.txtTotalExento}" readonly="true" style="font-size: 10px; width: 350px;"/>
+                <p:outputLabel value="Total Impuesto" style="font-weight: bold; font-size: 10px;"/>
+                <p:inputText id="txtTotalImpuesto" value="#{Felcr.txtTotalImpuesto}" readonly="true" style="font-size: 10px; width: 350px;"/>
+                <p:outputLabel value="Total Venta" style="font-weight: bold; font-size: 10px;"/>
+                <p:inputText id="txtTotalVenta" value="#{Felcr.txtTotalVenta}" readonly="true" style="font-size: 10px; width: 350px;"/>
+                <p:outputLabel value="Total Comprobante" style="font-weight: bold; font-size: 10px;"/>
+                <p:inputText id="txtTotalComprobante" value="#{Felcr.txtTotalComprobante}" readonly="true" style="font-size: 10px; width: 350px;"/>
+                <p:outputLabel value="TotalServGravados" style="font-weight: bold; font-size: 10px;"/>
+                <p:inputText id="txtTotalServGravados" value="#{Felcr.txtTotalServGravados}" readonly="true" style="font-size: 10px; width: 350px;"/>
+                <p:outputLabel value="Total Serv. Excentos" style="font-weight: bold; font-size: 10px;"/>
+                <p:inputText id="txtTotalServExcentos" value="#{Felcr.txtTotalServExcentos}" readonly="true" style="font-size: 10px; width: 350px;"/>
+                <p:outputLabel value="Total Merca. Gravados" style="font-weight: bold; font-size: 10px;"/>
+                <p:inputText id="txtTotalMercaGravados" value="#{Felcr.txtTotalMercaGravados}" readonly="true" style="font-size: 10px; width: 350px;"/>
+                <p:outputLabel value="Total Merca. Excentos" style="font-weight: bold; font-size: 10px;"/>
+                <p:inputText id="txtTotalMercaExcentos" value="#{Felcr.txtTotalMercaExcentos}" readonly="true" style="font-size: 10px; width: 350px;"/>
+            </h:panelGrid>
+        </p:dialog>
+        
     </ui:define>
 </ui:composition>

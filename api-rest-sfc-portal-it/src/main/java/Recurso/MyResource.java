@@ -114,6 +114,25 @@ public class MyResource implements Serializable {
     }
     
     @GET
+    @Path("felcr/obtener_totales/{ambiente}/{id_document_convert}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String obtener_totales(
+            @PathParam("ambiente") String ambiente,
+            @PathParam("id_document_convert") Long id_document_convert) {
+
+        String resultado;
+
+        try {
+            Control.Ctrl_FelCr ctrl_felcr = new Control.Ctrl_FelCr();
+            resultado = ctrl_felcr.obtener_totales(ambiente, id_document_convert);
+        } catch (Exception ex) {
+            resultado = "PROYECTO: api-rest-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: obtener_totales(), ERRROR: " + ex.toString();
+        }
+
+        return resultado;
+    }
+    
+    @GET
     @Path("felcr/obtener_cat_codigo_ref/{ambiente}")
     public String obtener_cat_codigo_ref(
             @PathParam("ambiente") String ambiente) {
