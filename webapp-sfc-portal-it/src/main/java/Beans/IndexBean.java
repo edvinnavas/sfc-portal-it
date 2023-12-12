@@ -40,6 +40,7 @@ public class IndexBean implements Serializable {
         try {
             ClientesRest.ClienteRestApi cliente_rest_api = new ClientesRest.ClienteRestApi();
             String json_result = cliente_rest_api.autenticar(this.txt_usuario, this.pass_contrasena);
+            // String json_result = cliente_rest_api.autenticar_local(this.txt_usuario, this.pass_contrasena);
             if (!json_result.equals("Usuario no autenticado.")) {
                 Type usuario_type = new TypeToken<Entidades.Usuario>() {
                 }.getType();
@@ -64,7 +65,7 @@ public class IndexBean implements Serializable {
             this.usuario_sesion = null;
             resultado = "index.xhtml";
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Mensaje del sistema.", ex.toString()));
-            System.out.println("PROYECTO: unocorp-web-app, CLASE: " + this.getClass().getName() + ", METODO: autenticar(), ERRROR: " + ex.toString());
+            System.out.println("PROYECTO: webapp-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: autenticar(), ERRROR: " + ex.toString());
         }
 
         return resultado;

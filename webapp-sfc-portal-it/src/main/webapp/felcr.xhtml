@@ -29,7 +29,7 @@
                 font-weight: bold !important;
             }
         </style>
-        
+
         <p:panel header="DTE's Costa Rica." styleClass="titulo_panel">
             <p:growl id="msgFelcr" showDetail="true"/>
             <p:panelGrid columns="8">
@@ -67,9 +67,9 @@
                 rowKey="#{dte.id_convert_document}"
                 rowStyleClass="#{dte.procesado eq 'NO' ? 'pendiente' : null}"
                 style="font-size: 10px;">
-                
+
                 <p:ajax event="rowDblselect" listener="#{Felcr.mostrar_document_convert}" update="formPlantilla:pnlConverDocument" global="false"/>
-                
+
                 <p:column headerText="No. Orden E1" sortBy="#{dte.no_orden_e1}" filterBy="#{dte.no_orden_e1}" filterMatchMode="contains" style="width: 200px; font-size: 10px; font-weight: bold;">
                     <h:outputText value="#{dte.no_orden_e1}"/>
                 </p:column>
@@ -99,7 +99,7 @@
                 </p:column>
             </p:dataTable>
         </p:panel>
-        
+
         <p:dialog id="dlgConverDocument" header="Convert-Document" widgetVar="widvarConverDocument" modal="true" resizable="false" closable="true" closeOnEscape="true" style="font-size:10px; font-weight:bold;">
             <h:panelGrid id="pnlConverDocument" columns="2" cellpadding="3" style="font-size: 10px;">
                 <p:outputLabel value="Id Convert Document" style="font-weight: bold; font-size: 10px;"/>
@@ -132,7 +132,7 @@
                     <div class="card" style="padding-top: 10px;">
                         <p:commandButton id="btnReferencia" value="Referencia" actionListener="#{Felcr.mostrar_referencia}" icon="pi pi-file" update="formPlantilla:pnlReferencia" style="font-size: 10px; margin-right: .5rem;"/>
                         <p:commandButton id="btnTotal" value="Total" actionListener="#{Felcr.mostrar_totales}" icon="pi pi-file" update="formPlantilla:pnlTotales" style="font-size: 10px; margin-right: .5rem;"/>
-                        <p:commandButton id="btnDetalle" value="Detalle" icon="pi pi-file" style="font-size: 10px; margin-right: .5rem;"/>
+                        <p:commandButton id="btnDetalle" value="Detalle" actionListener="#{Felcr.mostrar_detalle}" icon="pi pi-file" update="formPlantilla:tblDetalle" style="font-size: 10px; margin-right: .5rem;"/>
                         <p:commandButton id="btnReceptor" value="Receptor" icon="pi pi-file" style="font-size: 10px; margin-right: .5rem;"/>
                         <p:commandButton id="btnExoneracion" value="Exoneración" icon="pi pi-file" style="font-size: 10px; margin-right: .5rem;"/>
                         <p:commandButton id="btnOtrosCargos" value="Otros cargos" icon="pi pi-file" style="font-size: 10px; margin-right: .5rem;"/>
@@ -140,7 +140,7 @@
                 </f:facet>
             </h:panelGrid>
         </p:dialog>
-        
+
         <p:dialog id="dlgReferencia" header="Referencia" widgetVar="widvarReferencia" modal="true" resizable="false" closable="true" closeOnEscape="true" style="font-size:10px; font-weight:bold;">
             <h:panelGrid id="pnlReferencia" columns="2" style="font-size: 10px;">
                 <p:outputLabel value="Id Referencia" style="font-weight: bold; font-size: 10px;"/>
@@ -176,7 +176,7 @@
                 </f:facet>
             </h:panelGrid>
         </p:dialog>
-        
+
         <p:dialog id="dlgTotales" header="Totales" widgetVar="widvarTotales" modal="true" resizable="false" closable="true" closeOnEscape="true" style="font-size:10px; font-weight:bold;">
             <h:panelGrid id="pnlTotales" columns="2" style="font-size: 10px;">
                 <p:outputLabel value="Id Total" style="font-weight: bold; font-size: 10px;"/>
@@ -209,6 +209,74 @@
                 <p:inputText id="txtTotalMercaExcentos" value="#{Felcr.txtTotalMercaExcentos}" readonly="true" style="font-size: 10px; width: 350px;"/>
             </h:panelGrid>
         </p:dialog>
-        
+
+        <p:dialog id="dlgDetalle" header="Detalle" widgetVar="widvarDetalle" modal="true" resizable="false" closable="true" closeOnEscape="true" width="900" style="font-size:10px; font-weight:bold;">
+            <p:dataTable 
+                id="tblDetalle" 
+                var="detalle" 
+                widgetVar="widgetTblDetalle" 
+                value="#{Felcr.lst_reg_tbl_detalle}"
+                selectionMode="single" 
+                selection="#{Felcr.sel_reg_tbl_detalle}" 
+                rowKey="#{detalle.id}"
+                style="font-size: 10px;">
+
+                <p:column headerText="Id" sortBy="#{detalle.id}" style="width: 200px; font-size: 10px; font-weight: bold;">
+                    <h:outputText value="#{detalle.id}"/>
+                </p:column>
+                <p:column headerText="Id-Detalle" sortBy="#{detalle.id_detalle}" style="width: 200px; font-size: 10px; font-weight: bold;">
+                    <h:outputText value="#{detalle.id_detalle}"/>
+                </p:column>
+                <p:column headerText="Id-Documento" sortBy="#{detalle.id_documento}" style="width: 200px; font-size: 10px; font-weight: bold;">
+                    <h:outputText value="#{detalle.id_documento}"/>
+                </p:column>
+                <p:column headerText="Tipo Producto" sortBy="#{detalle.tipo_producto}" style="width: 200px; font-size: 10px; font-weight: bold;">
+                    <h:outputText value="#{detalle.tipo_producto}"/>
+                </p:column>
+                <p:column headerText="Código Producto" sortBy="#{detalle.codigo_producto}" style="width: 200px; font-size: 10px; font-weight: bold;">
+                    <h:outputText value="#{detalle.codigo_producto}"/>
+                </p:column>
+                <p:column headerText="Descripción" sortBy="#{detalle.detalle_producto}" style="width: 200px; font-size: 10px; font-weight: bold;">
+                    <h:outputText value="#{detalle.detalle_producto}"/>
+                </p:column>
+                <p:column headerText="Cantidad" sortBy="#{detalle.cantidad}" style="width: 200px; font-size: 10px; font-weight: bold;">
+                    <h:outputText value="#{detalle.cantidad}"/>
+                </p:column>
+                <p:column headerText="Unidad Medida" sortBy="#{detalle.unidad_medida}" style="width: 200px; font-size: 10px; font-weight: bold;">
+                    <h:outputText value="#{detalle.unidad_medida}"/>
+                </p:column>
+                <p:column headerText="Unidad Medida Comercial" sortBy="#{detalle.unidad_medida_comercial}" style="width: 200px; font-size: 10px; font-weight: bold;">
+                    <h:outputText value="#{detalle.unidad_medida_comercial}"/>
+                </p:column>
+                <p:column headerText="Precio Unitario" sortBy="#{detalle.precio_unitario}" style="width: 200px; font-size: 10px; font-weight: bold;">
+                    <h:outputText value="#{detalle.precio_unitario}"/>
+                </p:column>
+                <p:column headerText="Monto Descuento" sortBy="#{detalle.monto_descuento}" style="width: 200px; font-size: 10px; font-weight: bold;">
+                    <h:outputText value="#{detalle.monto_descuento}"/>
+                </p:column>
+                <p:column headerText="Monto Total" sortBy="#{detalle.monto_total}" style="width: 200px; font-size: 10px; font-weight: bold;">
+                    <h:outputText value="#{detalle.monto_total}"/>
+                </p:column>
+                <p:column headerText="Subtotal" sortBy="#{detalle.subtotal}" style="width: 200px; font-size: 10px; font-weight: bold;">
+                    <h:outputText value="#{detalle.subtotal}"/>
+                </p:column>
+                <p:column headerText="Monto Total Línea" sortBy="#{detalle.monto_total_linea}" style="width: 200px; font-size: 10px; font-weight: bold;">
+                    <h:outputText value="#{detalle.monto_total_linea}"/>
+                </p:column>
+                <p:column headerText="Naturaliza Descuento" sortBy="#{detalle.naturaliza_descuento}" style="width: 200px; font-size: 10px; font-weight: bold;">
+                    <h:outputText value="#{detalle.naturaliza_descuento}"/>
+                </p:column>
+                <p:column headerText="Porcentaje Impuesto" sortBy="#{detalle.porcentaje_impuesto}" style="width: 200px; font-size: 10px; font-weight: bold;">
+                    <h:outputText value="#{detalle.porcentaje_impuesto}"/>
+                </p:column>
+                <p:column headerText="Exento" sortBy="#{detalle.exento}" style="width: 200px; font-size: 10px; font-weight: bold;">
+                    <h:outputText value="#{detalle.exento}"/>
+                </p:column>
+                <p:column headerText="CABYS" sortBy="#{detalle.cabys}" style="width: 200px; font-size: 10px; font-weight: bold;">
+                    <h:outputText value="#{detalle.cabys}"/>
+                </p:column>
+            </p:dataTable>
+        </p:dialog>
+
     </ui:define>
 </ui:composition>

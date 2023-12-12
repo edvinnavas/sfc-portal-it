@@ -84,6 +84,10 @@ public class Felcr implements Serializable {
     private String txtTotalMercaGravados;
     private String txtTotalMercaExcentos;
 
+    // Dialogo Detalle.
+    private List<Entidades.RegDglDetalle> lst_reg_tbl_detalle;
+    private Entidades.RegDglDetalle sel_reg_tbl_detalle;
+
     @PostConstruct
     public void init() {
         try {
@@ -319,7 +323,7 @@ public class Felcr implements Serializable {
             } else {
                 this.ambiente = "PY";
             }
-            
+
             ClientesRest.ClienteRestApi cliente_rest_api = new ClientesRest.ClienteRestApi();
             String json_result = cliente_rest_api.felcr_obtener_totales(this.ambiente, Long.valueOf(this.sel_reg_tbl_dtecr.getId_convert_document().toString()));
 
@@ -346,6 +350,32 @@ public class Felcr implements Serializable {
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Mensaje del sistema.", ex.toString()));
             System.out.println("PROYECTO: webapp-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: mostrar_totales(), ERRROR: " + ex.toString());
+        }
+    }
+
+    public void mostrar_detalle() {
+        try {
+            HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+            this.usuario_sesion = (Entidades.UsuarioSesion) session.getAttribute("usuario_sesion");
+
+            if (FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath().trim().equals("/apps")) {
+                this.ambiente = "PD";
+            } else {
+                this.ambiente = "PY";
+            }
+
+            ClientesRest.ClienteRestApi cliente_rest_api = new ClientesRest.ClienteRestApi();
+            String json_result = cliente_rest_api.felcr_obtener_detalle(this.ambiente, Long.valueOf(this.sel_reg_tbl_dtecr.getId_convert_document().toString()));
+
+            Type reg_dgl_detalle_type = new TypeToken<List<Entidades.RegDglDetalle>>() {
+            }.getType();
+
+            this.lst_reg_tbl_detalle = new Gson().fromJson(json_result, reg_dgl_detalle_type);
+
+            PrimeFaces.current().executeScript("PF('widvarDetalle').show();");
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Mensaje del sistema.", ex.toString()));
+            System.out.println("PROYECTO: webapp-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: mostrar_detalle(), ERRROR: " + ex.toString());
         }
     }
 

@@ -386,6 +386,100 @@ public class Ctrl_FelCr implements Serializable {
         return resultado;
     }
     
+    public String obtener_detalle(String ambiente, Long id_document_convert) {
+        String resultado = "";
+
+        Connection conn = null;
+
+        try {
+            Ctrl_Base_Datos ctrl_base_datos = new Ctrl_Base_Datos();
+            conn = ctrl_base_datos.obtener_conexion_felcr(ambiente);
+
+            conn.setAutoCommit(false);
+
+            List<Entidad.felcr.RegDglDetalle> lst_reg_dgl_totales = new ArrayList<>();
+
+            String sql = "SELECT "
+                    + "D.ID_DETALLE ID_DETALLE, "
+                    + "D.ID_DOCUMENTO ID_DOCUMENTO, "
+                    + "D.ID_TIPO_CODIGO_PRODUCTO TIPO_CODIGO_PRODUCTO, "
+                    + "D.VLRCODIGO CODIGO_PRODUCTO, "
+                    + "D.DSCITEM DETALLE_PRODUCTO, "
+                    + "D.QTYITEM CANTIDAD, "
+                    + "D.UNMDITEM UNIDAD_MEDIDA, "
+                    + "D.UNIDADMEDIDACOMERCIAL UNIDAD_MEDIDA_COMERCIAL, "
+                    + "D.PRCNETOITEM PRECIO_UNITARIO, "
+                    + "D.MNTDSCTO MONTO_DESCUENTO, "
+                    + "D.MONTOBRUTOITEM MONTO_TOTAL, "
+                    + "D.MONTONETOITEM SUBTOTAL, "
+                    + "D.MONTOTOTALITEM MONTO_TOTAL_LINEA, "
+                    + "D.NROCTAPREDIAL NATURALEZA_DESCUENTO, "
+                    + "D.IMPUESTO PORCENTAJE_IMPUESTO, "
+                    + "D.EXENTO EXENTO, "
+                    + "D.CABYS CABYS "
+                    + "FROM "
+                    + "DETALLE D "
+                    + "WHERE "
+                    + "D.ID_DOCUMENTO IN (SELECT CON.ID_DOCUMENTO FROM CONVERT_DOCUMENT CON WHERE CON.ID_CONVERT_DOCUMENT=" + id_document_convert + ")";
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            Long contador = Long.valueOf("1");
+            while (rs.next()) {
+                Entidad.felcr.RegDglDetalle reg_dgl_detalle = new Entidad.felcr.RegDglDetalle();
+                reg_dgl_detalle.setId(contador);
+                reg_dgl_detalle.setId_detalle(rs.getLong(1));
+                reg_dgl_detalle.setId_documento(rs.getLong(2));
+                reg_dgl_detalle.setTipo_producto(rs.getInt(3));
+                reg_dgl_detalle.setCodigo_producto(rs.getString(4));
+                reg_dgl_detalle.setDetalle_producto(rs.getString(5));
+                reg_dgl_detalle.setCantidad(rs.getDouble(6));
+                reg_dgl_detalle.setUnidad_medida(rs.getString(7));
+                reg_dgl_detalle.setUnidad_medida_comercial(rs.getString(8));
+                reg_dgl_detalle.setPrecio_unitario(rs.getDouble(9));
+                reg_dgl_detalle.setMonto_descuento(rs.getDouble(10));
+                reg_dgl_detalle.setMonto_total(rs.getDouble(11));
+                reg_dgl_detalle.setSubtotal(rs.getDouble(12));
+                reg_dgl_detalle.setMonto_total_linea(rs.getDouble(13));
+                reg_dgl_detalle.setNaturaliza_descuento(rs.getString(14));
+                reg_dgl_detalle.setPorcentaje_impuesto(rs.getInt(15));
+                reg_dgl_detalle.setExento(rs.getString(16));
+                reg_dgl_detalle.setCabys(rs.getString(17));
+                
+                lst_reg_dgl_totales.add(reg_dgl_detalle);
+                contador++;
+            }
+            rs.close();
+            stmt.close();
+
+            conn.commit();
+            conn.setAutoCommit(true);
+
+            Gson gson = new GsonBuilder().serializeNulls().create();
+            resultado = gson.toJson(lst_reg_dgl_totales);
+        } catch (Exception ex) {
+            try {
+                if (conn != null) {
+                    conn.rollback();
+                    conn.setAutoCommit(true);
+                    conn = null;
+                    resultado = "PROYECTO: api-rest-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: obtener_detalle(), ERRROR: " + ex.toString();
+                }
+            } catch (Exception ex1) {
+                resultado = "PROYECTO: api-rest-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: rollback-obtener_detalle(), ERRROR: " + ex.toString();
+            }
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (Exception ex) {
+                resultado = "PROYECTO: api-rest-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: finally-obtener_detalle(), ERRROR: " + ex.toString();
+            }
+        }
+
+        return resultado;
+    }
+    
     public String obtener_cat_codigo_ref(String ambiente) {
         String resultado = "";
 

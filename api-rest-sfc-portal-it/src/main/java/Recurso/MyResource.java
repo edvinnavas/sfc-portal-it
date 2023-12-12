@@ -55,6 +55,26 @@ public class MyResource implements Serializable {
 
         return resultado;
     }
+    
+    @GET
+    @Path("autenticar_local/{usuario}/{contrasena}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String autenticar_local(
+            @PathParam("usuario") String usuario,
+            @PathParam("contrasena") String contrasena) {
+
+        String resultado;
+
+        try {
+            Control.Ctrl_Usuario ctrl_usuario = new Control.Ctrl_Usuario();
+            resultado = ctrl_usuario.autenticar_local(usuario, contrasena);
+        } catch (Exception ex) {
+            resultado = "PROYECTO: api-rest-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: autenticar_local(), ERRROR: " + ex.toString();
+            System.out.println("PROYECTO: api-rest-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: autenticar_local(), ERRROR: " + ex.toString());
+        }
+
+        return resultado;
+    }
 
     @GET
     @Path("felcr/lista_dtes/{ambiente}/{fecha}")
@@ -127,6 +147,25 @@ public class MyResource implements Serializable {
             resultado = ctrl_felcr.obtener_totales(ambiente, id_document_convert);
         } catch (Exception ex) {
             resultado = "PROYECTO: api-rest-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: obtener_totales(), ERRROR: " + ex.toString();
+        }
+
+        return resultado;
+    }
+    
+    @GET
+    @Path("felcr/obtener_detalle/{ambiente}/{id_document_convert}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String obtener_detalle(
+            @PathParam("ambiente") String ambiente,
+            @PathParam("id_document_convert") Long id_document_convert) {
+
+        String resultado;
+
+        try {
+            Control.Ctrl_FelCr ctrl_felcr = new Control.Ctrl_FelCr();
+            resultado = ctrl_felcr.obtener_detalle(ambiente, id_document_convert);
+        } catch (Exception ex) {
+            resultado = "PROYECTO: api-rest-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: obtener_detalle(), ERRROR: " + ex.toString();
         }
 
         return resultado;

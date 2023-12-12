@@ -15,6 +15,8 @@ public class ClienteRestApi implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private static final String BASE_URI = "http://10.253.7.250:8015/portal-it/";
+    // private static final String BASE_URI = "http://PORTAL-IT-API:8015/portal-it/";
+
     private static final String BASE_URI_GOSOCKET = "http://10.253.7.250:8019/webapp-sfc-gosocket/portal-it/";
     private ClientConfig clientConfig;
     private Client client;
@@ -48,7 +50,27 @@ public class ClienteRestApi implements Serializable {
 
         return resultado;
     }
-    
+
+    public String autenticar_local(String usuario, String contrasena) {
+        String resultado = "";
+
+        try {
+            WebTarget webTarget = this.client.target(BASE_URI).path("autenticar_local/" + usuario + "/" + contrasena);
+            Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+            Response response = invocationBuilder.get();
+            // System.out.println("CONEXION REST-API-PORTAL-TI: " + response.getStatus());
+            if (response.getStatus() == 200) {
+                resultado = response.readEntity(String.class);
+            } else {
+                resultado = response.getStatus() + ": " + response.getStatusInfo();
+            }
+        } catch (Exception ex) {
+            System.out.println("PROYECTO: webapp-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: autenticar_local(), ERRROR: " + ex.toString());
+        }
+
+        return resultado;
+    }
+
     public String lista_dtes(String ambiente, String fecha) {
         String resultado = "";
 
@@ -68,7 +90,7 @@ public class ClienteRestApi implements Serializable {
 
         return resultado;
     }
-    
+
     public String felcr_obtener_document(String ambiente, Long id_convert_document) {
         String resultado = "";
 
@@ -88,7 +110,7 @@ public class ClienteRestApi implements Serializable {
 
         return resultado;
     }
-    
+
     public String felcr_obtener_referencia(String ambiente, Long id_document) {
         String resultado = "";
 
@@ -108,12 +130,12 @@ public class ClienteRestApi implements Serializable {
 
         return resultado;
     }
-    
-    public String felcr_obtener_totales(String ambiente, Long id_document) {
+
+    public String felcr_obtener_totales(String ambiente, Long id_document_convert) {
         String resultado = "";
 
         try {
-            WebTarget webTarget = this.client.target(BASE_URI).path("felcr/obtener_totales/" + ambiente + "/" + id_document);
+            WebTarget webTarget = this.client.target(BASE_URI).path("felcr/obtener_totales/" + ambiente + "/" + id_document_convert);
             Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
             Response response = invocationBuilder.get();
             // System.out.println("CONEXION REST-API-PORTAL-TI: " + response.getStatus());
@@ -128,7 +150,27 @@ public class ClienteRestApi implements Serializable {
 
         return resultado;
     }
-    
+
+    public String felcr_obtener_detalle(String ambiente, Long id_document_convert) {
+        String resultado = "";
+
+        try {
+            WebTarget webTarget = this.client.target(BASE_URI).path("felcr/obtener_detalle/" + ambiente + "/" + id_document_convert);
+            Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+            Response response = invocationBuilder.get();
+            // System.out.println("CONEXION REST-API-PORTAL-TI: " + response.getStatus());
+            if (response.getStatus() == 200) {
+                resultado = response.readEntity(String.class);
+            } else {
+                resultado = response.getStatus() + ": " + response.getStatusInfo();
+            }
+        } catch (Exception ex) {
+            System.out.println("PROYECTO: webapp-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: felcr_obtener_totales(), ERRROR: " + ex.toString());
+        }
+
+        return resultado;
+    }
+
     public String obtener_cat_codigo_ref(String ambiente) {
         String resultado = "";
 
@@ -148,7 +190,7 @@ public class ClienteRestApi implements Serializable {
 
         return resultado;
     }
-    
+
     public String cargar_docs(String parametros) {
         String resultado = "";
 
@@ -169,7 +211,7 @@ public class ClienteRestApi implements Serializable {
 
         return resultado;
     }
-    
+
     public String gosocket(String parametros) {
         String resultado = "";
 
@@ -190,7 +232,7 @@ public class ClienteRestApi implements Serializable {
 
         return resultado;
     }
-    
+
     public String modificar_referencia(String parametros) {
         String resultado = "";
 
@@ -211,7 +253,7 @@ public class ClienteRestApi implements Serializable {
 
         return resultado;
     }
-    
+
     public String anular_documento(String parametros) {
         String resultado = "";
 
@@ -232,7 +274,7 @@ public class ClienteRestApi implements Serializable {
 
         return resultado;
     }
-    
+
     public String re_facturar(String parametros) {
         String resultado = "";
 
@@ -253,7 +295,7 @@ public class ClienteRestApi implements Serializable {
 
         return resultado;
     }
-    
+
     public String modificar_receptor(String parametros) {
         String resultado = "";
 
@@ -274,7 +316,7 @@ public class ClienteRestApi implements Serializable {
 
         return resultado;
     }
-    
+
     public String modificar_exoneracion(String parametros) {
         String resultado = "";
 
@@ -295,7 +337,7 @@ public class ClienteRestApi implements Serializable {
 
         return resultado;
     }
-    
+
     public String modificar_otros_cargos(String parametros) {
         String resultado = "";
 
