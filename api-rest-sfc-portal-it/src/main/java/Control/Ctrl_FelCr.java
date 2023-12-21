@@ -480,6 +480,78 @@ public class Ctrl_FelCr implements Serializable {
         return resultado;
     }
     
+    public String obtener_receptor(String ambiente, Long id_document_convert) {
+        String resultado = "";
+
+        Connection conn = null;
+
+        try {
+            Ctrl_Base_Datos ctrl_base_datos = new Ctrl_Base_Datos();
+            conn = ctrl_base_datos.obtener_conexion_felcr(ambiente);
+
+            conn.setAutoCommit(false);
+
+            Entidad.felcr.RegDglReceptor reg_dgl_receptor = new Entidad.felcr.RegDglReceptor();
+
+            String sql = "SELECT "
+                        + "R.ID_RECEPTOR, "
+                        + "R.ID_TIPO_CONTRIBUYENTE, "
+                        + "R.NRODOCRECEP, "
+                        + "R.NMBRECEP, "
+                        + "R.CALLE, "
+                        + "R.EMAIL, "
+                        + "R.CODIGOPAIS "
+                        + "FROM "
+                        + "RECEPTOR R "
+                        + "LEFT JOIN ENCABEZADO E ON (E.ID_RECEPTOR = R.ID_RECEPTOR) "
+                        + "LEFT JOIN DOCUMENTO D ON (D.ID_ENCABEZADO = E.ID_ENCABEZADO) "
+                        + "LEFT JOIN DTE DTE ON (DTE.ID_DOCUMENTO = D.ID_DOCUMENTO) "
+                        + "LEFT JOIN CONVERT_DOCUMENT CD ON (DTE.ID_DOCUMENTO = CD.ID_DOCUMENTO AND DTE.ID_DTE = CD.ID_DTE) "
+                        + "WHERE "
+                        + "CD.ID_CONVERT_DOCUMENT=" + id_document_convert;
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                reg_dgl_receptor.setId_receptor(rs.getLong(1));
+                reg_dgl_receptor.setId_tipo_contribuyente(rs.getLong(2));
+                reg_dgl_receptor.setTax_id(rs.getString(3));
+                reg_dgl_receptor.setNombre_receptor(rs.getString(4));
+                reg_dgl_receptor.setDireccion(rs.getString(5));
+                reg_dgl_receptor.setCorreo(rs.getString(6));
+                reg_dgl_receptor.setCodigo_area(rs.getString(7));
+            }
+            rs.close();
+            stmt.close();
+
+            conn.commit();
+            conn.setAutoCommit(true);
+
+            Gson gson = new GsonBuilder().serializeNulls().create();
+            resultado = gson.toJson(reg_dgl_receptor);
+        } catch (Exception ex) {
+            try {
+                if (conn != null) {
+                    conn.rollback();
+                    conn.setAutoCommit(true);
+                    conn = null;
+                    resultado = "PROYECTO: api-rest-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: obtener_receptor(), ERRROR: " + ex.toString();
+                }
+            } catch (Exception ex1) {
+                resultado = "PROYECTO: api-rest-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: rollback-obtener_receptor(), ERRROR: " + ex.toString();
+            }
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (Exception ex) {
+                resultado = "PROYECTO: api-rest-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: finally-obtener_receptor(), ERRROR: " + ex.toString();
+            }
+        }
+
+        return resultado;
+    }
+    
     public String obtener_cat_codigo_ref(String ambiente) {
         String resultado = "";
 
@@ -540,6 +612,68 @@ public class Ctrl_FelCr implements Serializable {
         return resultado;
     }
     
+    public String obtener_cat_tipo_contribuyente(String ambiente) {
+        String resultado = "";
+
+        Connection conn = null;
+
+        try {
+            Ctrl_Base_Datos ctrl_base_datos = new Ctrl_Base_Datos();
+            conn = ctrl_base_datos.obtener_conexion_felcr(ambiente);
+
+            conn.setAutoCommit(false);
+
+            List<Entidad.felcr.Cat_Tipo_Contribuyente> lst_cat_tipo_contribuyente = new ArrayList<>();
+
+            String sql = "SELECT "
+                    + "TC.ID_TIPO_CONTRIBUYENTE, "
+                    + "TC.COD_TIPO_CONTRIBUYENTE, "
+                    + "TC.DESCRIPTION "
+                    + "FROM "
+                    + "TIPO_CONTRIBUYENTE TC "
+                    + "ORDER BY "
+                    + "TC.DESCRIPTION";
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                Entidad.felcr.Cat_Tipo_Contribuyente cat_tipo_contribuyente = new Entidad.felcr.Cat_Tipo_Contribuyente();
+                cat_tipo_contribuyente.setID_TIPO_CONTRIBUYENTE(rs.getLong(1));
+                cat_tipo_contribuyente.setCOD_TIPO_CONTRIBUYENTE(rs.getString(2));
+                cat_tipo_contribuyente.setDESCRIPTION(rs.getString(3));
+                lst_cat_tipo_contribuyente.add(cat_tipo_contribuyente);
+            }
+            rs.close();
+            stmt.close();
+
+            conn.commit();
+            conn.setAutoCommit(true);
+
+            Gson gson = new GsonBuilder().serializeNulls().create();
+            resultado = gson.toJson(lst_cat_tipo_contribuyente);
+        } catch (Exception ex) {
+            try {
+                if (conn != null) {
+                    conn.rollback();
+                    conn.setAutoCommit(true);
+                    conn = null;
+                    resultado = "PROYECTO: api-rest-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: obtener_cat_tipo_contribuyente(), ERRROR: " + ex.toString();
+                }
+            } catch (Exception ex1) {
+                resultado = "PROYECTO: api-rest-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: rollback-obtener_cat_tipo_contribuyente(), ERRROR: " + ex.toString();
+            }
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (Exception ex) {
+                resultado = "PROYECTO: api-rest-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: finally-obtener_cat_tipo_contribuyente(), ERRROR: " + ex.toString();
+            }
+        }
+
+        return resultado;
+    }
+    
     public String cargar_docs(String ambiente, String usuario, Integer anio, Integer mes, Integer dia, String tabla) {
         String resultado;
 
@@ -592,12 +726,12 @@ public class Ctrl_FelCr implements Serializable {
         return resultado;
     }
 
-    public String modificar_receptor(String ambiente, String usuario, Integer id_receptor, Integer id_tipo_contribuyente, String tax_id, String nombre_cliente, String direccion, String correo, String codigo_area) {
+    public String modificar_receptor(String ambiente, String usuario, Integer id_receptor, Integer id_tipo_contribuyente, String tax_id, String nombre_receptor, String direccion, String correo, String codigo_area) {
         String resultado;
 
         try {
             Control.felcr.Control_Receptor controllerReceptor = new Control.felcr.Control_Receptor();
-            resultado = controllerReceptor.Modificar_Receptor(ambiente, id_receptor, id_tipo_contribuyente, tax_id, nombre_cliente, direccion, correo, codigo_area);
+            resultado = controllerReceptor.Modificar_Receptor(ambiente, id_receptor, id_tipo_contribuyente, tax_id, nombre_receptor, direccion, correo, codigo_area);
         } catch (Exception ex) {
             resultado = "1," + ex.toString();
         }

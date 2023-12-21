@@ -87,6 +87,17 @@ public class Felcr implements Serializable {
     // Dialogo Detalle.
     private List<Entidades.RegDglDetalle> lst_reg_tbl_detalle;
     private Entidades.RegDglDetalle sel_reg_tbl_detalle;
+    
+    // Dialogo Receptor.
+    private String txtIdReceptor;
+    private Long somTipoContribuyente;
+    private List<SelectItem> lst_somTipoContribuyente;
+    private String txtTaxId;
+    private String txtNombreReceptorDgl;
+    private String txtDireccion;
+    private String txtCorreoElectronico;
+    private String txtCodigoPais;
+    private Boolean btnGuardarReceptorDisabled;
 
     @PostConstruct
     public void init() {
@@ -378,6 +389,57 @@ public class Felcr implements Serializable {
             System.out.println("PROYECTO: webapp-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: mostrar_detalle(), ERRROR: " + ex.toString());
         }
     }
+    
+    public void mostrar_receptor() {
+        try {
+            HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+            this.usuario_sesion = (Entidades.UsuarioSesion) session.getAttribute("usuario_sesion");
+
+            if (FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath().trim().equals("/apps")) {
+                this.ambiente = "PD";
+            } else {
+                this.ambiente = "PY";
+            }
+            
+            ClientesRest.ClienteRestApi cliente_rest_api = new ClientesRest.ClienteRestApi();
+            String json_result = cliente_rest_api.obtener_cat_tipo_contribuyente(this.ambiente);
+
+            Type cat_lst_tipo_contribuyente_type = new TypeToken<List<Entidades.Cat_Tipo_Contribuyente>>() {
+            }.getType();
+
+            List<Entidades.Cat_Tipo_Contribuyente> cat_tipo_contribuyente = new Gson().fromJson(json_result, cat_lst_tipo_contribuyente_type);
+
+            this.lst_somTipoContribuyente = new ArrayList<>();
+            for (Integer i = 0; i < cat_tipo_contribuyente.size(); i++) {
+                this.lst_somTipoContribuyente.add(new SelectItem(cat_tipo_contribuyente.get(i).getID_TIPO_CONTRIBUYENTE(), cat_tipo_contribuyente.get(i).getCOD_TIPO_CONTRIBUYENTE() + "-" + cat_tipo_contribuyente.get(i).getDESCRIPTION()));
+            }
+            
+            json_result = cliente_rest_api.felcr_obtener_receptor(this.ambiente, Long.valueOf(this.sel_reg_tbl_dtecr.getId_convert_document().toString()));
+            
+            Type reg_dgl_receptor_type = new TypeToken<Entidades.RegDglReceptor>() {
+            }.getType();
+
+            Entidades.RegDglReceptor reg_dgl_receptor = new Gson().fromJson(json_result, reg_dgl_receptor_type);
+            
+            this.txtIdReceptor = reg_dgl_receptor.getId_receptor().toString();
+            this.somTipoContribuyente = reg_dgl_receptor.getId_tipo_contribuyente();
+            this.txtTaxId = reg_dgl_receptor.getTax_id();
+            this.txtNombreReceptorDgl = reg_dgl_receptor.getNombre_receptor();
+            this.txtDireccion = reg_dgl_receptor.getDireccion();
+            this.txtCorreoElectronico = reg_dgl_receptor.getCorreo();
+            this.txtCodigoPais = reg_dgl_receptor.getCodigo_area();
+            if (this.sel_reg_tbl_dtecr.getProcesado().equals("SI")) {
+                this.btnGuardarReceptorDisabled = true;
+            } else {
+                this.btnGuardarReceptorDisabled = false;
+            }
+
+            PrimeFaces.current().executeScript("PF('widvarReceptor').show();");
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Mensaje del sistema.", ex.toString()));
+            System.out.println("PROYECTO: webapp-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: mostrar_receptor(), ERRROR: " + ex.toString());
+        }
+    }
 
     public void guardar_referencia() {
         try {
@@ -402,6 +464,32 @@ public class Felcr implements Serializable {
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Mensaje del sistema.", ex.toString()));
             System.out.println("PROYECTO: webapp-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: guardar_referencia(), ERRROR: " + ex.toString());
+        }
+    }
+    
+    public void guardar_receptor() {
+        try {
+            HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+            this.usuario_sesion = (Entidades.UsuarioSesion) session.getAttribute("usuario_sesion");
+
+            if (FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath().trim().equals("/apps")) {
+                this.ambiente = "PD";
+            } else {
+                this.ambiente = "PY";
+            }
+
+            String parametros = this.ambiente + "♣" + this.usuario_sesion.getNombre_usuario() + "♣" + this.txtIdReceptor + "♣" + this.somTipoContribuyente + "♣" + this.txtTaxId + "♣" + this.txtNombreReceptorDgl + "♣" + this.txtDireccion + "♣" + this.txtCorreoElectronico + "♣" + this.txtCodigoPais;
+            ClientesRest.ClienteRestApi cliente_rest_api = new ClientesRest.ClienteRestApi();
+            String resultado = cliente_rest_api.modificar_receptor(parametros);
+            String opcion = resultado.substring(0, 1);
+            if (opcion.equals("0")) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje del sistema...", resultado.substring(2)));
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Mensaje del sistema...", resultado.substring(2)));
+            }
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Mensaje del sistema.", ex.toString()));
+            System.out.println("PROYECTO: webapp-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: guardar_receptor(), ERRROR: " + ex.toString());
         }
     }
 

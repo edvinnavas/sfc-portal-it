@@ -172,6 +172,25 @@ public class MyResource implements Serializable {
     }
     
     @GET
+    @Path("felcr/obtener_receptor/{ambiente}/{id_document_convert}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String obtener_receptor(
+            @PathParam("ambiente") String ambiente,
+            @PathParam("id_document_convert") Long id_document_convert) {
+
+        String resultado;
+
+        try {
+            Control.Ctrl_FelCr ctrl_felcr = new Control.Ctrl_FelCr();
+            resultado = ctrl_felcr.obtener_receptor(ambiente, id_document_convert);
+        } catch (Exception ex) {
+            resultado = "PROYECTO: api-rest-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: obtener_receptor(), ERRROR: " + ex.toString();
+        }
+
+        return resultado;
+    }
+    
+    @GET
     @Path("felcr/obtener_cat_codigo_ref/{ambiente}")
     public String obtener_cat_codigo_ref(
             @PathParam("ambiente") String ambiente) {
@@ -184,6 +203,24 @@ public class MyResource implements Serializable {
         } catch (Exception ex) {
             resultado = "PROYECTO: api-rest-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: obtener_cat_codigo_ref(), ERRROR: " + ex.toString();
             System.out.println("PROYECTO: api-rest-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: obtener_cat_codigo_ref(), ERRROR: " + ex.toString());
+        }
+        
+        return resultado;
+    }
+    
+    @GET
+    @Path("felcr/obtener_cat_tipo_contribuyente/{ambiente}")
+    public String obtener_cat_tipo_contribuyente(
+            @PathParam("ambiente") String ambiente) {
+        
+        String resultado = "";
+        
+        try {
+            Control.Ctrl_FelCr ctrl_felcr = new Control.Ctrl_FelCr();
+            resultado = ctrl_felcr.obtener_cat_tipo_contribuyente(ambiente);
+        } catch (Exception ex) {
+            resultado = "PROYECTO: api-rest-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: obtener_cat_tipo_contribuyente(), ERRROR: " + ex.toString();
+            System.out.println("PROYECTO: api-rest-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: obtener_cat_tipo_contribuyente(), ERRROR: " + ex.toString());
         }
         
         return resultado;

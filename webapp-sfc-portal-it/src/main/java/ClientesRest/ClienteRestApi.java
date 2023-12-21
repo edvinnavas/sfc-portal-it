@@ -170,6 +170,26 @@ public class ClienteRestApi implements Serializable {
 
         return resultado;
     }
+    
+    public String felcr_obtener_receptor(String ambiente, Long id_document_convert) {
+        String resultado = "";
+
+        try {
+            WebTarget webTarget = this.client.target(BASE_URI).path("felcr/obtener_receptor/" + ambiente + "/" + id_document_convert);
+            Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+            Response response = invocationBuilder.get();
+            // System.out.println("CONEXION REST-API-PORTAL-TI: " + response.getStatus());
+            if (response.getStatus() == 200) {
+                resultado = response.readEntity(String.class);
+            } else {
+                resultado = response.getStatus() + ": " + response.getStatusInfo();
+            }
+        } catch (Exception ex) {
+            System.out.println("PROYECTO: webapp-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: felcr_obtener_receptor(), ERRROR: " + ex.toString());
+        }
+
+        return resultado;
+    }
 
     public String obtener_cat_codigo_ref(String ambiente) {
         String resultado = "";
@@ -186,6 +206,26 @@ public class ClienteRestApi implements Serializable {
             }
         } catch (Exception ex) {
             System.out.println("PROYECTO: webapp-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: obtener_cat_codigo_ref(), ERRROR: " + ex.toString());
+        }
+
+        return resultado;
+    }
+    
+    public String obtener_cat_tipo_contribuyente(String ambiente) {
+        String resultado = "";
+
+        try {
+            WebTarget webTarget = this.client.target(BASE_URI).path("felcr/obtener_cat_tipo_contribuyente/" + ambiente);
+            Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+            Response response = invocationBuilder.get();
+            // System.out.println("CONEXION REST-API-PORTAL-TI: " + response.getStatus());
+            if (response.getStatus() == 200) {
+                resultado = response.readEntity(String.class);
+            } else {
+                resultado = response.getStatus() + ": " + response.getStatusInfo();
+            }
+        } catch (Exception ex) {
+            System.out.println("PROYECTO: webapp-sfc-portal-it, CLASE: " + this.getClass().getName() + ", METODO: obtener_cat_tipo_contribuyente(), ERRROR: " + ex.toString());
         }
 
         return resultado;
@@ -358,4 +398,5 @@ public class ClienteRestApi implements Serializable {
 
         return resultado;
     }
+    
 }

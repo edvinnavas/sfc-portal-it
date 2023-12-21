@@ -133,7 +133,7 @@
                         <p:commandButton id="btnReferencia" value="Referencia" actionListener="#{Felcr.mostrar_referencia}" icon="pi pi-file" update="formPlantilla:pnlReferencia" style="font-size: 10px; margin-right: .5rem;"/>
                         <p:commandButton id="btnTotal" value="Total" actionListener="#{Felcr.mostrar_totales}" icon="pi pi-file" update="formPlantilla:pnlTotales" style="font-size: 10px; margin-right: .5rem;"/>
                         <p:commandButton id="btnDetalle" value="Detalle" actionListener="#{Felcr.mostrar_detalle}" icon="pi pi-file" update="formPlantilla:tblDetalle" style="font-size: 10px; margin-right: .5rem;"/>
-                        <p:commandButton id="btnReceptor" value="Receptor" icon="pi pi-file" style="font-size: 10px; margin-right: .5rem;"/>
+                        <p:commandButton id="btnReceptor" value="Receptor" actionListener="#{Felcr.mostrar_receptor}" icon="pi pi-file" update="formPlantilla:pnlReceptor" style="font-size: 10px; margin-right: .5rem;"/>
                         <p:commandButton id="btnExoneracion" value="Exoneración" icon="pi pi-file" style="font-size: 10px; margin-right: .5rem;"/>
                         <p:commandButton id="btnOtrosCargos" value="Otros cargos" icon="pi pi-file" style="font-size: 10px; margin-right: .5rem;"/>
                     </div>
@@ -276,6 +276,32 @@
                     <h:outputText value="#{detalle.cabys}"/>
                 </p:column>
             </p:dataTable>
+        </p:dialog>
+        
+        <p:dialog id="dlgReceptor" header="Receptor" widgetVar="widvarReceptor" modal="true" resizable="false" closable="true" closeOnEscape="true" style="font-size:10px; font-weight:bold;">
+            <h:panelGrid id="pnlReceptor" columns="2" style="font-size: 10px;">
+                <p:outputLabel value="Id-Receptor" style="font-weight: bold; font-size: 10px;"/>
+                <p:inputText id="txtIdReceptor" value="#{Felcr.txtIdReceptor}" readonly="true" style="font-size: 10px; width: 350px;"/>
+                <p:outputLabel value="Tipo contribuyente" style="font-weight: bold; font-size: 10px;"/>
+                <p:selectOneMenu id="somTipoContribuyente" value="#{Felcr.somTipoContribuyente}" style="font-size: 10px; background-color: yellow;">
+                    <f:selectItems value="#{Felcr.lst_somTipoContribuyente}"/>
+                </p:selectOneMenu>
+                <p:outputLabel value="TAX-ID" style="font-weight: bold; font-size: 10px;"/>
+                <p:inputText id="txtTaxId" value="#{Felcr.txtTaxId}" style="font-size: 10px; width: 350px; background-color: yellow;"/>
+                <p:outputLabel value="Nombre receptor" style="font-weight: bold; font-size: 10px;"/>
+                <p:inputText id="txtNombreReceptorDgl" value="#{Felcr.txtNombreReceptorDgl}" style="font-size: 10px; width: 350px; background-color: yellow;"/>
+                <p:outputLabel value="Dirección" style="font-weight: bold; font-size: 10px;"/>
+                <p:inputText id="txtDireccion" value="#{Felcr.txtDireccion}" style="font-size: 10px; width: 350px; background-color: yellow;"/>
+                <p:outputLabel value="Correo electrónico" style="font-weight: bold; font-size: 10px;"/>
+                <p:inputText id="txtCorreoElectronico" value="#{Felcr.txtCorreoElectronico}" style="font-size: 10px; width: 350px; background-color: yellow;"/>
+                <p:outputLabel value="Código país" style="font-weight: bold; font-size: 10px;"/>
+                <p:inputText id="txtCodigoPais" value="#{Felcr.txtCodigoPais}" style="font-size: 10px; width: 350px; background-color: yellow;"/>
+                <f:facet name="footer">
+                    <div class="card" style="padding-top: 10px;">
+                        <p:commandButton id="btnGuardarReceptor" disabled="#{Felcr.btnGuardarReceptorDisabled}" value="Guardar" actionListener="#{Felcr.guardar_receptor}" icon="pi pi-save" update="formPlantilla:msgFelcr" oncomplete="PF('widvarReceptor').hide()" style="font-size: 10px; margin-right: .5rem;"/>
+                    </div>
+                </f:facet>
+            </h:panelGrid>
         </p:dialog>
 
     </ui:define>

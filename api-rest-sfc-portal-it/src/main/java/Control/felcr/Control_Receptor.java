@@ -235,7 +235,7 @@ public class Control_Receptor implements Serializable {
         return resultado;
     }
 
-    public String Modificar_Receptor(String ambiente, Integer id_receptor, Integer id_tipo_contribuyente, String tax_id, String nombre_cliente, String direccion, String correo, String codigo_area) {
+    public String Modificar_Receptor(String ambiente, Integer id_receptor, Integer id_tipo_contribuyente, String tax_id, String nombre_receptor, String direccion, String correo, String codigo_area) {
         Control.Ctrl_Base_Datos ctrl_base_datos = new Control.Ctrl_Base_Datos();
         Connection conn = ctrl_base_datos.obtener_conexion_felcr(ambiente);
         String resultado = "";
@@ -246,14 +246,13 @@ public class Control_Receptor implements Serializable {
             String cadenasql = "UPDATE RECEPTOR SET "
                     + "ID_TIPO_CONTRIBUYENTE=" + id_tipo_contribuyente + ", "
                     + "NRODOCRECEP='" + tax_id + "', "
-                    + "NMBRECEP='" + nombre_cliente + "', "
-                    + "PRIMERNOMBRE='" + nombre_cliente + "', "
+                    + "NMBRECEP='" + nombre_receptor + "', "
+                    + "PRIMERNOMBRE='" + nombre_receptor + "', "
                     + "CALLE='" + direccion + "', "
                     + "EMAIL='" + correo + "', "
                     + "CODIGOPAIS='" + codigo_area + "' "
                     + "WHERE ID_RECEPTOR=" + id_receptor;
             Statement stmt = conn.createStatement();
-            System.out.println(cadenasql);
             stmt.executeUpdate(cadenasql);
             stmt.close();
 
