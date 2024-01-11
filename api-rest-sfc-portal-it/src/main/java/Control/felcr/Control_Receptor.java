@@ -113,6 +113,7 @@ public class Control_Receptor implements Serializable {
                         + "FAX='" + "0000-0000" + "' "
                         + "WHERE ID_RECEPTOR=" + id_receptor;
                 stmt = conn.createStatement();
+                System.out.println("UPDATE RECEPTOR: " + cadenasql);
                 stmt.executeUpdate(cadenasql);
                 stmt.close();
 
@@ -222,6 +223,7 @@ public class Control_Receptor implements Serializable {
                         + "000" + "','"
                         + "0000-0000" + "')";
                 stmt = conn.createStatement();
+                System.out.println("INSERT RECEPTOR: " + cadenasql);
                 stmt.executeUpdate(cadenasql);
                 stmt.close();
 
