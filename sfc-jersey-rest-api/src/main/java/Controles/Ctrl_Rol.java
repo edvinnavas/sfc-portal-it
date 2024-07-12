@@ -12,38 +12,38 @@ import java.util.List;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-public class Ctrl_Tipo_Menu implements Serializable {
+public class Ctrl_Rol implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public Ctrl_Tipo_Menu() {
+    public Ctrl_Rol() {
 
     }
 
-    public List<Entidades.Tipo_Menu> obtener_lista(Connection conn) {
-        List<Entidades.Tipo_Menu> resultado = new ArrayList<>();
+    public List<Entidades.Rol> obtener_lista(Connection conn) {
+        List<Entidades.Rol> resultado = new ArrayList<>();
 
         try {
             String sql = "SELECT "
-                    + "A.ID_TIPO_MENU, "
+                    + "A.ID_ROL, "
                     + "A.NOMBRE, "
                     + "A.ACTIVO, "
                     + "A.DESCRIPCION, "
                     + "A.USUARIO_M, "
                     + "A.FECHA_HORA "
                     + "FROM "
-                    + "TIPO_MENU A";
+                    + "ROL A";
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {
-                Entidades.Tipo_Menu tipo_menu = new Entidades.Tipo_Menu();
-                tipo_menu.setId_tipo_menu(rs.getLong(1));
-                tipo_menu.setNombre(rs.getString(2));
-                tipo_menu.setActivo(rs.getInt(3));
-                tipo_menu.setDescripcion(rs.getString(4));
-                tipo_menu.setUsuario_m(rs.getString(5));
-                tipo_menu.setFecha_hora(rs.getDate(6));
-                resultado.add(tipo_menu);
+                Entidades.Rol rol = new Entidades.Rol();
+                rol.setId_rol(rs.getLong(1));
+                rol.setNombre(rs.getString(2));
+                rol.setActivo(rs.getInt(3));
+                rol.setDescripcion(rs.getString(4));
+                rol.setUsuario_m(rs.getString(5));
+                rol.setFecha_hora(rs.getDate(6));
+                resultado.add(rol);
             }
             rs.close();
             stmt.close();
@@ -55,25 +55,25 @@ public class Ctrl_Tipo_Menu implements Serializable {
         return resultado;
     }
 
-    public Entidades.Tipo_Menu obtener_id(Connection conn, Long id_tipo_menu) {
-        Entidades.Tipo_Menu resultado = new Entidades.Tipo_Menu();
+    public Entidades.Rol obtener_id(Connection conn, Long id_rol) {
+        Entidades.Rol resultado = new Entidades.Rol();
 
         try {
             String sql = "SELECT "
-                    + "A.ID_TIPO_MENU, "
+                    + "A.ID_ROL, "
                     + "A.NOMBRE, "
                     + "A.ACTIVO, "
                     + "A.DESCRIPCION, "
                     + "A.USUARIO_M, "
                     + "A.FECHA_HORA "
                     + "FROM "
-                    + "TIPO_MENU A "
+                    + "ROL A "
                     + "WHERE "
-                    + "A.ID_TIPO_MENU=" + id_tipo_menu;
+                    + "A.ID_ROL=" + id_rol;
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {
-                resultado.setId_tipo_menu(rs.getLong(1));
+                resultado.setId_rol(rs.getLong(1));
                 resultado.setNombre(rs.getString(2));
                 resultado.setActivo(rs.getInt(3));
                 resultado.setDescripcion(rs.getString(4));
@@ -90,31 +90,31 @@ public class Ctrl_Tipo_Menu implements Serializable {
         return resultado;
     }
 
-    public Entidades.Tipo_Menu crear(Connection conn, String jsonString) {
-        Entidades.Tipo_Menu resultado = new Entidades.Tipo_Menu();
+    public Entidades.Rol crear(Connection conn, String jsonString) {
+        Entidades.Rol resultado = new Entidades.Rol();
 
         try {
-            Type ObjectType = new TypeToken<Entidades.Tipo_Menu>() {
+            Type ObjectType = new TypeToken<Entidades.Rol>() {
             }.getType();
             resultado = new Gson().fromJson(jsonString, ObjectType);
 
             Ctrl_Base_Datos ctrl_base_datos = new Ctrl_Base_Datos();
 
-            Long id_tipo_menu = ctrl_base_datos.ObtenerLong("SELECT IFNULL(MAX(A.ID_TIPO_MENU),0) + 1 MAXIMO FROM TIPO_MENU A", conn);
-            resultado.setId_tipo_menu(id_tipo_menu);
+            Long id_rol = ctrl_base_datos.ObtenerLong("SELECT IFNULL(MAX(A.ID_ROL),0) + 1 MAXIMO FROM ROL A", conn);
+            resultado.setId_rol(id_rol);
 
             resultado.setFecha_hora(new Date());
 
             SimpleDateFormat db_formato_fecha_hora = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-            String sql = "INSERT INTO TIPO_MENU ("
-                    + "ID_TIPO_MENU,"
+            String sql = "INSERT INTO ROL ("
+                    + "ID_ROL,"
                     + "NOMBRE,"
                     + "ACTIVO,"
                     + "DESCRIPCION,"
                     + "USUARIO_M,"
                     + "FECHA_HORA) VALUES ("
-                    + resultado.getId_tipo_menu() + ",'"
+                    + resultado.getId_rol() + ",'"
                     + resultado.getNombre() + "',"
                     + resultado.getActivo() + ",'"
                     + resultado.getDescripcion() + "','"
@@ -131,28 +131,28 @@ public class Ctrl_Tipo_Menu implements Serializable {
         return resultado;
     }
 
-    public Entidades.Tipo_Menu modificar(Connection conn, Long id_tipo_menu, String jsonString) {
-        Entidades.Tipo_Menu resultado = new Entidades.Tipo_Menu();
+    public Entidades.Rol modificar(Connection conn, Long id_rol, String jsonString) {
+        Entidades.Rol resultado = new Entidades.Rol();
 
         try {
-            Type ObjectType = new TypeToken<Entidades.Tipo_Menu>() {
+            Type ObjectType = new TypeToken<Entidades.Rol>() {
             }.getType();
             resultado = new Gson().fromJson(jsonString, ObjectType);
 
-            resultado.setId_tipo_menu(id_tipo_menu);
+            resultado.setId_rol(id_rol);
 
             resultado.setFecha_hora(new Date());
 
             SimpleDateFormat db_formato_fecha_hora = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-            String sql = "UPDATE TIPO_MENU SET "
+            String sql = "UPDATE ROL SET "
                     + "NOMBRE='" + resultado.getNombre() + "', "
                     + "ACTIVO=" + resultado.getActivo() + ", "
                     + "DESCRIPCION='" + resultado.getDescripcion() + "', "
                     + "USUARIO_M='" + resultado.getUsuario_m() + "', "
                     + "FECHA_HORA='" + db_formato_fecha_hora.format(resultado.getFecha_hora()) + "' "
                     + "WHERE "
-                    + "ID_TIPO_MENU=" + id_tipo_menu;
+                    + "ID_ROL=" + id_rol;
             Statement stmt = conn.createStatement();
             stmt.executeUpdate(sql);
             stmt.close();
@@ -164,25 +164,25 @@ public class Ctrl_Tipo_Menu implements Serializable {
         return resultado;
     }
 
-    public Entidades.Tipo_Menu eliminar(Connection conn, Long id_tipo_menu) {
-        Entidades.Tipo_Menu resultado = new Entidades.Tipo_Menu();
+    public Entidades.Rol eliminar(Connection conn, Long id_rol) {
+        Entidades.Rol resultado = new Entidades.Rol();
 
         try {
             String sql = "SELECT "
-                    + "A.ID_TIPO_MENU, "
+                    + "A.ID_ROL, "
                     + "A.NOMBRE, "
                     + "A.ACTIVO, "
                     + "A.DESCRIPCION, "
                     + "A.USUARIO_M, "
                     + "A.FECHA_HORA "
                     + "FROM "
-                    + "TIPO_MENU A "
+                    + "ROL A "
                     + "WHERE "
-                    + "A.ID_TIPO_MENU=" + id_tipo_menu;
+                    + "A.ID_ROL=" + id_rol;
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {
-                resultado.setId_tipo_menu(rs.getLong(1));
+                resultado.setId_rol(rs.getLong(1));
                 resultado.setNombre(rs.getString(2));
                 resultado.setActivo(rs.getInt(3));
                 resultado.setDescripcion(rs.getString(4));
@@ -192,7 +192,7 @@ public class Ctrl_Tipo_Menu implements Serializable {
             rs.close();
             stmt.close();
 
-            sql = "DELETE FROM TIPO_MENU WHERE ID_TIPO_MENU=" + id_tipo_menu;
+            sql = "DELETE FROM ROL WHERE ID_ROL=" + id_rol;
             stmt = conn.createStatement();
             stmt.executeUpdate(sql);
         } catch (Exception ex) {

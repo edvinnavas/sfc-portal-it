@@ -18,8 +18,8 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
 
-@Path("sfc/tipo-evento")
-public class Recurso_Tipo_Evento implements Serializable {
+@Path("sfc/rol")
+public class Recurso_Rol implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -37,11 +37,11 @@ public class Recurso_Tipo_Evento implements Serializable {
 
 			conn.setAutoCommit(false);
 
-			Controles.Ctrl_Tipo_Evento ctrl_tipo_evento = new Controles.Ctrl_Tipo_Evento();
-			List<Entidades.Tipo_Evento> lista_tipo_evento = ctrl_tipo_evento.obtener_lista(conn);
+			Controles.Ctrl_Rol ctrl_rol = new Controles.Ctrl_Rol();
+			List<Entidades.Rol> lista_rol = ctrl_rol.obtener_lista(conn);
 
 			Gson gson = new GsonBuilder().serializeNulls().create();
-			resultado = Response.ok(gson.toJson(lista_tipo_evento), MediaType.APPLICATION_JSON).build();
+			resultado = Response.ok(gson.toJson(lista_rol), MediaType.APPLICATION_JSON).build();
 
 			conn.commit();
 			conn.setAutoCommit(true);
@@ -69,10 +69,10 @@ public class Recurso_Tipo_Evento implements Serializable {
 	}
 
 	@RolesAllowed("ADMIN")
-	@Path("obtener-id/{id_tipo_evento}")
+	@Path("obtener-id/{id_rol}")
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response obtener_id(@PathParam("id_tipo_evento") Long id_tipo_evento) {
+	public Response obtener_id(@PathParam("id_rol") Long id_rol) {
 		Response resultado;
 		Connection conn = null;
 
@@ -82,11 +82,11 @@ public class Recurso_Tipo_Evento implements Serializable {
 
 			conn.setAutoCommit(false);
 
-			Controles.Ctrl_Tipo_Evento ctrl_tipo_evento = new Controles.Ctrl_Tipo_Evento();
-			Entidades.Tipo_Evento tipo_evento = ctrl_tipo_evento.obtener_id(conn, id_tipo_evento);
+			Controles.Ctrl_Rol ctrl_rol = new Controles.Ctrl_Rol();
+			Entidades.Rol rol = ctrl_rol.obtener_id(conn, id_rol);
 
 			Gson gson = new GsonBuilder().serializeNulls().create();
-			resultado = Response.ok(gson.toJson(tipo_evento), MediaType.APPLICATION_JSON).build();
+			resultado = Response.ok(gson.toJson(rol), MediaType.APPLICATION_JSON).build();
 
 			conn.commit();
 			conn.setAutoCommit(true);
@@ -127,11 +127,11 @@ public class Recurso_Tipo_Evento implements Serializable {
 
 			conn.setAutoCommit(false);
 
-			Controles.Ctrl_Tipo_Evento ctrl_tipo_evento = new Controles.Ctrl_Tipo_Evento();
-			Entidades.Tipo_Evento tipo_evento = ctrl_tipo_evento.crear(conn, jsonString);
+			Controles.Ctrl_Rol ctrl_rol = new Controles.Ctrl_Rol();
+			Entidades.Rol rol = ctrl_rol.crear(conn, jsonString);
 
 			Gson gson = new GsonBuilder().serializeNulls().create();
-			resultado = Response.ok(gson.toJson(tipo_evento), MediaType.APPLICATION_JSON).build();
+			resultado = Response.ok(gson.toJson(rol), MediaType.APPLICATION_JSON).build();
 
 			conn.commit();
 			conn.setAutoCommit(true);
@@ -159,10 +159,10 @@ public class Recurso_Tipo_Evento implements Serializable {
 	}
 
 	@RolesAllowed("ADMIN")
-	@Path("modificar/{id_tipo_evento}")
+	@Path("modificar/{id_rol}")
 	@PUT
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response modificar(@PathParam("id_tipo_evento") Long id_tipo_evento, String jsonString) {
+	public Response modificar(@PathParam("id_rol") Long id_rol, String jsonString) {
 		Response resultado;
 		Connection conn = null;
 
@@ -172,11 +172,11 @@ public class Recurso_Tipo_Evento implements Serializable {
 
 			conn.setAutoCommit(false);
 
-			Controles.Ctrl_Tipo_Evento ctrl_tipo_evento = new Controles.Ctrl_Tipo_Evento();
-			Entidades.Tipo_Evento tipo_evento = ctrl_tipo_evento.modificar(conn, id_tipo_evento, jsonString);
+			Controles.Ctrl_Rol ctrl_rol = new Controles.Ctrl_Rol();
+			Entidades.Rol rol = ctrl_rol.modificar(conn, id_rol, jsonString);
 
 			Gson gson = new GsonBuilder().serializeNulls().create();
-			resultado = Response.ok(gson.toJson(tipo_evento), MediaType.APPLICATION_JSON).build();
+			resultado = Response.ok(gson.toJson(rol), MediaType.APPLICATION_JSON).build();
 
 			conn.commit();
 			conn.setAutoCommit(true);
@@ -204,10 +204,10 @@ public class Recurso_Tipo_Evento implements Serializable {
 	}
 
 	@RolesAllowed("ADMIN")
-	@Path("eliminar/{id_tipo_evento}")
+	@Path("eliminar/{id_rol}")
 	@DELETE
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response eliminar(@PathParam("id_tipo_evento") Long id_tipo_evento) {
+	public Response eliminar(@PathParam("id_rol") Long id_rol) {
 		Response resultado;
 		Connection conn = null;
 
@@ -217,11 +217,11 @@ public class Recurso_Tipo_Evento implements Serializable {
 
 			conn.setAutoCommit(false);
 
-			Controles.Ctrl_Tipo_Evento ctrl_tipo_evento = new Controles.Ctrl_Tipo_Evento();
-			Entidades.Tipo_Evento tipo_evento = ctrl_tipo_evento.eliminar(conn, id_tipo_evento);
+			Controles.Ctrl_Rol ctrl_rol = new Controles.Ctrl_Rol();
+			Entidades.Rol rol = ctrl_rol.eliminar(conn, id_rol);
 
 			Gson gson = new GsonBuilder().serializeNulls().create();
-			resultado = Response.ok(gson.toJson(tipo_evento), MediaType.APPLICATION_JSON).build();
+			resultado = Response.ok(gson.toJson(rol), MediaType.APPLICATION_JSON).build();
 
 			conn.commit();
 			conn.setAutoCommit(true);
