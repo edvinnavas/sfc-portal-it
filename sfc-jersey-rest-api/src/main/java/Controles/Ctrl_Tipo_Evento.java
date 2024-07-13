@@ -196,6 +196,7 @@ public class Ctrl_Tipo_Evento implements Serializable {
             sql = "DELETE FROM TIPO_EVENTO WHERE ID_TIPO_EVENTO=" + id_tipo_evento;
             stmt = conn.createStatement();
             stmt.executeUpdate(sql);
+            stmt.close();
         } catch (Exception ex) {
             System.out.println("PROYECTO: SFC-JERSEY-REST-API ==> CLASE: " + this.getClass().getName()
                     + " ==> METODO: eliminar()" + " ERROR: " + ex.toString());

@@ -195,6 +195,7 @@ public class Ctrl_Tipo_Menu implements Serializable {
             sql = "DELETE FROM TIPO_MENU WHERE ID_TIPO_MENU=" + id_tipo_menu;
             stmt = conn.createStatement();
             stmt.executeUpdate(sql);
+            stmt.close();
         } catch (Exception ex) {
             System.out.println("PROYECTO: SFC-JERSEY-REST-API ==> CLASE: " + this.getClass().getName()
                     + " ==> METODO: eliminar()" + " ERROR: " + ex.toString());

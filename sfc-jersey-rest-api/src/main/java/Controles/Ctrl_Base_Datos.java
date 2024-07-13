@@ -20,13 +20,45 @@ public class Ctrl_Base_Datos implements Serializable {
         Connection resultado;
 
         try {
-            String host_mysql_db = "192.200.107.24";
-            String nombre_db = "db_sfc";
-            String usuario_db = "user_sfc";
-            String contrasena_db = "Sfc2024";
+            String mysql_db_host = "";
+            String mysql_db_port = "";
+            String mysql_db_name = "";
+            String mysql_db_user = "";
+            String mysql_db_pass = "";
+
+            Ctrl_Archivos ctrl_archivos = new Ctrl_Archivos();
+            List<String> lineas_archivos = ctrl_archivos
+                    .lineas_archivo("C:/VolumeDocker/SFC_PORTAL_IT/Configuracion/properties.conf");
+
+            for (Integer i = 0; i < lineas_archivos.size(); i++) {
+                String[] param_db = lineas_archivos.get(i).trim().split(":");
+
+                if (param_db[0].trim().equals("mysql-db-host")) {
+                    mysql_db_host = param_db[1];
+                    // System.out.println("mysql-db-host:" + mysql_db_host);
+                }
+                if (param_db[0].trim().equals("mysql-db-port")) {
+                    mysql_db_port = param_db[1];
+                    // System.out.println("mysql-db-port:" + mysql_db_port);
+                }
+                if (param_db[0].trim().equals("mysql-db-name")) {
+                    mysql_db_name = param_db[1];
+                    // System.out.println("mysql-db-name:" + mysql_db_name);
+                }
+                if (param_db[0].trim().equals("mysql-db-user")) {
+                    mysql_db_user = param_db[1];
+                    // System.out.println("mysql-db-user:" + mysql_db_user);
+                }
+                if (param_db[0].trim().equals("mysql-db-pass")) {
+                    mysql_db_pass = param_db[1];
+                    // System.out.println("mysql-db-pass:" + mysql_db_pass);
+                }
+            }
 
             Class.forName("com.mysql.cj.jdbc.Driver");
-            resultado = DriverManager.getConnection("jdbc:mysql://" + host_mysql_db + ":3306/" + nombre_db, usuario_db, contrasena_db);
+            resultado = DriverManager.getConnection(
+                    "jdbc:mysql://" + mysql_db_host + ":" + mysql_db_port + "/" + mysql_db_name, mysql_db_user,
+                    mysql_db_pass);
 
             // System.out.println("Conexión MySQL satisfactoria!!!");
         } catch (Exception ex) {

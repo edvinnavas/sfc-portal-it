@@ -18,8 +18,8 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
 
-@Path("sfc/rol")
-public class Recurso_Rol implements Serializable {
+@Path("sfc/usuario")
+public class Recurso_Usuario implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -37,11 +37,11 @@ public class Recurso_Rol implements Serializable {
 
 			conn.setAutoCommit(false);
 
-			Controles.Ctrl_Rol ctrl_rol = new Controles.Ctrl_Rol();
-			List<Entidades.Rol> lista_rol = ctrl_rol.obtener_lista(conn);
+			Controles.Ctrl_Usuario ctrl_usuario = new Controles.Ctrl_Usuario();
+			List<Entidades.Usuario> lista_usuario = ctrl_usuario.obtener_lista(conn);
 
 			Gson gson = new GsonBuilder().serializeNulls().create();
-			resultado = Response.ok(gson.toJson(lista_rol), MediaType.APPLICATION_JSON).build();
+			resultado = Response.ok(gson.toJson(lista_usuario), MediaType.APPLICATION_JSON).build();
 
 			conn.commit();
 			conn.setAutoCommit(true);
@@ -69,10 +69,10 @@ public class Recurso_Rol implements Serializable {
 	}
 
 	@RolesAllowed("ADMIN")
-	@Path("obtener-id/{id_rol}")
+	@Path("obtener-id/{id_usuario}")
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response obtener_id(@PathParam("id_rol") Long id_rol) {
+	public Response obtener_id(@PathParam("id_usuario") Long id_usuario) {
 		Response resultado;
 		Connection conn = null;
 
@@ -82,11 +82,11 @@ public class Recurso_Rol implements Serializable {
 
 			conn.setAutoCommit(false);
 
-			Controles.Ctrl_Rol ctrl_rol = new Controles.Ctrl_Rol();
-			Entidades.Rol rol = ctrl_rol.obtener_id(conn, id_rol);
+			Controles.Ctrl_Usuario ctrl_usuario = new Controles.Ctrl_Usuario();
+			Entidades.Usuario usuario = ctrl_usuario.obtener_id(conn, id_usuario);
 
 			Gson gson = new GsonBuilder().serializeNulls().create();
-			resultado = Response.ok(gson.toJson(rol), MediaType.APPLICATION_JSON).build();
+			resultado = Response.ok(gson.toJson(usuario), MediaType.APPLICATION_JSON).build();
 
 			conn.commit();
 			conn.setAutoCommit(true);
@@ -127,11 +127,11 @@ public class Recurso_Rol implements Serializable {
 
 			conn.setAutoCommit(false);
 
-			Controles.Ctrl_Rol ctrl_rol = new Controles.Ctrl_Rol();
-			Entidades.Rol rol = ctrl_rol.crear(conn, jsonString);
+			Controles.Ctrl_Usuario ctrl_usuario = new Controles.Ctrl_Usuario();
+			Entidades.Usuario usuario = ctrl_usuario.crear(conn, jsonString);
 
 			Gson gson = new GsonBuilder().serializeNulls().create();
-			resultado = Response.ok(gson.toJson(rol), MediaType.APPLICATION_JSON).build();
+			resultado = Response.ok(gson.toJson(usuario), MediaType.APPLICATION_JSON).build();
 
 			conn.commit();
 			conn.setAutoCommit(true);
@@ -159,10 +159,10 @@ public class Recurso_Rol implements Serializable {
 	}
 
 	@RolesAllowed("ADMIN")
-	@Path("modificar/{id_rol}")
+	@Path("modificar/{id_usuario}")
 	@PUT
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response modificar(@PathParam("id_rol") Long id_rol, String jsonString) {
+	public Response modificar(@PathParam("id_usuario") Long id_usuario, String jsonString) {
 		Response resultado;
 		Connection conn = null;
 
@@ -172,11 +172,11 @@ public class Recurso_Rol implements Serializable {
 
 			conn.setAutoCommit(false);
 
-			Controles.Ctrl_Rol ctrl_rol = new Controles.Ctrl_Rol();
-			Entidades.Rol rol = ctrl_rol.modificar(conn, id_rol, jsonString);
+			Controles.Ctrl_Usuario ctrl_usuario = new Controles.Ctrl_Usuario();
+			Entidades.Usuario usuario = ctrl_usuario.modificar(conn, id_usuario, jsonString);
 
 			Gson gson = new GsonBuilder().serializeNulls().create();
-			resultado = Response.ok(gson.toJson(rol), MediaType.APPLICATION_JSON).build();
+			resultado = Response.ok(gson.toJson(usuario), MediaType.APPLICATION_JSON).build();
 
 			conn.commit();
 			conn.setAutoCommit(true);
@@ -204,10 +204,10 @@ public class Recurso_Rol implements Serializable {
 	}
 
 	@RolesAllowed("ADMIN")
-	@Path("eliminar/{id_rol}")
+	@Path("eliminar/{id_usuario}")
 	@DELETE
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response eliminar(@PathParam("id_rol") Long id_rol) {
+	public Response eliminar(@PathParam("id_usuario") Long id_usuario) {
 		Response resultado;
 		Connection conn = null;
 
@@ -217,11 +217,11 @@ public class Recurso_Rol implements Serializable {
 
 			conn.setAutoCommit(false);
 
-			Controles.Ctrl_Rol ctrl_rol = new Controles.Ctrl_Rol();
-			Entidades.Rol rol = ctrl_rol.eliminar(conn, id_rol);
+			Controles.Ctrl_Usuario ctrl_usuario = new Controles.Ctrl_Usuario();
+			Entidades.Usuario usuario = ctrl_usuario.eliminar(conn, id_usuario);
 
 			Gson gson = new GsonBuilder().serializeNulls().create();
-			resultado = Response.ok(gson.toJson(rol), MediaType.APPLICATION_JSON).build();
+			resultado = Response.ok(gson.toJson(usuario), MediaType.APPLICATION_JSON).build();
 
 			conn.commit();
 			conn.setAutoCommit(true);
@@ -242,96 +242,6 @@ public class Recurso_Rol implements Serializable {
 			} catch (Exception ex) {
 				System.out.println("PROYECTO: SFC-JERSEY-REST-API ==> CLASE: " + this.getClass().getName()
 						+ " ==> METODO: eliminar()-Finally" + " ERROR: " + ex.toString());
-			}
-		}
-
-		return resultado;
-	}
-
-	@RolesAllowed("ADMIN")
-	@Path("obtener-lista-rol-menu/{id_rol}")
-	@GET
-	@Produces({ MediaType.APPLICATION_JSON })
-	public Response obtener_lista_rol_menu(@PathParam("id_rol") Long id_rol) {
-		Response resultado;
-		Connection conn = null;
-
-		try {
-			Ctrl_Base_Datos ctrl_base_datos = new Ctrl_Base_Datos();
-			conn = ctrl_base_datos.obtener_conexion_mysql();
-
-			conn.setAutoCommit(false);
-
-			Controles.Ctrl_Rol ctrl_rol = new Controles.Ctrl_Rol();
-			Entidades.Rol_Menu rol_menu = ctrl_rol.obtener_lista_rol_menu(conn, id_rol);
-
-			Gson gson = new GsonBuilder().serializeNulls().create();
-			resultado = Response.ok(gson.toJson(rol_menu), MediaType.APPLICATION_JSON).build();
-
-			conn.commit();
-			conn.setAutoCommit(true);
-		} catch (Exception ex) {
-			String mensaje = "PROYECTO: SFC-JERSEY-REST-API ==> CLASE: " + this.getClass().getName()
-					+ " ==> METODO: obtener_lista_rol_menu()" + " ERROR: " + ex.toString();
-
-			resultado = Response.status(Status.NOT_FOUND).entity(mensaje).build();
-
-			System.out.println("PROYECTO: SFC-JERSEY-REST-API ==> CLASE: " + this.getClass().getName()
-					+ " ==> METODO: obtener_lista_rol_menu()" + " ERROR: " + ex.toString());
-		} finally {
-			try {
-				if (conn.isClosed()) {
-					conn.close();
-					conn = null;
-				}
-			} catch (Exception ex) {
-				System.out.println("PROYECTO: SFC-JERSEY-REST-API ==> CLASE: " + this.getClass().getName()
-						+ " ==> METODO: obtener_lista_rol_menu()-Finally" + " ERROR: " + ex.toString());
-			}
-		}
-
-		return resultado;
-	}
-
-	@RolesAllowed("ADMIN")
-	@Path("crear-lista-rol-menu/{id_rol}")
-	@POST
-	@Produces({ MediaType.APPLICATION_JSON })
-	public Response crear_lista_rol_menu(@PathParam("id_rol") Long id_rol, String jsonString) {
-		Response resultado;
-		Connection conn = null;
-
-		try {
-			Ctrl_Base_Datos ctrl_base_datos = new Ctrl_Base_Datos();
-			conn = ctrl_base_datos.obtener_conexion_mysql();
-
-			conn.setAutoCommit(false);
-
-			Controles.Ctrl_Rol ctrl_rol = new Controles.Ctrl_Rol();
-			Entidades.Rol_Menu rol_menu = ctrl_rol.crear_lista_rol_menu(conn, id_rol, jsonString);
-
-			Gson gson = new GsonBuilder().serializeNulls().create();
-			resultado = Response.ok(gson.toJson(rol_menu), MediaType.APPLICATION_JSON).build();
-
-			conn.commit();
-			conn.setAutoCommit(true);
-		} catch (Exception ex) {
-			String mensaje = "PROYECTO: SFC-JERSEY-REST-API ==> CLASE: " + this.getClass().getName()
-					+ " ==> METODO: crear_lista_rol_menu()" + " ERROR: " + ex.toString();
-
-			resultado = Response.status(Status.NOT_FOUND).entity(mensaje).build();
-
-			System.out.println("PROYECTO: SFC-JERSEY-REST-API ==> CLASE: " + this.getClass().getName()
-					+ " ==> METODO: crear_lista_rol_menu()" + " ERROR: " + ex.toString());
-		} finally {
-			try {
-				if (conn.isClosed()) {
-					conn.close();
-					conn = null;
-				}
-			} catch (Exception ex) {
-				System.out.println("PROYECTO: SFC-JERSEY-REST-API ==> CLASE: " + this.getClass().getName()
-						+ " ==> METODO: crear_lista_rol_menu()-Finally" + " ERROR: " + ex.toString());
 			}
 		}
 

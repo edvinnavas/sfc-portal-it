@@ -99,7 +99,7 @@ public class Ctrl_Menu implements Serializable {
         try {
             Type ObjectType = new TypeToken<Entidades.Menu>() {
             }.getType();
-            Entidades.Menu menu = new Gson().fromJson(jsonString, ObjectType);
+            resultado = new Gson().fromJson(jsonString, ObjectType);
 
             Ctrl_Base_Datos ctrl_base_datos = new Ctrl_Base_Datos();
 
@@ -142,7 +142,7 @@ public class Ctrl_Menu implements Serializable {
         try {
             Type ObjectType = new TypeToken<Entidades.Menu>() {
             }.getType();
-            Entidades.Menu menu = new Gson().fromJson(jsonString, ObjectType);
+            resultado = new Gson().fromJson(jsonString, ObjectType);
 
             resultado.setId_menu(id_menu);
 
@@ -202,6 +202,7 @@ public class Ctrl_Menu implements Serializable {
             sql = "DELETE FROM MENU WHERE ID_MENU=" + id_menu;
             stmt = conn.createStatement();
             stmt.executeUpdate(sql);
+            stmt.close();
         } catch (Exception ex) {
             System.out.println("PROYECTO: SFC-JERSEY-REST-API ==> CLASE: " + this.getClass().getName()
                     + " ==> METODO: eliminar()" + " ERROR: " + ex.toString());

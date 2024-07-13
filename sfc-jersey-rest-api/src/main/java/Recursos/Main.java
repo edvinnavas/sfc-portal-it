@@ -15,17 +15,18 @@ public class Main implements Serializable {
 
     public static final String BASE_URI = "http://0.0.0.0:8080/";
 
-    public static HttpServer startServer() {        
+    public static HttpServer startServer() {
         Set<Class<?>> lista_clases = new HashSet<Class<?>>();
         lista_clases.add(Recursos.MyResource.class);
         lista_clases.add(Recursos.Recurso_Tipo_Menu.class);
         lista_clases.add(Recursos.Recurso_Tipo_Evento.class);
         lista_clases.add(Recursos.Recurso_Rol.class);
         lista_clases.add(Recursos.Recurso_Menu.class);
+        lista_clases.add(Recursos.Recurso_Usuario.class);
 
         final ResourceConfig rc = new ResourceConfig()
-            .registerClasses(lista_clases)
-            .register(FiltroRecurso.class);
+                .registerClasses(lista_clases)
+                .register(FiltroRecurso.class);
 
         return GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
     }

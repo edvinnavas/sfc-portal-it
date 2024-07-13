@@ -195,9 +195,85 @@ public class Ctrl_Rol implements Serializable {
             sql = "DELETE FROM ROL WHERE ID_ROL=" + id_rol;
             stmt = conn.createStatement();
             stmt.executeUpdate(sql);
+            stmt.close();
         } catch (Exception ex) {
             System.out.println("PROYECTO: SFC-JERSEY-REST-API ==> CLASE: " + this.getClass().getName()
                     + " ==> METODO: eliminar()" + " ERROR: " + ex.toString());
+        }
+
+        return resultado;
+    }
+
+    public Entidades.Rol_Menu obtener_lista_rol_menu(Connection conn, Long id_rol) {
+        Entidades.Rol_Menu resultado = new Entidades.Rol_Menu();
+
+        try {
+            List<Entidades.Menu> lista_menu = new ArrayList<>();
+
+            resultado.setRol(new Ctrl_Rol().obtener_id(conn, id_rol));
+
+            String sql = "SELECT "
+                    + "A.ID_MENU, "
+                    + "A.USUARIO_M, "
+                    + "A.FECHA_HORA "
+                    + "FROM "
+                    + "ROL_MENU A "
+                    + "WHERE "
+                    + "A.ID_ROL=" + id_rol;
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                lista_menu.add(new Ctrl_Menu().obtener_id(conn, rs.getLong(1)));
+                resultado.setLista_menu(lista_menu);
+                resultado.setUsuario_m(rs.getString(2));
+                resultado.setFecha_hora(rs.getDate(3));
+            }
+            rs.close();
+            stmt.close();
+        } catch (Exception ex) {
+            System.out.println("PROYECTO: SFC-JERSEY-REST-API ==> CLASE: " + this.getClass().getName()
+                    + " ==> METODO: obtener_lista_rol_menu()" + " ERROR: " + ex.toString());
+        }
+
+        return resultado;
+    }
+
+    public Entidades.Rol_Menu crear_lista_rol_menu(Connection conn, Long id_rol, String jsonString) {
+        Entidades.Rol_Menu resultado = new Entidades.Rol_Menu();
+
+        try {
+            Type ObjectType = new TypeToken<Entidades.Rol_Menu>() {
+            }.getType();
+            resultado = new Gson().fromJson(jsonString, ObjectType);
+
+            String sql = "DELETE FROM ROL_MENU WHERE ID_ROL=" + id_rol;
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate(sql);
+            stmt.close();
+
+            resultado.setFecha_hora(new Date());
+
+            SimpleDateFormat db_formato_fecha_hora = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+            for (Integer i = 0; i < resultado.getLista_menu().size(); i++) {
+                sql = "INSERT INTO ROL_MENU ("
+                        + "ID_ROL,"
+                        + "ID_MENU,"
+                        + "USUARIO_M,"
+                        + "FECHA_HORA) VALUES ("
+                        + resultado.getRol().getId_rol() + ","
+                        + resultado.getLista_menu().get(i).getId_menu() + ",'"
+                        + resultado.getUsuario_m() + "','"
+                        + db_formato_fecha_hora.format(resultado.getFecha_hora()) + "')";
+                stmt = conn.createStatement();
+                stmt.executeUpdate(sql);
+                stmt.close();
+            }
+
+            resultado = obtener_lista_rol_menu(conn, id_rol);
+        } catch (Exception ex) {
+            System.out.println("PROYECTO: SFC-JERSEY-REST-API ==> CLASE: " + this.getClass().getName()
+                    + " ==> METODO: crear_lista_rol_menu()" + " ERROR: " + ex.toString());
         }
 
         return resultado;
