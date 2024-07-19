@@ -23,6 +23,8 @@ public class Main implements Serializable {
         lista_clases.add(Recursos.Recurso_Rol.class);
         lista_clases.add(Recursos.Recurso_Menu.class);
         lista_clases.add(Recursos.Recurso_Usuario.class);
+        lista_clases.add(Recursos.Recurso_Log_Evento.class);
+        lista_clases.add(Recursos.Recurso_Ambiente.class);
 
         final ResourceConfig rc = new ResourceConfig()
                 .registerClasses(lista_clases)

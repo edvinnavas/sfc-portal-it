@@ -18,8 +18,8 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
 
-@Path("sfc/usuario")
-public class Recurso_Usuario implements Serializable {
+@Path("sfc/log-evento")
+public class Recurso_Log_Evento implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -37,11 +37,11 @@ public class Recurso_Usuario implements Serializable {
 
 			conn.setAutoCommit(false);
 
-			Controles.Ctrl_Usuario ctrl_usuario = new Controles.Ctrl_Usuario();
-			List<Entidades.Usuario> lista_usuario = ctrl_usuario.obtener_lista(conn);
+			Controles.Ctrl_Log_Evento ctrl_log_evento = new Controles.Ctrl_Log_Evento();
+			List<Entidades.Log_Evento> lista_log_evento = ctrl_log_evento.obtener_lista(conn);
 
 			Gson gson = new GsonBuilder().serializeNulls().create();
-			resultado = Response.ok(gson.toJson(lista_usuario), MediaType.APPLICATION_JSON).build();
+			resultado = Response.ok(gson.toJson(lista_log_evento), MediaType.APPLICATION_JSON).build();
 
 			conn.commit();
 			conn.setAutoCommit(true);
@@ -69,10 +69,10 @@ public class Recurso_Usuario implements Serializable {
 	}
 
 	@RolesAllowed("ADMIN")
-	@Path("obtener-id/{id_usuario}")
+	@Path("obtener-id/{id_log_evento}")
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response obtener_id(@PathParam("id_usuario") Long id_usuario) {
+	public Response obtener_id(@PathParam("id_log_evento") Long id_log_evento) {
 		Response resultado;
 		Connection conn = null;
 
@@ -82,11 +82,11 @@ public class Recurso_Usuario implements Serializable {
 
 			conn.setAutoCommit(false);
 
-			Controles.Ctrl_Usuario ctrl_usuario = new Controles.Ctrl_Usuario();
-			Entidades.Usuario usuario = ctrl_usuario.obtener_id(conn, id_usuario);
+			Controles.Ctrl_Log_Evento ctrl_log_evento = new Controles.Ctrl_Log_Evento();
+			Entidades.Log_Evento log_evento = ctrl_log_evento.obtener_id(conn, id_log_evento);
 
 			Gson gson = new GsonBuilder().serializeNulls().create();
-			resultado = Response.ok(gson.toJson(usuario), MediaType.APPLICATION_JSON).build();
+			resultado = Response.ok(gson.toJson(log_evento), MediaType.APPLICATION_JSON).build();
 
 			conn.commit();
 			conn.setAutoCommit(true);
@@ -127,11 +127,11 @@ public class Recurso_Usuario implements Serializable {
 
 			conn.setAutoCommit(false);
 
-			Controles.Ctrl_Usuario ctrl_usuario = new Controles.Ctrl_Usuario();
-			Entidades.Usuario usuario = ctrl_usuario.crear(conn, jsonString);
+			Controles.Ctrl_Log_Evento ctrl_log_evento = new Controles.Ctrl_Log_Evento();
+			Entidades.Log_Evento log_evento = ctrl_log_evento.crear(conn, jsonString);
 
 			Gson gson = new GsonBuilder().serializeNulls().create();
-			resultado = Response.ok(gson.toJson(usuario), MediaType.APPLICATION_JSON).build();
+			resultado = Response.ok(gson.toJson(log_evento), MediaType.APPLICATION_JSON).build();
 
 			conn.commit();
 			conn.setAutoCommit(true);
@@ -159,10 +159,10 @@ public class Recurso_Usuario implements Serializable {
 	}
 
 	@RolesAllowed("ADMIN")
-	@Path("modificar/{id_usuario}")
+	@Path("modificar/{id_log_evento}")
 	@PUT
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response modificar(@PathParam("id_usuario") Long id_usuario, String jsonString) {
+	public Response modificar(@PathParam("id_log_evento") Long id_log_evento, String jsonString) {
 		Response resultado;
 		Connection conn = null;
 
@@ -172,11 +172,11 @@ public class Recurso_Usuario implements Serializable {
 
 			conn.setAutoCommit(false);
 
-			Controles.Ctrl_Usuario ctrl_usuario = new Controles.Ctrl_Usuario();
-			Entidades.Usuario usuario = ctrl_usuario.modificar(conn, id_usuario, jsonString);
+			Controles.Ctrl_Log_Evento ctrl_log_evento = new Controles.Ctrl_Log_Evento();
+			Entidades.Log_Evento log_evento = ctrl_log_evento.modificar(conn, id_log_evento, jsonString);
 
 			Gson gson = new GsonBuilder().serializeNulls().create();
-			resultado = Response.ok(gson.toJson(usuario), MediaType.APPLICATION_JSON).build();
+			resultado = Response.ok(gson.toJson(log_evento), MediaType.APPLICATION_JSON).build();
 
 			conn.commit();
 			conn.setAutoCommit(true);
@@ -204,10 +204,10 @@ public class Recurso_Usuario implements Serializable {
 	}
 
 	@RolesAllowed("ADMIN")
-	@Path("eliminar/{id_usuario}")
+	@Path("eliminar/{id_log_evento}")
 	@DELETE
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response eliminar(@PathParam("id_usuario") Long id_usuario) {
+	public Response eliminar(@PathParam("id_log_evento") Long id_log_evento) {
 		Response resultado;
 		Connection conn = null;
 
@@ -217,11 +217,11 @@ public class Recurso_Usuario implements Serializable {
 
 			conn.setAutoCommit(false);
 
-			Controles.Ctrl_Usuario ctrl_usuario = new Controles.Ctrl_Usuario();
-			Entidades.Usuario usuario = ctrl_usuario.eliminar(conn, id_usuario);
+			Controles.Ctrl_Log_Evento ctrl_log_evento = new Controles.Ctrl_Log_Evento();
+			Entidades.Log_Evento log_evento = ctrl_log_evento.eliminar(conn, id_log_evento);
 
 			Gson gson = new GsonBuilder().serializeNulls().create();
-			resultado = Response.ok(gson.toJson(usuario), MediaType.APPLICATION_JSON).build();
+			resultado = Response.ok(gson.toJson(log_evento), MediaType.APPLICATION_JSON).build();
 
 			conn.commit();
 			conn.setAutoCommit(true);
@@ -242,51 +242,6 @@ public class Recurso_Usuario implements Serializable {
 			} catch (Exception ex) {
 				System.out.println("PROYECTO: SFC-JERSEY-REST-API ==> CLASE: " + this.getClass().getName()
 						+ " ==> METODO: eliminar()-Finally" + " ERROR: " + ex.toString());
-			}
-		}
-
-		return resultado;
-	}
-
-	@RolesAllowed("ADMIN")
-	@Path("cambiar-contrasena/{id_usuario}")
-	@PUT
-	@Produces({ MediaType.APPLICATION_JSON })
-	public Response cambiar_contrasena(@PathParam("id_usuario") Long id_usuario, String contrasena) {
-		Response resultado;
-		Connection conn = null;
-
-		try {
-			Ctrl_Base_Datos ctrl_base_datos = new Ctrl_Base_Datos();
-			conn = ctrl_base_datos.obtener_conexion_mysql();
-
-			conn.setAutoCommit(false);
-
-			Controles.Ctrl_Usuario ctrl_usuario = new Controles.Ctrl_Usuario();
-			String result_cambiar_contrasena = ctrl_usuario.cambiar_contrasena(conn, id_usuario, contrasena);
-
-			Gson gson = new GsonBuilder().serializeNulls().create();
-			resultado = Response.ok(gson.toJson(result_cambiar_contrasena), MediaType.APPLICATION_JSON).build();
-
-			conn.commit();
-			conn.setAutoCommit(true);
-		} catch (Exception ex) {
-			String mensaje = "PROYECTO: SFC-JERSEY-REST-API ==> CLASE: " + this.getClass().getName()
-					+ " ==> METODO: cambiar_contrasena()" + " ERROR: " + ex.toString();
-
-			resultado = Response.status(Status.NOT_FOUND).entity(mensaje).build();
-
-			System.out.println("PROYECTO: SFC-JERSEY-REST-API ==> CLASE: " + this.getClass().getName()
-					+ " ==> METODO: cambiar_contrasena()" + " ERROR: " + ex.toString());
-		} finally {
-			try {
-				if (conn.isClosed()) {
-					conn.close();
-					conn = null;
-				}
-			} catch (Exception ex) {
-				System.out.println("PROYECTO: SFC-JERSEY-REST-API ==> CLASE: " + this.getClass().getName()
-						+ " ==> METODO: cambiar_contrasena()-Finally" + " ERROR: " + ex.toString());
 			}
 		}
 

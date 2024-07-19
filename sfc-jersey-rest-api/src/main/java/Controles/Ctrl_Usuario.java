@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.apache.commons.codec.digest.DigestUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -144,7 +145,7 @@ public class Ctrl_Usuario implements Serializable {
                     + resultado.getId_usuario() + ",'"
                     + resultado.getNombre_completo() + "','"
                     + resultado.getNombre_usuario() + "','"
-                    + resultado.getConstrasena() + "','"
+                    + DigestUtils.sha256Hex(resultado.getConstrasena()) + "','"
                     + resultado.getCorreo_electronico() + "',"
                     + resultado.getActivo() + ",'"
                     + resultado.getAutenticacion() + "','"
@@ -245,6 +246,29 @@ public class Ctrl_Usuario implements Serializable {
         } catch (Exception ex) {
             System.out.println("PROYECTO: SFC-JERSEY-REST-API ==> CLASE: " + this.getClass().getName()
                     + " ==> METODO: eliminar()" + " ERROR: " + ex.toString());
+        }
+
+        return resultado;
+    }
+
+    public String cambiar_contrasena(Connection conn, Long id_usuario, String contrasena) {
+        String resultado = "";
+
+        try {
+            String sql = "UPDATE USUARIO SET "
+                    + "CONTRASENA='" + DigestUtils.sha256Hex(contrasena) + "' "
+                    + "WHERE "
+                    + "ID_USUARIO=" + id_usuario;
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate(sql);
+            stmt.close();
+
+            resultado = "Contraseña actualizada correctamente.";
+        } catch (Exception ex) {
+            resultado = "PROYECTO: SFC-JERSEY-REST-API ==> CLASE: " + this.getClass().getName()
+                    + " ==> METODO: cambiar_contrasena()" + " ERROR: " + ex.toString();
+            System.out.println("PROYECTO: SFC-JERSEY-REST-API ==> CLASE: " + this.getClass().getName()
+                    + " ==> METODO: cambiar_contrasena()" + " ERROR: " + ex.toString());
         }
 
         return resultado;
