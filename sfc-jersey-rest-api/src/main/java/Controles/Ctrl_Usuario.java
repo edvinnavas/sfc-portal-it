@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 import org.apache.commons.codec.digest.DigestUtils;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 public class Ctrl_Usuario implements Serializable {
@@ -269,6 +270,66 @@ public class Ctrl_Usuario implements Serializable {
                     + " ==> METODO: cambiar_contrasena()" + " ERROR: " + ex.toString();
             System.out.println("PROYECTO: SFC-JERSEY-REST-API ==> CLASE: " + this.getClass().getName()
                     + " ==> METODO: cambiar_contrasena()" + " ERROR: " + ex.toString());
+        }
+
+        return resultado;
+    }
+
+    public Entidades.Usuario autenticar(Connection conn, String nombre_usuario, String contrasena) {
+        Entidades.Usuario resultado = new Entidades.Usuario();
+
+        try {
+            Gson gson = new GsonBuilder().serializeNulls().create();
+
+            String sql = "SELECT "
+                    + "A.ID_USUARIO, "
+                    + "A.NOMBRE_COMPLETO, "
+                    + "A.NOMBRE_USUARIO, "
+                    + "A.CONTRASENA, "
+                    + "A.CORREO_ELECTRONICO, "
+                    + "A.ACTIVO, "
+                    + "A.AUTENTICACION, "
+                    + "A.DESCRIPCION, "
+                    + "A.ID_ROL, "
+                    + "A.USUARIO_M, "
+                    + "A.FECHA_HORA "
+                    + "FROM "
+                    + "USUARIO A "
+                    + "WHERE "
+                    + "A.NOMBRE_USUARIO='" + nombre_usuario + "' AND "
+                    + "A.CONTRASENA='" + DigestUtils.sha256Hex(contrasena) + "'";
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                resultado.setId_usuario(rs.getLong(1));
+                resultado.setNombre_completo(rs.getString(2));
+                resultado.setNombre_usuario(rs.getString(3));
+                resultado.setConstrasena("**********");
+                resultado.setCorreo_electronico(rs.getString(5));
+                resultado.setActivo(rs.getInt(6));
+                resultado.setAutenticacion(rs.getString(7));
+                resultado.setDescripcion(rs.getString(8));
+                resultado.setRol(new Ctrl_Rol().obtener_id(conn, rs.getLong(9)));
+                resultado.setUsuario_m(rs.getString(10));
+                resultado.setFecha_hora(rs.getDate(11));
+
+                // REGISTRAR EVENTO.
+                Entidades.Log_Evento log_evento = new Entidades.Log_Evento();
+                log_evento.setId_evento(null);
+                log_evento.setTipo_evento(new Controles.Ctrl_Tipo_Evento().obtener_id(conn, Long.valueOf("1")));
+                log_evento.setUsuario(resultado);
+                log_evento.setDescripcion("Usuario " + resultado.getNombre_usuario() + " se autentico en la sistema.");
+                log_evento.setFecha_hora(null);
+                log_evento.getTipo_evento().setFecha_hora(null);
+                log_evento.getUsuario().getRol().setFecha_hora(null);
+                log_evento.getUsuario().setFecha_hora(null);
+                log_evento = new Controles.Ctrl_Log_Evento().crear(conn, gson.toJson(log_evento));
+            }
+            rs.close();
+            stmt.close();
+        } catch (Exception ex) {
+            System.out.println("PROYECTO: SFC-JERSEY-REST-API ==> CLASE: " + this.getClass().getName()
+                    + " ==> METODO: autenticar()" + " ERROR: " + ex.toString());
         }
 
         return resultado;

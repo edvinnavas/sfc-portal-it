@@ -20,6 +20,16 @@ public class Ctrl_Ambiente implements Serializable {
         String resultado = "";
 
         try {
+            // LIMPIAR TABLAS DE LA INICIALIZACIÓN DEL AMBIENTE.
+            Controles.Ctrl_Base_Datos ctrl_base_datos = new Controles.Ctrl_Base_Datos();
+            ctrl_base_datos.EjecutarCMD("DELETE FROM LOG_EVENTO WHERE ID_EVENTO > 0", conn);
+            ctrl_base_datos.EjecutarCMD("DELETE FROM TIPO_EVENTO WHERE ID_TIPO_EVENTO > 0", conn);
+            ctrl_base_datos.EjecutarCMD("DELETE FROM USUARIO WHERE ID_USUARIO > 0", conn);
+            ctrl_base_datos.EjecutarCMD("DELETE FROM ROL_MENU WHERE ID_ROL > 0", conn);
+            ctrl_base_datos.EjecutarCMD("DELETE FROM ROL WHERE ID_ROL > 0", conn);
+            ctrl_base_datos.EjecutarCMD("DELETE FROM MENU WHERE ID_MENU > 0", conn);
+            ctrl_base_datos.EjecutarCMD("DELETE FROM TIPO_MENU WHERE ID_TIPO_MENU > 0", conn);
+
             // OBJETO PARA SERIALIZAR JSON.
             Gson gson = new GsonBuilder().serializeNulls().create();
 
@@ -152,7 +162,7 @@ public class Ctrl_Ambiente implements Serializable {
 
             Entidades.Tipo_Evento tipo_evento_1 = new Entidades.Tipo_Evento();
             tipo_evento_1.setId_tipo_evento(null);
-            tipo_evento_1.setNombre("LOGIN");
+            tipo_evento_1.setNombre("AUTENTICACION");
             tipo_evento_1.setActivo(1);
             tipo_evento_1.setDescripcion("Tipo de evento creado por el sistema.");
             tipo_evento_1.setUsuario_m("SISTEMA");
@@ -222,21 +232,25 @@ public class Ctrl_Ambiente implements Serializable {
             tipo_evento_8.setFecha_hora(new Date());
             tipo_evento_8 = ctrl_tipo_evento.crear(conn, gson.toJson(tipo_evento_8));
 
-            // SECCIÓN PARA CREAR LOS TIPO DE EVENTO.
-            Controles.Ctrl_Log_Evento ctrl_log_evento = new Controles.Ctrl_Log_Evento();
-
-            Entidades.Log_Evento log_evento = new Entidades.Log_Evento();
-            log_evento.setId_evento(null);
-            log_evento.setTipo_evento(tipo_evento_1);
-            log_evento.setUsuario(usuario_1);
-            log_evento.setDescripcion("Usuario " + usuario_1.getNombre_usuario() + " se registro en el sistema.");
-            log_evento.setFecha_hora(null);
-            log_evento = ctrl_log_evento.crear(conn, gson.toJson(log_evento));
-
             resultado = "AMBIENTE INICIADO CORRECTAMENTE.";
         } catch (Exception ex) {
             resultado = "PROYECTO: SFC-JERSEY-REST-API ==> CLASE: " + this.getClass().getName()
                     + " ==> METODO: iniciar()" + " ERROR: " + ex.toString();
+            System.out.println("PROYECTO: SFC-JERSEY-REST-API ==> CLASE: " + this.getClass().getName()
+                    + " ==> METODO: iniciar()" + " ERROR: " + ex.toString());
+        }
+
+        return resultado;
+    }
+
+    public Entidades.Usuario prueba_metodos(Connection conn) {
+        Entidades.Usuario resultado = new Entidades.Usuario();
+
+        try {
+            // SECCIÓN PARA CREAR LOS USUARIO.
+            Controles.Ctrl_Usuario ctrl_usuario = new Controles.Ctrl_Usuario();
+            resultado = ctrl_usuario.autenticar(conn, "enavas", "Edfr@2024");
+        } catch (Exception ex) {
             System.out.println("PROYECTO: SFC-JERSEY-REST-API ==> CLASE: " + this.getClass().getName()
                     + " ==> METODO: iniciar()" + " ERROR: " + ex.toString());
         }

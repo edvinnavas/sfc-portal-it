@@ -214,4 +214,23 @@ public class Ctrl_Base_Datos implements Serializable {
         return resultado;
     }
 
+    public String EjecutarCMD(String cadenasql, Connection conn) {
+        String resultado = "";
+
+        try {
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate(cadenasql);
+            stmt.close();
+
+            resultado = "0,Comando ejecutado correctamente.";
+        } catch (Exception ex) {
+            resultado = "PROYECTO: SFC-JERSEY-REST-API ==> CLASE: " + this.getClass().getName()
+                    + " ==> METODO: EjecutarCMD()" + " ERROR: " + ex.toString();
+            System.out.println("PROYECTO: SFC-JERSEY-REST-API ==> CLASE: " + this.getClass().getName()
+                    + " ==> METODO: EjecutarCMD()" + " ERROR: " + ex.toString());
+        }
+
+        return resultado;
+    }
+
 }

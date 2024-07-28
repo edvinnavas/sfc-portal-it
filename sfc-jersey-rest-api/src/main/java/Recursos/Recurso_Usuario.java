@@ -249,10 +249,10 @@ public class Recurso_Usuario implements Serializable {
 	}
 
 	@RolesAllowed("ADMIN")
-	@Path("cambiar-contrasena/{id_usuario}")
+	@Path("autenticar/{nombre_usuario}/{contrasena}")
 	@PUT
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response cambiar_contrasena(@PathParam("id_usuario") Long id_usuario, String contrasena) {
+	public Response autenticar(@PathParam("nombre_usuario") String nombre_usuario, @PathParam("contrasena") String contrasena) {
 		Response resultado;
 		Connection conn = null;
 
@@ -263,21 +263,21 @@ public class Recurso_Usuario implements Serializable {
 			conn.setAutoCommit(false);
 
 			Controles.Ctrl_Usuario ctrl_usuario = new Controles.Ctrl_Usuario();
-			String result_cambiar_contrasena = ctrl_usuario.cambiar_contrasena(conn, id_usuario, contrasena);
+			Entidades.Usuario usuario = ctrl_usuario.autenticar(conn, nombre_usuario, contrasena);
 
 			Gson gson = new GsonBuilder().serializeNulls().create();
-			resultado = Response.ok(gson.toJson(result_cambiar_contrasena), MediaType.APPLICATION_JSON).build();
+			resultado = Response.ok(gson.toJson(usuario), MediaType.APPLICATION_JSON).build();
 
 			conn.commit();
 			conn.setAutoCommit(true);
 		} catch (Exception ex) {
 			String mensaje = "PROYECTO: SFC-JERSEY-REST-API ==> CLASE: " + this.getClass().getName()
-					+ " ==> METODO: cambiar_contrasena()" + " ERROR: " + ex.toString();
+					+ " ==> METODO: autenticar()" + " ERROR: " + ex.toString();
 
 			resultado = Response.status(Status.NOT_FOUND).entity(mensaje).build();
 
 			System.out.println("PROYECTO: SFC-JERSEY-REST-API ==> CLASE: " + this.getClass().getName()
-					+ " ==> METODO: cambiar_contrasena()" + " ERROR: " + ex.toString());
+					+ " ==> METODO: autenticar()" + " ERROR: " + ex.toString());
 		} finally {
 			try {
 				if (conn.isClosed()) {
@@ -286,7 +286,7 @@ public class Recurso_Usuario implements Serializable {
 				}
 			} catch (Exception ex) {
 				System.out.println("PROYECTO: SFC-JERSEY-REST-API ==> CLASE: " + this.getClass().getName()
-						+ " ==> METODO: cambiar_contrasena()-Finally" + " ERROR: " + ex.toString());
+						+ " ==> METODO: autenticar()-Finally" + " ERROR: " + ex.toString());
 			}
 		}
 

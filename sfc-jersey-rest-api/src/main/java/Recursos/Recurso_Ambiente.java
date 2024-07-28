@@ -63,4 +63,49 @@ public class Recurso_Ambiente implements Serializable {
 		return resultado;
 	}
 
+	@RolesAllowed("ADMIN")
+	@Path("prueba-metodos")
+	@POST
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response prueba_metodos() {
+		Response resultado;
+		Connection conn = null;
+
+		try {
+			Ctrl_Base_Datos ctrl_base_datos = new Ctrl_Base_Datos();
+			conn = ctrl_base_datos.obtener_conexion_mysql();
+
+			conn.setAutoCommit(false);
+
+			Controles.Ctrl_Ambiente ctrl_ambiente = new Controles.Ctrl_Ambiente();
+			Entidades.Usuario usuario = ctrl_ambiente.prueba_metodos(conn);
+
+			Gson gson = new GsonBuilder().serializeNulls().create();
+			resultado = Response.ok(gson.toJson(usuario), MediaType.APPLICATION_JSON).build();
+
+			conn.commit();
+			conn.setAutoCommit(true);
+		} catch (Exception ex) {
+			String mensaje = "PROYECTO: SFC-JERSEY-REST-API ==> CLASE: " + this.getClass().getName()
+					+ " ==> METODO: prueba_metodos()" + " ERROR: " + ex.toString();
+
+			resultado = Response.status(Status.NOT_FOUND).entity(mensaje).build();
+
+			System.out.println("PROYECTO: SFC-JERSEY-REST-API ==> CLASE: " + this.getClass().getName()
+					+ " ==> METODO: prueba_metodos()" + " ERROR: " + ex.toString());
+		} finally {
+			try {
+				if (conn.isClosed()) {
+					conn.close();
+					conn = null;
+				}
+			} catch (Exception ex) {
+				System.out.println("PROYECTO: SFC-JERSEY-REST-API ==> CLASE: " + this.getClass().getName()
+						+ " ==> METODO: prueba_metodos()-Finally" + " ERROR: " + ex.toString());
+			}
+		}
+
+		return resultado;
+	}
+
 }
